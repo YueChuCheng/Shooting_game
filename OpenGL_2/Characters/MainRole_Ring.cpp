@@ -2,7 +2,7 @@
 
 MainRole_Ring::MainRole_Ring()
 {
-
+	
 
 	//外圍環
 	for (int i = 0; i < Ring; i++)
@@ -18,24 +18,48 @@ MainRole_Ring::MainRole_Ring()
 
 
 	//外回環球
+	//R
 	for (int i = 0; i < Ring_ball; i++)
 	{
-		_Points[i+ Ring] = vec4(0.1f * cosf(2.0f * M_PI * i / Ring_ball) + 1.0f, 0.1 * sinf(2.0f * M_PI * i / Ring_ball) - 0.1, 0.0f, 1.0f);
+		_Points[i+ Ring] = vec4(0.1f * cosf(2.0f * M_PI * i / Ring_ball) , 0.1 * sinf(2.0f * M_PI * i / Ring_ball)+1.0 , 0.0f, 1.0f);
 	}
 
 	for (int i = 0; i < Ring_ball; i++)
 	{
-		_Colors[i+ Ring] = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+		_Colors[i+ Ring] = vec4(0.9921f, 0.0039f, 0.0f, 1.0f);
 	}
 
-	//校正大小
+	//B
+	for (int i = 0; i < Ring_ball; i++)
+	{
+		_Points[i + Ring + Ring_ball] = vec4(0.1f * cosf(2.0f * M_PI * i / Ring_ball)+ 0.866, 0.1 * sinf(2.0f * M_PI * i / Ring_ball) - 0.5 , 0.0f, 1.0f);
+	}
+
+	for (int i = 0; i < Ring_ball; i++)
+	{
+		_Colors[i + Ring + Ring_ball] = vec4(0.2187f, 0.6171f, 0.7734f, 1.0f);
+	}
+
+	//Y
+	for (int i = 0; i < Ring_ball; i++)
+	{
+		_Points[i + Ring + (Ring_ball * 2)] = vec4(0.1f * cosf(2.0f * M_PI * i / Ring_ball) - 0.866f, 0.1 * sinf(2.0f * M_PI * i / Ring_ball) - 0.5, 0.0f, 1.0f);
+	}
+
+	for (int i = 0; i < Ring_ball; i++)
+	{
+		_Colors[i + Ring + (Ring_ball * 2)] = vec4(0.9531f, 0.9375f, 0.3828, 1.0f);
+	}
+
+
+	//校正大小已於AutomaticRotation處校正
 	/*for (int i = 0; i < Ring_Point_NUM; i++)
 	{
 		_Points[i].x = _Points[i].x * (6.5 / 10.0);
 		_Points[i].y = _Points[i].y * (360.0 / 640.0) * (6.5 / 10.0);
 		
-	}*/
-
+	}
+	*/
 	CreateBufferObject();
 	_bUpdateProj = false;
 }
@@ -139,6 +163,51 @@ void MainRole_Ring::SetVtxColors(GLfloat vLFColor[], GLfloat vLRColor[], GLfloat
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(_Points), sizeof(_Colors), _Colors);
 }
 
+
+
+void MainRole_Ring::SetDefenseBall() { //設定有幾顆防禦球
+
+
+	switch (_defenceBallNUM) //幾顆防禦球
+	{
+
+	case 0:
+		break;
+
+	case 1:
+		glDrawArrays(GL_LINE_LOOP, 0, Ring);
+		glDrawArrays(GL_TRIANGLE_FAN, Ring, Ring_ball);
+		break;
+
+	case 2:
+		glDrawArrays(GL_LINE_LOOP, 0, Ring);
+		glDrawArrays(GL_TRIANGLE_FAN, Ring, Ring_ball);
+		glDrawArrays(GL_TRIANGLE_FAN, Ring + Ring_ball, Ring_ball);
+		break;
+
+	case 3:
+		glDrawArrays(GL_LINE_LOOP, 0, Ring);
+		glDrawArrays(GL_TRIANGLE_FAN, Ring, Ring_ball);
+		glDrawArrays(GL_TRIANGLE_FAN, Ring + Ring_ball, Ring_ball);
+		glDrawArrays(GL_TRIANGLE_FAN, Ring + (Ring_ball * 2), Ring_ball);
+		break;
+
+
+
+	default:
+		glDrawArrays(GL_LINE_LOOP, 0, Ring);
+		glDrawArrays(GL_TRIANGLE_FAN, Ring, Ring_ball);
+		glDrawArrays(GL_TRIANGLE_FAN, Ring + Ring_ball, Ring_ball);
+		glDrawArrays(GL_TRIANGLE_FAN, Ring + (Ring_ball * 2), Ring_ball);
+
+		break;
+	}
+	
+
+}
+
+
+
 void MainRole_Ring::Draw()
 {
 	glUseProgram(_Program);
@@ -153,8 +222,8 @@ void MainRole_Ring::Draw()
 		glUniformMatrix4fv(_Projection, 1, GL_TRUE, _mxProjection);
 		_bUpdateProj = false;
 	}
-	glDrawArrays(GL_LINE_LOOP, 0, Ring);
-	glDrawArrays(GL_TRIANGLE_FAN, Ring, Ring_ball);
+	
+	SetDefenseBall(); //防禦球函數
 }
 
 

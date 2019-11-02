@@ -20,6 +20,8 @@ extern void onFrameMove(float delta);
 void DisplayFSP(int ifps);
 void DrawText(float x, float y, char *string);
 
+
+
 void IdleProcess()
 {
 	float delta;
@@ -37,10 +39,11 @@ void IdleProcess()
 			g_icount = 0;
 			g_ckStart += g_felapse;
 		}
-		delta = (float)((ckNow - g_fprev)/1000.0); // 計算間隔的時間
+		delta = (float)((ckNow - g_fprev)/1000); // 計算間隔的時間
 		g_fprev = ckNow; // 記錄這次的時間，當成前一次的時間
 		onFrameMove(delta);
-		//printf("%d\n",g_ifps);
+		
+		
 	}
 	glutPostRedisplay(); // 呼叫 Rendering 更新螢幕
 }

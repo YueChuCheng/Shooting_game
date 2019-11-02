@@ -5,17 +5,19 @@ typedef Angel::vec4  point4;
 
 const int Ring_ball = 20;
 const int Ring = 150;
-const int Ring_Point_NUM = Ring_ball + Ring;
+const int Ring_Point_NUM = (Ring_ball * 3) + Ring;
 
 class MainRole_Ring
 {
 public:
 	MainRole_Ring();
 	~MainRole_Ring();
+
 	GLfloat _x = 0;
-	GLfloat _y = 0;
+	GLfloat _y = -0.05; //-0.05使戰機於圓的正中心
 	GLfloat _scale = 1;
 	GLfloat _rotate = 0;
+	int _defenceBallNUM = 3;
 
 	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
 	GLuint GetShaderHandle() { return _Program; }
@@ -24,6 +26,9 @@ public:
 	void SetTRSMatrix(mat4& mat);
 	void SetColor(GLfloat vColor[4]); // Single color
 	void SetVtxColors(GLfloat vLFColor[], GLfloat vLRColor[], GLfloat vTRColor[], GLfloat vTLColor[]); // four Vertices' Color
+
+	
+
 
 	void Draw();
 	void DrawW();
@@ -50,6 +55,7 @@ private:
 	bool  _bUpdateProj;
 
 	void CreateBufferObject();
+	void SetDefenseBall();
 
 
 };
