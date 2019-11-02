@@ -28,6 +28,11 @@ mat4 g_mxModelView(1.0f);
 mat4 g_mxProjection;
 
 
+//矩陣
+mat4 mxAutoRotate_ring;
+mat4 mxTran;
+mat4 maTran_Ring;
+
 // 函式的原型宣告
 void IdleProcess();
 void CreateGameObject();
@@ -46,7 +51,6 @@ void init( void )
 }
 
 
-//----------------------------------------------------------------------------
 
 void CreateGameObject() {
 
@@ -69,10 +73,31 @@ void GL_Display( void )
 	glutSwapBuffers();	// 交換 Frame Buffer
 }
 
+//----------------------------------------------------------------------------
+
+//自動旋轉
+
+
+
+void AutomaticRotation() {
+
+	mxAutoRotate_ring = RotateZ(mainrole_ring->_rotate+=0.1);
+	
+	//rotate 需要做校正 
+	mxAutoRotate_ring._m[0] *=  (6.5 / 10.0);
+	mxAutoRotate_ring._m[1] *= (360.0 / 640.0) * (6.5 / 10.0);
+
+	mainrole_ring->SetTRSMatrix(mxTran * mxAutoRotate_ring * maTran_Ring);
+
+}
+
+
+
 void onFrameMove(float delta)
 {
 	/*if( _bAutoRotation ) AutomaticRotation();
 	GL_Display();*/
+	AutomaticRotation();
 	GL_Display();
 }
 
@@ -85,7 +110,7 @@ void reset()
 }
 //----------------------------------------------------------------------------
 
-mat4 mxTran;
+
 float mouse_displacement = 2.0f; //滑鼠位移量
 
 void win_PassiveMotion(int x , int y) { //用滑鼠操控船艦
@@ -96,7 +121,12 @@ void win_PassiveMotion(int x , int y) { //用滑鼠操控船艦
 	mainrole->_y = -mouse_displacement * (y - SCREENHEIGHT_HALF) / (SCREENHEIGHT_HALF);
 	mxTran = Translate(mainrole->_x, mainrole->_y,0);
 
+	maTran_Ring = Translate(mainrole_ring->_x, mainrole_ring->_y, 0); //取得圓環的X、Y資訊
+	
 	mainrole->SetTRSMatrix(mxTran);
+
+	mxTran = Translate(mainrole->_x, mainrole->_y-0.05, 0);
+	mainrole_ring->SetTRSMatrix(mxTran * mxAutoRotate_ring * maTran_Ring); //設定圓環的父子關係
 
 }
 

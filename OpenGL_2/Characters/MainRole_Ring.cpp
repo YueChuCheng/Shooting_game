@@ -3,23 +3,38 @@
 MainRole_Ring::MainRole_Ring()
 {
 
-	for (int i = 0; i < MainRole_Point_NUM; i++)
+
+	//外圍環
+	for (int i = 0; i < Ring; i++)
 	{
-		_Points[i] = vec4(1.0f * cosf(2.0f * M_PI * i / MainRole_Point_NUM), 1.0 * sinf(2.0f * M_PI * i / MainRole_Point_NUM), 0.0f, 1.0f);
+		//Y扣0.1使戰機於圓圈的中心
+		_Points[i] = vec4(1.0f * cosf(2.0f * M_PI * i / Ring), 1.0 * sinf(2.0f * M_PI * i / Ring), 0.0f, 1.0f);
 	}
 
-	for (int i = 0; i < MainRole_Point_NUM; i++)
+	for (int i = 0; i < Ring; i++)
 	{
 		_Colors[i] = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
+
+	//外回環球
+	for (int i = 0; i < Ring_ball; i++)
+	{
+		_Points[i+ Ring] = vec4(0.1f * cosf(2.0f * M_PI * i / Ring_ball) + 1.0f, 0.1 * sinf(2.0f * M_PI * i / Ring_ball) - 0.1, 0.0f, 1.0f);
+	}
+
+	for (int i = 0; i < Ring_ball; i++)
+	{
+		_Colors[i+ Ring] = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	}
+
 	//校正大小
-	for (int i = 0; i < MainRole_Point_NUM; i++)
+	/*for (int i = 0; i < Ring_Point_NUM; i++)
 	{
 		_Points[i].x = _Points[i].x * (6.5 / 10.0);
 		_Points[i].y = _Points[i].y * (360.0 / 640.0) * (6.5 / 10.0);
-
-	}
+		
+	}*/
 
 	CreateBufferObject();
 	_bUpdateProj = false;
@@ -86,7 +101,7 @@ void MainRole_Ring::SetTRSMatrix(mat4& mat)
 
 void MainRole_Ring::SetColor(GLfloat vColor[4])
 {
-	for (int i = 0; i < MainRole_Point_NUM; i++) {
+	for (int i = 0; i < Ring_Point_NUM; i++) {
 		_Colors[i].x = vColor[0];
 		_Colors[i].y = vColor[1];
 		_Colors[i].z = vColor[2];
@@ -138,7 +153,8 @@ void MainRole_Ring::Draw()
 		glUniformMatrix4fv(_Projection, 1, GL_TRUE, _mxProjection);
 		_bUpdateProj = false;
 	}
-	glDrawArrays(GL_LINE_LOOP, 0, MainRole_Point_NUM);
+	glDrawArrays(GL_LINE_LOOP, 0, Ring);
+	glDrawArrays(GL_TRIANGLE_FAN, Ring, Ring_ball);
 }
 
 

@@ -3,8 +3,9 @@ typedef Angel::vec4  color4;
 typedef Angel::vec4  point4;
 
 
-
-const int MainRole_Point_NUM = 200;
+const int Ring_ball = 20;
+const int Ring = 150;
+const int Ring_Point_NUM = Ring_ball + Ring;
 
 class MainRole_Ring
 {
@@ -14,6 +15,7 @@ public:
 	GLfloat _x = 0;
 	GLfloat _y = 0;
 	GLfloat _scale = 1;
+	GLfloat _rotate = 0;
 
 	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
 	GLuint GetShaderHandle() { return _Program; }
@@ -28,8 +30,8 @@ public:
 
 private:
 
-	vec4 _Points[MainRole_Point_NUM];
-	vec4 _Colors[MainRole_Point_NUM];
+	vec4 _Points[Ring_Point_NUM];
+	vec4 _Colors[Ring_Point_NUM];
 
 	// VAO
 	GLuint _VAO;
