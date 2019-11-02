@@ -1,0 +1,7 @@
+﻿  MainRole_Ring.cpp
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(8,49): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(8,99): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(8,76): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(19,31): warning C4244: '=': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(20,49): warning C4244: '=': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+  OpenGL_2.vcxproj -> D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\Debug\OpenGL_2.exe
