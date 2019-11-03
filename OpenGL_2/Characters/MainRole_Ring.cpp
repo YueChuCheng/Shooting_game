@@ -239,7 +239,7 @@ void MainRole_Ring:: AutomaticRotation(mat4 mainrole_mxTran) {
 	}
 
 
-	mxAutoRotate_Ring = RotateZ(_rotate += 0.1);
+	mxAutoRotate_Ring = RotateZ(_rotate += 0.5);
 
 	//rotate 需要做校正 
 	mxAutoRotate_Ring._m[0] *= (6.5 / 10.0);

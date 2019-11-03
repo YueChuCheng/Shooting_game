@@ -37,7 +37,7 @@ public:
 	void SetXYScale(float fx, float fy, float fscale);
 	
 	//¦Û°Ê²¾°Ê­I´º
-	void AutoTranslate_background();
+	void AutoTranslate_Background();
 private:
 	
 	vec4 _Points[Cloud_Point_NUM];

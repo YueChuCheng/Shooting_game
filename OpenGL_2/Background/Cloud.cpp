@@ -259,7 +259,7 @@ void Cloud::Draw()
 
 
 //¶³¼h¦Û°Ê²¾°Ê
-void Cloud:: AutoTranslate_background() {
+void Cloud:: AutoTranslate_Background() {
 
 
 

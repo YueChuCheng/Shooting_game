@@ -25,6 +25,9 @@
     <Filter Include="Background">
       <UniqueIdentifier>{76d727d7-f8dd-4d58-8ff1-027ac4e80afb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Weapon">
+      <UniqueIdentifier>{c6dff4ca-a58a-4707-9050-921749d4ef55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InitShader.cpp">
@@ -47,6 +50,9 @@
     </ClCompile>
     <ClCompile Include="Background\Cloud.cpp">
       <Filter>Background</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon\Bullet_Main.cpp">
+      <Filter>Weapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +80,9 @@
     <ClInclude Include="Background\Cloud.h">
       <Filter>Background</Filter>
     </ClInclude>
+    <ClInclude Include="Weapon\Bullet_Main.h">
+      <Filter>Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fsMainRole.glsl">
@@ -92,6 +101,12 @@
       <Filter>原始程式檔\Shader</Filter>
     </None>
     <None Include="fsCloud_1.glsl">
+      <Filter>原始程式檔\Shader</Filter>
+    </None>
+    <None Include="fsBullet_Main.glsl">
+      <Filter>原始程式檔\Shader</Filter>
+    </None>
+    <None Include="vsBullet_Main.glsl">
       <Filter>原始程式檔\Shader</Filter>
     </None>
   </ItemGroup>

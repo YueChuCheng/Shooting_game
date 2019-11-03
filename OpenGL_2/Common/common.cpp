@@ -8,15 +8,26 @@
 #define ORTHO_WIDTH 0
 
 char g_strFPS[9] = "FPS:0000";
+//IdleProcess
 int g_ifps;
 int g_icount = 0;
 double g_ckStart = -1;
 double g_felapse;
 double g_fprev;
-
 Timer g_Timer;
 
+//CallBackDelta 
+int callback_ifps;
+int callback_icount = 0;
+double callback_ckStart = -1;
+double callback_felapse;
+double callback_fprev;
+Timer callback_Timer;
+
+
+
 extern void onFrameMove(float delta);
+extern void onBulletLaunch(float delta);
 void DisplayFSP(int ifps);
 void DrawText(float x, float y, char *string);
 
@@ -33,20 +44,25 @@ void IdleProcess()
 	}
 	else {
 		ckNow = g_Timer.getElapsedTimeInMilliSec();
-		g_felapse = (ckNow - g_ckStart);
+		//計時一秒計時器
+		/*g_felapse = (ckNow - g_ckStart);
 		if( g_felapse >= 1000.0 ) {
 			g_ifps = g_icount;
 			g_icount = 0;
 			g_ckStart += g_felapse;
-		}
+		}*/
 		delta = (float)((ckNow - g_fprev)/1000); // 計算間隔的時間
 		g_fprev = ckNow; // 記錄這次的時間，當成前一次的時間
 		onFrameMove(delta);
+		onBulletLaunch(delta);
 		
-		
+				
 	}
 	glutPostRedisplay(); // 呼叫 Rendering 更新螢幕
 }
+
+
+
 
 //--------------------------------------------------------------------------------
 // 以下沒有用到，無須理會

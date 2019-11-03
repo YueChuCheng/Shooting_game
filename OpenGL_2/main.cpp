@@ -4,7 +4,7 @@
 #include "Characters/mainrole.h"
 #include "Characters/MainRole_Ring.h"
 #include "Background/Cloud.h"
-
+#include "Weapon/Bullet_Main.h"
 
 #define SPACE_KEY 32
 
@@ -20,6 +20,7 @@
 MainRole *mainrole;	// 宣告 指標物件，結束時記得釋放
 MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
 Cloud* cloud[6];
+Bullet_Main* bullet_main;
 
 
 // For Model View and Projection Matrix
@@ -98,9 +99,20 @@ void GL_Display(void)
 	{
 		cloud[i]->Draw();
 	}
+
 	mainrole->Draw();
 	mainrole_ring->Draw();
+
 	glutSwapBuffers();	// 交換 Frame Buffer
+}
+
+
+void CreateBullet_Main() { //你在寫這裡!!!!!
+
+	bullet_main = new Bullet_Main;
+	bullet_main->SetShader(g_mxModelView, g_mxProjection);
+	bullet_main->Draw();
+
 }
 
 //----------------------------------------------------------------------------
@@ -111,14 +123,14 @@ float timer_autoRotate = 0; //rotation's timer
 void onFrameMove(float delta)
 {
 	timer_autoRotate += delta;
-	if (timer_autoRotate > 1.0 / 3000.0) { //每1/3000更新一次
+	if (timer_autoRotate > 1.0 / 1000.0) { //每1/1000更新一次
 		
 		
 		mainrole_ring->AutomaticRotation( mainrole->mxTran_Main );//星環自動選轉 傳入父層
 
 		for (int i = 0; i < 6; i++)
 		{
-			cloud[i]->AutoTranslate_background();
+			cloud[i]->AutoTranslate_Background();
 		}
 		
 		timer_autoRotate = 0;
@@ -127,6 +139,46 @@ void onFrameMove(float delta)
 	GL_Display();
 	
 }
+
+
+int bullet_count = 0; //發射子彈數
+float timer_bullet = 0.0; //時間計時器
+float BulletLaunchSecStart = 0.0; //紀錄子彈發射的時間 
+bool canLaunchBullet = true; //是否允許發射子彈
+bool clickLaunchBullet = false; //是否按下發射
+
+bool mouse_down= GLUT_UP;
+void onBulletLaunch(float delta) {
+	
+	//printf("目前發射了: %d\n 發子彈", bullet_count);
+
+	timer_bullet += delta;
+	if (clickLaunchBullet && canLaunchBullet) {
+		
+		//bullet_count++;
+		CreateBullet_Main();
+		canLaunchBullet = false;
+		
+		BulletLaunchSecStart = timer_bullet;
+		 
+	}
+
+	if (timer_bullet - BulletLaunchSecStart > 0.6f ) { //每隔0.6秒可發射一發子彈
+		
+		canLaunchBullet = true;
+		if(mouse_down == GLUT_UP){ 
+			clickLaunchBullet = false; //從此處開始再次確認是否有點擊滑鼠
+
+		}
+		else if (mouse_down == GLUT_DOWN) { //長按
+			clickLaunchBullet = true; //若為長按則連續發射
+		}
+		
+		timer_bullet = BulletLaunchSecStart = 0.0f;
+	}
+
+}
+
 
 //----------------------------------------------------------------------------
 void reset()
@@ -158,6 +210,24 @@ void win_PassiveMotion(int x , int y) { //用滑鼠操控船艦
 }
 
 
+void win_mousemotion( int x ,int y) {
+	//計算位移量
+
+	mainrole->_x = mouse_displacement * (x - SCREENWIDTH_HALF) / (SCREENWIDTH_HALF);
+	mainrole->_y = -mouse_displacement * (y - SCREENHEIGHT_HALF) / (SCREENHEIGHT_HALF);
+
+	//set main role matrix
+	mainrole->mxTran_Main = Translate(mainrole->_x, mainrole->_y, 0);
+	mainrole->SetTRSMatrix(mainrole->mxTran_Main);
+
+	//set ring matrix
+	mainrole_ring->maTran_Ring = Translate(mainrole_ring->_x, mainrole_ring->_y, 0); //取得圓環的X、Y資訊 
+	mainrole_ring->SetTRSMatrix(mainrole->mxTran_Main * mainrole_ring->maTran_Ring * mainrole_ring->mxAutoRotate_Ring); //設定圓環的父子關係
+
+
+}
+
+
 //test _defenceBallNUM
 void win_keyFunc(unsigned char key ,int x, int y) { 
 
@@ -169,7 +239,6 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 	case 'b':
 		mainrole_ring->_defenceBallNUM = 1;
 		break;
-
 	case 'c':
 		mainrole_ring->_defenceBallNUM = 2;
 		break;
@@ -180,6 +249,34 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 	}
 
 }
+
+
+//launch bullet
+void win_mouse(int button , int state , int x , int y ) {
+
+	switch (button)
+	{
+		case GLUT_LEFT_BUTTON:
+			
+
+			if (state == GLUT_DOWN) {
+				mouse_down = GLUT_DOWN;
+				clickLaunchBullet = true;
+			}
+			else
+				mouse_down = GLUT_UP;
+
+				
+			break;
+
+		default:
+
+			break;
+	}
+	
+
+}
+
 
 
 
@@ -205,6 +302,8 @@ void GL_Reshape(GLsizei w, GLsizei h)
 
 //----------------------------------------------------------------------------
 
+float timer_test;
+
 int main( int argc, char **argv )
 {
     
@@ -225,15 +324,20 @@ int main( int argc, char **argv )
 
     init();
 
-	//test _defenceBallNUM
-	glutKeyboardFunc(win_keyFunc);
 	
+	glutKeyboardFunc(win_keyFunc);//test _defenceBallNUM
 	
+	glutMotionFunc(win_mousemotion);//滑鼠在按下按鍵時一樣操控船艦
 	glutPassiveMotionFunc(win_PassiveMotion); //用滑鼠操控船艦
+
+	glutMouseFunc(win_mouse); //發射子彈
+	
+
 	glutDisplayFunc( GL_Display );
 	glutReshapeFunc( GL_Reshape );
 	glutIdleFunc( IdleProcess );
 	
+
     glutMainLoop();
     return 0;
 }

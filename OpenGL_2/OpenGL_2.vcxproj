@@ -86,6 +86,7 @@
     <ClCompile Include="Common\Timer.cpp" />
     <ClCompile Include="InitShader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Weapon\Bullet_Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background\Cloud.h" />
@@ -96,11 +97,14 @@
     <ClInclude Include="Header\CheckError.h" />
     <ClInclude Include="Header\mat.h" />
     <ClInclude Include="Header\vec.h" />
+    <ClInclude Include="Weapon\Bullet_Main.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="fsBullet_Main.glsl" />
     <None Include="fsCloud_1.glsl" />
     <None Include="fsMainRole.glsl" />
     <None Include="fsMainRole_Ring.glsl" />
+    <None Include="vsBullet_Main.glsl" />
     <None Include="vsCloud_1.glsl" />
     <None Include="vsMainRole.glsl" />
     <None Include="vsMainRole_Ring.glsl" />
