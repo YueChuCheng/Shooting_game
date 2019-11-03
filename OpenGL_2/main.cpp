@@ -1,8 +1,5 @@
-// Model-View matrix and Projection matrix
-// Orthogonal or Orthographic projection
-// Windows Events - Keyboard & Mouse
-// Rotate Rectangle
-
+#include <math.h>
+#include <time.h>
 #include "header/Angel.h"
 #include "Characters/mainrole.h"
 #include "Characters/MainRole_Ring.h"
@@ -22,7 +19,7 @@
 // 必須在 glewInit(); 執行完後,在執行物件實體的取得
 MainRole *mainrole;	// 宣告 指標物件，結束時記得釋放
 MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
-Cloud* cloud[1];
+Cloud* cloud[6];
 
 
 // For Model View and Projection Matrix
@@ -30,33 +27,41 @@ mat4 g_mxModelView(1.0f);
 mat4 g_mxProjection;
 
 
-//矩陣
-mat4 mxAutoRotate_Ring;
-mat4 mxTran_Main;
-mat4 maTran_Ring;
-
 // 函式的原型宣告
 void IdleProcess();
 void CreateGameObject();
 
 
-float aa = 1.3f;
+
+//雲朵位置、大小陣列
+float cloud_info[6][3] = {
+
+	1.0f , 1.3f , 8.5f/10.0f,
+	1.5f , 0.1f , 7.0f/10.0f,
+	0.95f , -0.8f , 6.5f / 10.0f,
+	-1.45f , 1.9f , 8.0f / 10.0f,
+	-2.1f , 0.6f , 10.0f / 10.0f,
+	-1.2f , -1.45f , 10.1f / 10.0f
+
+};
 
 
 
 void init( void )
 {
+	
+	srand((unsigned)time(NULL));//設定亂數種子
 
     g_mxProjection = Ortho(-2.0f, 2.0f, -2.0f, 2.0f, -2.0f, 2.0f);
 
-	CreateGameObject();
+	CreateGameObject();	//取得物件
 
 
     glClearColor( 0.9882, 0.6718, 0.6445, 1.0 ); // black background
 }
 
 
-
+//取得物件
 void CreateGameObject() {
 
 	mainrole = new MainRole;
@@ -66,13 +71,21 @@ void CreateGameObject() {
 	mainrole_ring->SetShader(g_mxModelView, g_mxProjection);
 
 	
-	cloud[0] = new Cloud;
-	cloud[0]->SetShader(g_mxModelView, g_mxProjection);
-	cloud[0]->SetXYScale(1.0f, aa, (8.5f / 10.0f));//here!!!設定雲朵資訊
+	
+	for (int i = 0; i < 6; i++)
+	{
+		cloud[i] = new Cloud;
+		cloud[i]->SetShader(g_mxModelView, g_mxProjection);
+		cloud[i]->_x = cloud_info[i][0];
+		cloud[i]->_y = cloud_info[i][1];
+		cloud[i]->_scale = cloud_info[i][2];
+		cloud[i]->SetXYScale(cloud[i]->_x, cloud[i]->_y, cloud[i]->_scale);
 
+	}
 	
 	
 
+	
 }
 
 
@@ -81,58 +94,33 @@ void CreateGameObject() {
 void GL_Display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT); // clear the window
-
+	for (int i = 0; i < 6; i++)
+	{
+		cloud[i]->Draw();
+	}
 	mainrole->Draw();
 	mainrole_ring->Draw();
-	cloud[0]->Draw();
-
 	glutSwapBuffers();	// 交換 Frame Buffer
 }
 
 //----------------------------------------------------------------------------
 
-//自動旋轉
-
-
-void AutomaticRotation() {
-
-	//防止角度溢位
-	if (mainrole_ring->_rotate>360) {
-		mainrole_ring->_rotate -= 360;  
-	}
-	
-	
-	mxAutoRotate_Ring = RotateZ(mainrole_ring->_rotate+=0.1);
-	
-	//rotate 需要做校正 
-	mxAutoRotate_Ring._m[0] *=  (6.5 / 10.0);
-	mxAutoRotate_Ring._m[1] *= (360.0 / 640.0) * (6.5 / 10.0);
-
-	mainrole_ring->SetTRSMatrix(mxTran_Main * maTran_Ring * mxAutoRotate_Ring);
-	
-	
-	
-
-}
-
-
-
-void AutoTranslate_background() {
-	aa -=  0.001f;     // 旋轉角度遞增(遞減) 0.125 度
-	cloud[0]->SetXYScale(1.0f, aa, (8.5f / 10.0f));
-	
-}
-
-
 
 float timer_autoRotate = 0; //rotation's timer
+
 void onFrameMove(float delta)
 {
 	timer_autoRotate += delta;
 	if (timer_autoRotate > 1.0 / 3000.0) { //每1/3000更新一次
 		
-		AutomaticRotation();
-		AutoTranslate_background();
+		
+		mainrole_ring->AutomaticRotation( mainrole->mxTran_Main );//星環自動選轉 傳入父層
+
+		for (int i = 0; i < 6; i++)
+		{
+			cloud[i]->AutoTranslate_background();
+		}
+		
 		timer_autoRotate = 0;
 	}
 	
@@ -160,12 +148,12 @@ void win_PassiveMotion(int x , int y) { //用滑鼠操控船艦
 	mainrole->_y = -mouse_displacement * (y - SCREENHEIGHT_HALF) / (SCREENHEIGHT_HALF);
 	
 	//set main role matrix
-	mxTran_Main = Translate(mainrole->_x, mainrole->_y,0);
-	mainrole->SetTRSMatrix(mxTran_Main);
+	mainrole->mxTran_Main = Translate(mainrole->_x, mainrole->_y,0);
+	mainrole->SetTRSMatrix(mainrole->mxTran_Main);
 
 	//set ring matrix
-	maTran_Ring = Translate(mainrole_ring->_x, mainrole_ring->_y , 0); //取得圓環的X、Y資訊 
-	mainrole_ring->SetTRSMatrix(mxTran_Main * maTran_Ring * mxAutoRotate_Ring ); //設定圓環的父子關係
+	mainrole_ring->maTran_Ring = Translate(mainrole_ring->_x, mainrole_ring->_y , 0); //取得圓環的X、Y資訊 
+	mainrole_ring->SetTRSMatrix(mainrole->mxTran_Main * mainrole_ring->maTran_Ring * mainrole_ring->mxAutoRotate_Ring ); //設定圓環的父子關係
 	
 }
 

@@ -1,5 +1,6 @@
 #include "MainRole_Ring.h"
 
+
 MainRole_Ring::MainRole_Ring()
 {
 	
@@ -227,24 +228,23 @@ void MainRole_Ring::Draw()
 }
 
 
-//MainRole_Ring Update
 
 
+//自動旋轉
+void MainRole_Ring:: AutomaticRotation(mat4 mainrole_mxTran) {
 
-/*void MainRole_Ring::DrawW()
-{
-	glBindVertexArray( _VAO );
-
-	if( _bUpdateMV ) {
-		_mxMVFinal = _mxView*_mxTRS;
-		_bUpdateMV = false;
+	//防止角度溢位
+	if (_rotate > 360) {
+		_rotate -= 360;
 	}
 
-	glUniformMatrix4fv( _ModelView, 1, GL_TRUE, _mxMVFinal );
-	if( _bUpdateProj ) {
-		glUniformMatrix4fv( _Projection, 1, GL_TRUE, _mxProjection );
-		_bUpdateProj = false;
-	}
-	glDrawArrays( GL_TRIANGLE_FAN, 0, body_circle);
-	glDrawArrays(GL_TRIANGLE_FAN, body_circle, head_circle);
-}*/
+
+	mxAutoRotate_Ring = RotateZ(_rotate += 0.1);
+
+	//rotate 需要做校正 
+	mxAutoRotate_Ring._m[0] *= (6.5 / 10.0);
+	mxAutoRotate_Ring._m[1] *= (360.0 / 640.0) * (6.5 / 10.0);
+
+	SetTRSMatrix(mainrole_mxTran * maTran_Ring * mxAutoRotate_Ring);
+
+}

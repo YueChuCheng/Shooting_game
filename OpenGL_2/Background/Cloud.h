@@ -18,6 +18,7 @@ public:
 	GLfloat _x = 0;
 	GLfloat _y = 0;
 	GLfloat _scale = 1;
+
 	GLfloat _xLoc , _yLoc , _scaleLoc; //雲朵位置
 
 
@@ -32,10 +33,11 @@ public:
 	void Draw();
 	void DrawW();
 
-	//API 速度、位置(X、Y)
+	//API 位置(X、Y) 、大小
 	void SetXYScale(float fx, float fy, float fscale);
 	
-
+	//自動移動背景
+	void AutoTranslate_background();
 private:
 	
 	vec4 _Points[Cloud_Point_NUM];

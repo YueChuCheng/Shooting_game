@@ -1,9 +1,106 @@
-﻿  main.cpp
+﻿  Cloud.cpp
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(11,49): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(11,94): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(11,71): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(30,82): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(30,132): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(30,109): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(30,98): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(39,88): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(39,138): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(39,154): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(39,104): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(48,81): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(50,81): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(51,81): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(58,92): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(58,142): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(58,158): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(58,108): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(63,46): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(72,31): warning C4244: '=': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(122,30): warning C4244: '=': 將 'GLint' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(123,30): warning C4244: '=': 將 'GLint' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(124,34): warning C4244: '=': 將 'GLint' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(140,14): warning C4244: '引數': 將 'GLfloat' 轉換為 'GLint'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(141,14): warning C4244: '引數': 將 'GLfloat' 轉換為 'GLint'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(142,14): warning C4244: '引數': 將 'GLfloat' 轉換為 'GLint'，由於類型不同，可能導致資料遺失
+  MainRole.cpp
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Background\Cloud.cpp(268,42): warning C4244: '=': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(9,42): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(9,83): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(20,16): warning C4305: '正在初始化': 從 'double' 轉換為 'float'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(21,11): warning C4244: '正在初始化': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(22,11): warning C4244: '正在初始化': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(38,78): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(38,123): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(42,79): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(51,87): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(51,132): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(55,86): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(60,83): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(61,84): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(62,85): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(63,83): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(64,85): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(65,84): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(75,94): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(76,95): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(77,96): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(78,94): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(79,96): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(80,95): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(92,109): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(92,159): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(92,173): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(92,123): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(104,111): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(104,163): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(104,178): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(104,126): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(115,111): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(115,156): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(115,171): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(120,111): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(125,103): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(126,101): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(127,102): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(132,111): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(137,111): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(138,111): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(139,110): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(140,111): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(141,110): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(142,110): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(195,31): warning C4244: '=': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+  MainRole_Ring.cpp
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole.cpp(196,48): warning C4244: '=': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
 D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.h(17,20): warning C4305: '正在初始化': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
-D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\main.cpp(55,47): warning C4305: '引數': 從 'double' 轉換為 'GLclampf'，是由較大的類型轉換為較小的類型，可能導致資料遺失
-D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\main.cpp(105,57): warning C4305: '+=': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
-D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\main.cpp(108,42): warning C4305: '引數': 從 'double' 轉換為 'const GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
-D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\main.cpp(109,59): warning C4305: '引數': 從 'double' 轉換為 'const GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
-D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\main.cpp(159,61): warning C4244: '=': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
-D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\main.cpp(160,63): warning C4244: '=': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(12,49): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(12,85): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(12,62): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(25,55): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(25,97): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(25,109): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(36,68): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(36,116): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(36,129): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(36,80): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(47,74): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(47,124): warning C4244: '引數': 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(47,137): warning C4244: '引數': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(52,76): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(242,44): warning C4305: '+=': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(245,41): warning C4305: '引數': 從 'double' 轉換為 'const GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+  common.cpp
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.cpp(246,59): warning C4305: '引數': 從 'double' 轉換為 'const GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+  Timer.cpp
+  InitShader.cpp
+  main.cpp
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Common\common.cpp(76,25): warning C4305: '引數': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\Characters\MainRole_Ring.h(17,20): warning C4305: '正在初始化': 從 'double' 轉換為 'GLfloat'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\main.cpp(60,47): warning C4305: '引數': 從 'double' 轉換為 'GLclampf'，是由較大的類型轉換為較小的類型，可能導致資料遺失
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\main.cpp(147,61): warning C4244: '=': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
+  正在產生程式碼...
+D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\OpenGL_2\main.cpp(148,63): warning C4244: '=': 將 'double' 轉換為 'GLfloat'，由於類型不同，可能導致資料遺失
   OpenGL_2.vcxproj -> D:\大學資料\大三\計算機圖學\Shooting_game\Shooting_game\Debug\OpenGL_2.exe

@@ -13,6 +13,29 @@ const int Point_NUM = body_circle+ head_circle+ (circle*7)+ (rectangle*4) + tria
 
 class MainRole
 {
+
+
+public:
+
+	MainRole();
+	GLfloat _x = 0;
+	GLfloat _y = 0;
+	GLfloat _scale = 1;
+
+	void SetShader(mat4 &mxModelView, mat4 &mxProjection, GLuint uiShaderHandle=MAX_UNSIGNED_INT);
+	GLuint GetShaderHandle() { return _Program;}
+	void SetViewMatrix(mat4 &mat);
+	void SetProjectionMatrix(mat4 &mat);
+	void SetTRSMatrix(mat4 &mat);
+	void SetColor(GLfloat vColor[4]); // Single color
+	void SetVtxColors(GLfloat vLFColor[], GLfloat vLRColor[], GLfloat vTRColor[], GLfloat vTLColor[]); // four Vertices' Color
+	
+	void Draw();
+	void DrawW();
+
+	//²¾°Ê¯x°}
+	mat4 mxTran_Main;
+
 private:
 	vec4 _Points[Point_NUM];
 	vec4 _Colors[Point_NUM];
@@ -35,23 +58,7 @@ private:
 	
 
 	void CreateBufferObject();
-public:
 
-	MainRole();
-	GLfloat _x = 0;
-	GLfloat _y = 0;
-	GLfloat _scale = 1;
-
-	void SetShader(mat4 &mxModelView, mat4 &mxProjection, GLuint uiShaderHandle=MAX_UNSIGNED_INT);
-	GLuint GetShaderHandle() { return _Program;}
-	void SetViewMatrix(mat4 &mat);
-	void SetProjectionMatrix(mat4 &mat);
-	void SetTRSMatrix(mat4 &mat);
-	void SetColor(GLfloat vColor[4]); // Single color
-	void SetVtxColors(GLfloat vLFColor[], GLfloat vLRColor[], GLfloat vTRColor[], GLfloat vTLColor[]); // four Vertices' Color
-	
-	void Draw();
-	void DrawW();
 };
 
 

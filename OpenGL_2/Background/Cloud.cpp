@@ -136,7 +136,7 @@ void Cloud::SetShader(mat4& mxView, mat4& mxProjection, GLuint uiShaderHandle)
 //設定位置、大小
 void Cloud::SetXYScale(float fx, float fy, float fscale) {
 	
-
+	glUseProgram(_Program); //利用shader計算時為了避免用到前一張圖片的shader program因此必須在執行一次
 	glUniform1f(_xLoc, fx);
 	glUniform1f(_yLoc, fy);
 	glUniform1f(_scaleLoc, fscale);
@@ -257,3 +257,22 @@ void Cloud::Draw()
 }*/
 
 
+
+//雲層自動移動
+void Cloud:: AutoTranslate_background() {
+
+
+
+		if (_y < -2.0) {
+
+			_x = (double)(rand() % 4600 - 2300.0) / 1000.0;
+			_y = 2.5;
+
+		}
+
+		_y -= 0.0004f;     // 遞減
+		SetXYScale(_x, _y, _scale);//設定雲朵資訊
+
+
+
+}
