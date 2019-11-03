@@ -6,6 +6,7 @@
 #include "header/Angel.h"
 #include "Characters/mainrole.h"
 #include "Characters/MainRole_Ring.h"
+#include "Background/Cloud.h"
 
 
 #define SPACE_KEY 32
@@ -21,6 +22,7 @@
 // 必須在 glewInit(); 執行完後,在執行物件實體的取得
 MainRole *mainrole;	// 宣告 指標物件，結束時記得釋放
 MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
+Cloud* cloud[1];
 
 
 // For Model View and Projection Matrix
@@ -36,6 +38,9 @@ mat4 maTran_Ring;
 // 函式的原型宣告
 void IdleProcess();
 void CreateGameObject();
+
+
+float aa = 1.3f;
 
 
 
@@ -59,16 +64,27 @@ void CreateGameObject() {
 
 	mainrole_ring = new MainRole_Ring;
 	mainrole_ring->SetShader(g_mxModelView, g_mxProjection);
+
+	
+	cloud[0] = new Cloud;
+	cloud[0]->SetShader(g_mxModelView, g_mxProjection);
+	cloud[0]->SetXYScale(1.0f, aa, (8.5f / 10.0f));//here!!!設定雲朵資訊
+
+	
+	
+
 }
 
 
 
 
-void GL_Display( void )
+void GL_Display(void)
 {
-    glClear( GL_COLOR_BUFFER_BIT ); // clear the window
+	glClear(GL_COLOR_BUFFER_BIT); // clear the window
+
 	mainrole->Draw();
 	mainrole_ring->Draw();
+	cloud[0]->Draw();
 
 	glutSwapBuffers();	// 交換 Frame Buffer
 }
@@ -76,7 +92,6 @@ void GL_Display( void )
 //----------------------------------------------------------------------------
 
 //自動旋轉
-
 
 
 void AutomaticRotation() {
@@ -94,7 +109,18 @@ void AutomaticRotation() {
 	mxAutoRotate_Ring._m[1] *= (360.0 / 640.0) * (6.5 / 10.0);
 
 	mainrole_ring->SetTRSMatrix(mxTran_Main * maTran_Ring * mxAutoRotate_Ring);
+	
+	
+	
 
+}
+
+
+
+void AutoTranslate_background() {
+	aa -=  0.001f;     // 旋轉角度遞增(遞減) 0.125 度
+	cloud[0]->SetXYScale(1.0f, aa, (8.5f / 10.0f));
+	
 }
 
 
@@ -103,12 +129,15 @@ float timer_autoRotate = 0; //rotation's timer
 void onFrameMove(float delta)
 {
 	timer_autoRotate += delta;
-	if (timer_autoRotate >1.0/3000.0) { //每1/5000更新一次
+	if (timer_autoRotate > 1.0 / 3000.0) { //每1/3000更新一次
+		
 		AutomaticRotation();
+		AutoTranslate_background();
 		timer_autoRotate = 0;
 	}
 	
 	GL_Display();
+	
 }
 
 //----------------------------------------------------------------------------
@@ -137,7 +166,7 @@ void win_PassiveMotion(int x , int y) { //用滑鼠操控船艦
 	//set ring matrix
 	maTran_Ring = Translate(mainrole_ring->_x, mainrole_ring->_y , 0); //取得圓環的X、Y資訊 
 	mainrole_ring->SetTRSMatrix(mxTran_Main * maTran_Ring * mxAutoRotate_Ring ); //設定圓環的父子關係
-
+	
 }
 
 

@@ -88,5 +88,11 @@
     <None Include="vsMainRole_Ring.glsl">
       <Filter>原始程式檔\Shader</Filter>
     </None>
+    <None Include="vsCloud_1.glsl">
+      <Filter>原始程式檔\Shader</Filter>
+    </None>
+    <None Include="fsCloud_1.glsl">
+      <Filter>原始程式檔\Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

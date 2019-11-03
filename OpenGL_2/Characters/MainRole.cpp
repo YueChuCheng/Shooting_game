@@ -313,10 +313,13 @@ void MainRole::Draw()
 	}
 	glUniformMatrix4fv(_ModelView, 1, GL_TRUE, _mxMVFinal);
 
-	if (_bUpdateProj) {
+	//沒有一直轉換視角則不須判斷Proj是否改變
+	/*if (_bUpdateProj) { 
 		glUniformMatrix4fv(_Projection, 1, GL_TRUE, _mxProjection);
 		_bUpdateProj = false;
-	}
+	}*/
+
+
 	glDrawArrays(GL_TRIANGLE_FAN, 0, body_circle);
 	glDrawArrays(GL_TRIANGLE_FAN, body_circle, head_circle);
 	glDrawArrays(GL_TRIANGLE_FAN, body_circle + head_circle, circle);

@@ -98,8 +98,10 @@
     <ClInclude Include="Header\vec.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="fsCloud_1.glsl" />
     <None Include="fsMainRole.glsl" />
     <None Include="fsMainRole_Ring.glsl" />
+    <None Include="vsCloud_1.glsl" />
     <None Include="vsMainRole.glsl" />
     <None Include="vsMainRole_Ring.glsl" />
   </ItemGroup>
