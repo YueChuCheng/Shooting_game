@@ -32,6 +32,18 @@ mat4 g_mxProjection;
 void IdleProcess();
 void CreateGameObject();
 
+//子彈宣告
+int Bullet_Total = 0;
+typedef struct Bullet_Node_struct {
+	Bullet_Main *bullet_main;
+	struct Bullet_Node_struct*link;
+
+} Bullet_NODE , *Bullet_PNODE ;
+
+Bullet_PNODE pHead_bullet = NULL;
+Bullet_PNODE pTail_bullet = NULL;
+Bullet_PNODE pGet_bullet;
+Bullet_PNODE pGet_Draw_bullet;
 
 
 //雲朵位置、大小陣列
@@ -45,7 +57,6 @@ float cloud_info[6][3] = {
 	-1.2f , -1.45f , 10.1f / 10.0f
 
 };
-
 
 
 void init( void )
@@ -100,6 +111,18 @@ void GL_Display(void)
 		cloud[i]->Draw();
 	}
 
+	pGet_Draw_bullet = pHead_bullet;
+	
+		for (int i = 0; i < Bullet_Total; i++)
+		{
+			pGet_Draw_bullet->bullet_main->Draw();
+			pGet_Draw_bullet = pGet_Draw_bullet->link;
+
+
+		}
+	
+
+
 	mainrole->Draw();
 	mainrole_ring->Draw();
 
@@ -107,11 +130,57 @@ void GL_Display(void)
 }
 
 
-void CreateBullet_Main() { //你在寫這裡!!!!!
+void CreateBullet_Main() { 
 
-	bullet_main = new Bullet_Main;
-	bullet_main->SetShader(g_mxModelView, g_mxProjection);
-	bullet_main->Draw();
+
+	if( Bullet_Total == 0){ //若第一顆子彈
+		
+		if ((pHead_bullet = (Bullet_PNODE)malloc(sizeof(Bullet_NODE))) == NULL) { //成功取得空間
+			printf("記憶體空間不足\n");
+			exit(0);
+		
+		}
+
+
+		//設定Bullet 內容
+
+		pHead_bullet->bullet_main = new Bullet_Main;
+		pHead_bullet->bullet_main->SetShader(g_mxModelView, g_mxProjection);
+		pHead_bullet->bullet_main->SetTRSMatrix(mainrole->mxTran_Main);
+
+		pHead_bullet->link = NULL;
+		pTail_bullet = pHead_bullet;
+
+		Bullet_Total++;
+
+	}
+
+	else if (Bullet_Total>0) { //若不為第一顆子彈
+
+		if ((pGet_bullet = (Bullet_PNODE)malloc(sizeof(Bullet_NODE))) == NULL) { //成功取得空間
+			printf("記憶體空間不足\n");
+			exit(0);
+
+		}
+
+		//設定Bullet內容
+
+		pGet_bullet->bullet_main = new Bullet_Main;
+		pGet_bullet->bullet_main->SetShader(g_mxModelView, g_mxProjection);
+		pGet_bullet->bullet_main->SetTRSMatrix(mainrole->mxTran_Main);
+		pGet_bullet->link = NULL;
+
+		pGet_bullet->bullet_main->Draw();
+
+
+		pTail_bullet->link = pGet_bullet; //將前一個節點與新的節點連接
+		pTail_bullet = pGet_bullet; //設定尾巴節點為新拿的空間
+		
+		Bullet_Total++;
+	}
+
+
+
 
 }
 
@@ -204,8 +273,8 @@ void win_PassiveMotion(int x , int y) { //用滑鼠操控船艦
 	mainrole->SetTRSMatrix(mainrole->mxTran_Main);
 
 	//set ring matrix
-	mainrole_ring->maTran_Ring = Translate(mainrole_ring->_x, mainrole_ring->_y , 0); //取得圓環的X、Y資訊 
-	mainrole_ring->SetTRSMatrix(mainrole->mxTran_Main * mainrole_ring->maTran_Ring * mainrole_ring->mxAutoRotate_Ring ); //設定圓環的父子關係
+	mainrole_ring->mxTran_Ring = Translate(mainrole_ring->_x, mainrole_ring->_y , 0); //取得圓環的X、Y資訊 
+	mainrole_ring->SetTRSMatrix(mainrole->mxTran_Main * mainrole_ring->mxTran_Ring * mainrole_ring->mxAutoRotate_Ring ); //設定圓環的父子關係
 	
 }
 
@@ -221,8 +290,8 @@ void win_mousemotion( int x ,int y) {
 	mainrole->SetTRSMatrix(mainrole->mxTran_Main);
 
 	//set ring matrix
-	mainrole_ring->maTran_Ring = Translate(mainrole_ring->_x, mainrole_ring->_y, 0); //取得圓環的X、Y資訊 
-	mainrole_ring->SetTRSMatrix(mainrole->mxTran_Main * mainrole_ring->maTran_Ring * mainrole_ring->mxAutoRotate_Ring); //設定圓環的父子關係
+	mainrole_ring->mxTran_Ring = Translate(mainrole_ring->_x, mainrole_ring->_y, 0); //取得圓環的X、Y資訊 
+	mainrole_ring->SetTRSMatrix(mainrole->mxTran_Main * mainrole_ring->mxTran_Ring * mainrole_ring->mxAutoRotate_Ring); //設定圓環的父子關係
 
 
 }

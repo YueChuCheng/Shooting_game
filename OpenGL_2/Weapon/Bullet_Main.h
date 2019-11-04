@@ -3,6 +3,8 @@
 typedef Angel::vec4 color4;
 typedef Angel::vec4 point4; 
 
+
+
 const int Bullet_Main_Point_NUM = 200 ;
 
 class Bullet_Main
@@ -10,10 +12,10 @@ class Bullet_Main
 public:
 	Bullet_Main();
 	~Bullet_Main();
-	GLfloat _x = 0;
-	GLfloat _y = 0;
-	GLfloat _scale = 1;
-	GLfloat _speed = 0;
+	GLfloat _x = 0.0f;
+	GLfloat _y = 0.0f;
+	GLfloat _scale = 1.0f;
+	GLfloat _speed = 0.0f;
 	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
 	void SetViewMatrix(mat4& mat);
 	void SetProjectionMatrix(mat4& mat);

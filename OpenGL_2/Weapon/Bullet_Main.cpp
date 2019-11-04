@@ -28,7 +28,7 @@ Bullet_Main::Bullet_Main()
 	for (int i = 0; i < Bullet_Main_Point_NUM; i++)
 	{
 		_Points[i].x = _Points[i].x;
-		_Points[i].y = _Points[i].y * (360.0 / 640.0);
+		_Points[i].y = _Points[i].y * (360.0 / 640.0) + 0.2f; // + 0.2 子彈射出的起始位置校正
 	}
 
 	CreateBufferObject();

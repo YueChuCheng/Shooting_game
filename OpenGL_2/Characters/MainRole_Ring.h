@@ -32,7 +32,7 @@ public:
 
 	//移動矩陣
 	mat4 mxAutoRotate_Ring;
-	mat4 maTran_Ring;
+	mat4 mxTran_Ring;
 
 	//自動旋轉 *傳入父親
 	void AutomaticRotation(mat4 mainrole_mxTran);
