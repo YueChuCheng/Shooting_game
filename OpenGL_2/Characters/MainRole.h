@@ -14,7 +14,6 @@ const int Point_NUM = body_circle+ head_circle+ (circle*7)+ (rectangle*4) + tria
 class MainRole
 {
 
-
 public:
 
 	MainRole();

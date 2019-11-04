@@ -80,8 +80,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Background\Cloud.cpp" />
+    <ClCompile Include="Characters\Alien.cpp" />
+    <ClCompile Include="Characters\BOSS_Alien.cpp" />
     <ClCompile Include="Characters\MainRole.cpp" />
     <ClCompile Include="Characters\MainRole_Ring.cpp" />
+    <ClCompile Include="Characters\Middle_Alien.cpp" />
+    <ClCompile Include="Characters\Small_Alien.cpp" />
     <ClCompile Include="Common\common.cpp" />
     <ClCompile Include="Common\Timer.cpp" />
     <ClCompile Include="InitShader.cpp" />
@@ -90,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background\Cloud.h" />
+    <ClInclude Include="Characters\Alien.h" />
     <ClInclude Include="Characters\MainRole.h" />
     <ClInclude Include="Characters\MainRole_Ring.h" />
     <ClInclude Include="Common\Timer.h" />

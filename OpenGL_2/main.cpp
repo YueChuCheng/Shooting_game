@@ -5,6 +5,8 @@
 #include "Characters/MainRole_Ring.h"
 #include "Background/Cloud.h"
 #include "Weapon/Bullet_Main.h"
+#include "Characters/Alien.h"
+
 
 #define SPACE_KEY 32
 
@@ -21,7 +23,7 @@ MainRole *mainrole;	// 宣告 指標物件，結束時記得釋放
 MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
 Cloud* cloud[6];
 Bullet_Main* bullet_main;
-
+Alien* alien[3];
 
 // For Model View and Projection Matrix
 mat4 g_mxModelView(1.0f);
@@ -97,6 +99,31 @@ void CreateGameObject() {
 		cloud[i]->SetXYScale(cloud[i]->_x, cloud[i]->_y, cloud[i]->_scale);
 
 	}
+
+	alien[0] = new Small_Alien;
+	alien[0]->SetShader(g_mxModelView, g_mxProjection);
+
+
+	GLfloat *GREEN = new GLfloat[4];
+	GREEN[0] = 0.0f;
+	GREEN[1] = 1.0f;
+	GREEN[2] = 0.0f;
+	GREEN[3] = 1.0f;
+
+	alien[1] = new Middle_Alien;
+	alien[1]->SetShader(g_mxModelView, g_mxProjection);
+	alien[1]->SetColor(GREEN);
+
+
+	GLfloat* BLUE = new GLfloat[4];
+	BLUE[0] = 0.0f;
+	BLUE[1] = 0.0f;
+	BLUE[2] = 1.0f;
+	BLUE[3] = 1.0f;
+
+	alien[2] = new BOSS_Alien;
+	alien[2]->SetShader(g_mxModelView, g_mxProjection);
+	alien[2]->SetColor(BLUE);
 	
 }
 
@@ -123,6 +150,12 @@ void GL_Display(void)
 
 	mainrole->Draw();
 	mainrole_ring->Draw();
+
+	for (int i = 0; i < 3; i++)
+	{
+		alien[i]->Draw();
+	}
+	
 
 	glutSwapBuffers();	// 交換 Frame Buffer
 }
@@ -255,49 +288,6 @@ void CheckBullet() {
 
 	}
 
-	/*while (pGet_Check_bullet!=NULL)
-	{
-
-		bullet_main_y = pGet_Check_bullet->bullet_main->_y;
-
-		if (bullet_main_y > 2.0) {
-
-			//若刪除的是第一個節點則更換 pHead的位置
-			if (pHead_bullet == pGet_Check_bullet) {
-				pHead_bullet = pHead_bullet->link;
-
-			}
-
-			//若刪除的是最後一個節點則更換 pTail的位置
-			else if (pTail_bullet == pGet_Check_bullet) {
-
-				pTail_bullet = pGet_Last_Draw_bullet;
-				pTail_bullet->link = NULL;
-
-			}
-
-
-
-			pGet_Last_Draw_bullet->link = pGet_Check_bullet->link; //前一次的link，連接到下一個節點的起頭
-
-
-
-			free(pGet_Check_bullet); //刪除節點
-
-			Bullet_Total--;
-
-			break; //若有刪除節點則跳出迴圈因為節點要重新計算
-
-		}
-
-		pGet_Last_Draw_bullet = pGet_Check_bullet; //獲取前一次的pGet 以便必要時收回空間
-		pGet_Check_bullet = pGet_Check_bullet->link;
-
-
-	}
-	*/
-
-
 	
 }
 
@@ -308,9 +298,6 @@ float timer_onFrameMove = 0; //rotation's timer
 
 void onFrameMove(float delta)
 {
-
-	
-
 	timer_onFrameMove += delta;
 	if (timer_onFrameMove > 1.0 / 1000.0) { //每1/1000更新一次
 		

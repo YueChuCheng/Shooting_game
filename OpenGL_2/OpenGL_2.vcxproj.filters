@@ -28,6 +28,9 @@
     <Filter Include="Weapon">
       <UniqueIdentifier>{c6dff4ca-a58a-4707-9050-921749d4ef55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Characters\Alien">
+      <UniqueIdentifier>{a04f6ff8-f7a9-40ca-8323-1cede9ef8ddd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InitShader.cpp">
@@ -53,6 +56,18 @@
     </ClCompile>
     <ClCompile Include="Weapon\Bullet_Main.cpp">
       <Filter>Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters\Alien.cpp">
+      <Filter>Characters\Alien</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters\Small_Alien.cpp">
+      <Filter>Characters\Alien</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters\Middle_Alien.cpp">
+      <Filter>Characters\Alien</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters\BOSS_Alien.cpp">
+      <Filter>Characters\Alien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="Weapon\Bullet_Main.h">
       <Filter>Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters\Alien.h">
+      <Filter>Characters\Alien</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
