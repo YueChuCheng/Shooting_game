@@ -25,6 +25,9 @@ public:
 	void Draw();
 	void DrawW();
 
+	mat4 BulletTrans;
+
+
 	//自動移動物件
 	void AutoTranslate_Bullet();
 

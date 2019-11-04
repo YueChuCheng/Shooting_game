@@ -196,3 +196,14 @@ void Bullet_Main::Draw()
 	glDrawArrays( GL_TRIANGLE_FAN, 0, body_circle);
 	glDrawArrays(GL_TRIANGLE_FAN, body_circle, head_circle);
 }*/
+
+
+
+//子彈往前飛
+void Bullet_Main::AutoTranslate_Bullet() {
+
+	_y += 0.01;
+	BulletTrans = Translate(_x , _y , 0.0);
+	SetTRSMatrix(BulletTrans);
+
+}

@@ -270,7 +270,7 @@ void Cloud:: AutoTranslate_Background() {
 
 		}
 
-		_y -= 0.0004f;     // 遞減
+		_y -= 0.002f;     // 遞減
 		SetXYScale(_x, _y, _scale);//設定雲朵資訊
 
 

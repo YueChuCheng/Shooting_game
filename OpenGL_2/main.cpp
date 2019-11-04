@@ -31,6 +31,7 @@ mat4 g_mxProjection;
 // 函式的原型宣告
 void IdleProcess();
 void CreateGameObject();
+void CheckBullet();
 
 //子彈宣告
 int Bullet_Total = 0;
@@ -44,6 +45,8 @@ Bullet_PNODE pHead_bullet = NULL;
 Bullet_PNODE pTail_bullet = NULL;
 Bullet_PNODE pGet_bullet;
 Bullet_PNODE pGet_Draw_bullet;
+Bullet_PNODE pGet_Last_Draw_bullet = NULL;
+Bullet_PNODE pGet_Check_bullet = NULL;
 
 
 //雲朵位置、大小陣列
@@ -95,12 +98,7 @@ void CreateGameObject() {
 
 	}
 	
-	
-
-	
 }
-
-
 
 
 void GL_Display(void)
@@ -130,8 +128,9 @@ void GL_Display(void)
 }
 
 
-void CreateBullet_Main() { 
 
+
+void CreateBullet_Main() { 
 
 	if( Bullet_Total == 0){ //若第一顆子彈
 		
@@ -140,13 +139,20 @@ void CreateBullet_Main() {
 			exit(0);
 		
 		}
-
+		
 
 		//設定Bullet 內容
 
 		pHead_bullet->bullet_main = new Bullet_Main;
 		pHead_bullet->bullet_main->SetShader(g_mxModelView, g_mxProjection);
-		pHead_bullet->bullet_main->SetTRSMatrix(mainrole->mxTran_Main);
+		
+		//複製mainrole 的資訊
+		pHead_bullet->bullet_main ->_x = mainrole->_x;
+		pHead_bullet->bullet_main->_y = mainrole->_y;
+		
+		pHead_bullet->bullet_main->BulletTrans = Translate(pHead_bullet->bullet_main->_x, pHead_bullet->bullet_main->_y, 0.0);
+
+		pHead_bullet->bullet_main->SetTRSMatrix(pHead_bullet->bullet_main->BulletTrans);
 
 		pHead_bullet->link = NULL;
 		pTail_bullet = pHead_bullet;
@@ -163,11 +169,20 @@ void CreateBullet_Main() {
 
 		}
 
+	
 		//設定Bullet內容
 
 		pGet_bullet->bullet_main = new Bullet_Main;
 		pGet_bullet->bullet_main->SetShader(g_mxModelView, g_mxProjection);
-		pGet_bullet->bullet_main->SetTRSMatrix(mainrole->mxTran_Main);
+
+		//複製mainrole 的資訊
+		pGet_bullet->bullet_main->_x = mainrole->_x;
+		pGet_bullet->bullet_main->_y = mainrole->_y;
+
+
+		pGet_bullet->bullet_main->BulletTrans = Translate(pGet_bullet->bullet_main->_x, pGet_bullet->bullet_main->_y, 0.0);
+
+		pGet_bullet->bullet_main->SetTRSMatrix(pGet_bullet->bullet_main->BulletTrans);
 		pGet_bullet->link = NULL;
 
 		pGet_bullet->bullet_main->Draw();
@@ -179,21 +194,131 @@ void CreateBullet_Main() {
 		Bullet_Total++;
 	}
 
-
-
+	
 
 }
 
 //----------------------------------------------------------------------------
 
+float bullet_main_y;
+Bullet_PNODE one, two, three;
 
-float timer_autoRotate = 0; //rotation's timer
+//檢查子彈是否超過有效範圍, 若超過則連結好前後節點，並delete
+void CheckBullet() {
+	
+	pGet_Check_bullet = pHead_bullet;
+
+	
+
+	for (int i = 0; i < Bullet_Total; i++)
+	{
+
+		bullet_main_y = pGet_Check_bullet->bullet_main->_y;
+
+		if (bullet_main_y > 2.0) {
+			
+			//若刪除的是第一個節點則更換 pHead的位置
+			if (pGet_Check_bullet == pHead_bullet) {
+				pHead_bullet = pHead_bullet->link;
+				
+			}
+
+			//若刪除的是最後一個節點則更換 pTail的位置
+			else if (pGet_Check_bullet == pTail_bullet) {
+
+				pTail_bullet = pGet_Last_Draw_bullet;
+				pTail_bullet->link = NULL;
+
+			}
+
+			//若不為頭也不為尾的節點則連接好頭尾位置
+			else {
+			
+				pGet_Last_Draw_bullet->link = pGet_Check_bullet->link; //前一次的link，連接到下一個節點的起頭
+			}
+			
+			
+
+			
+			
+			free(pGet_Check_bullet); //刪除節點
+			
+			Bullet_Total--;
+
+			break; //若有刪除節點則跳出迴圈因為節點要重新計算
+		
+		}
+
+		pGet_Last_Draw_bullet = pGet_Check_bullet; //獲取前一次的pGet 以便必要時收回空間
+		pGet_Check_bullet = pGet_Check_bullet->link;
+
+
+	}
+
+	/*while (pGet_Check_bullet!=NULL)
+	{
+
+		bullet_main_y = pGet_Check_bullet->bullet_main->_y;
+
+		if (bullet_main_y > 2.0) {
+
+			//若刪除的是第一個節點則更換 pHead的位置
+			if (pHead_bullet == pGet_Check_bullet) {
+				pHead_bullet = pHead_bullet->link;
+
+			}
+
+			//若刪除的是最後一個節點則更換 pTail的位置
+			else if (pTail_bullet == pGet_Check_bullet) {
+
+				pTail_bullet = pGet_Last_Draw_bullet;
+				pTail_bullet->link = NULL;
+
+			}
+
+
+
+			pGet_Last_Draw_bullet->link = pGet_Check_bullet->link; //前一次的link，連接到下一個節點的起頭
+
+
+
+			free(pGet_Check_bullet); //刪除節點
+
+			Bullet_Total--;
+
+			break; //若有刪除節點則跳出迴圈因為節點要重新計算
+
+		}
+
+		pGet_Last_Draw_bullet = pGet_Check_bullet; //獲取前一次的pGet 以便必要時收回空間
+		pGet_Check_bullet = pGet_Check_bullet->link;
+
+
+	}
+	*/
+
+
+	
+}
+
+
+//float test_i = 0; //測試是否有確實回收記憶體
+
+float timer_onFrameMove = 0; //rotation's timer
 
 void onFrameMove(float delta)
 {
-	timer_autoRotate += delta;
-	if (timer_autoRotate > 1.0 / 1000.0) { //每1/1000更新一次
+
+	
+
+	timer_onFrameMove += delta;
+	if (timer_onFrameMove > 1.0 / 1000.0) { //每1/1000更新一次
 		
+		//test 是否有回收記憶體
+		/*if (pHead_bullet == NULL) {
+			printf("%f\n", test_i);
+			test_i++;
+		}*/
 		
 		mainrole_ring->AutomaticRotation( mainrole->mxTran_Main );//星環自動選轉 傳入父層
 
@@ -201,8 +326,22 @@ void onFrameMove(float delta)
 		{
 			cloud[i]->AutoTranslate_Background();
 		}
+
 		
-		timer_autoRotate = 0;
+		//更新子彈路線 
+		pGet_Draw_bullet = pHead_bullet;
+		for (int i = 0; i < Bullet_Total; i++)
+		{
+			pGet_Draw_bullet->bullet_main->AutoTranslate_Bullet();
+			pGet_Draw_bullet = pGet_Draw_bullet->link;
+
+
+		}
+
+		//檢查是否有子彈超過有效區
+		CheckBullet();
+		
+		timer_onFrameMove = 0;
 	}
 	
 	GL_Display();
@@ -210,7 +349,6 @@ void onFrameMove(float delta)
 }
 
 
-int bullet_count = 0; //發射子彈數
 float timer_bullet = 0.0; //時間計時器
 float BulletLaunchSecStart = 0.0; //紀錄子彈發射的時間 
 bool canLaunchBullet = true; //是否允許發射子彈
@@ -218,13 +356,10 @@ bool clickLaunchBullet = false; //是否按下發射
 
 bool mouse_down= GLUT_UP;
 void onBulletLaunch(float delta) {
-	
-	//printf("目前發射了: %d\n 發子彈", bullet_count);
 
 	timer_bullet += delta;
 	if (clickLaunchBullet && canLaunchBullet) {
 		
-		//bullet_count++;
 		CreateBullet_Main();
 		canLaunchBullet = false;
 		
@@ -232,7 +367,7 @@ void onBulletLaunch(float delta) {
 		 
 	}
 
-	if (timer_bullet - BulletLaunchSecStart > 0.6f ) { //每隔0.6秒可發射一發子彈
+	if (timer_bullet - BulletLaunchSecStart > 0.1f ) { //每隔0.6秒可發射一發子彈
 		
 		canLaunchBullet = true;
 		if(mouse_down == GLUT_UP){ 
@@ -371,7 +506,7 @@ void GL_Reshape(GLsizei w, GLsizei h)
 
 //----------------------------------------------------------------------------
 
-float timer_test;
+
 
 int main( int argc, char **argv )
 {
