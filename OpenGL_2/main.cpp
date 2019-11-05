@@ -43,6 +43,8 @@ typedef struct Bullet_Node_struct {
 
 } Bullet_NODE , *Bullet_PNODE ;
 
+
+Bullet_PNODE pSpace[50];
 Bullet_PNODE pHead_bullet = NULL;
 Bullet_PNODE pTail_bullet = NULL;
 Bullet_PNODE pGet_bullet;
@@ -287,8 +289,8 @@ void CheckBullet() {
 			
 
 			
-			
-			free(pGet_Check_bullet); //刪除節點
+			delete pGet_Check_bullet;
+			//free(pGet_Check_bullet); //刪除節點
 			
 			Bullet_Total--;
 
