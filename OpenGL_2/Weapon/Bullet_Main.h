@@ -31,7 +31,7 @@ public:
 	//自動移動物件
 	void AutoTranslate_Bullet();
 
-
+	bool HurtAlien =false ;  //是否打中Alien
 
 private:
 	vec4 _Points[Bullet_Main_Point_NUM];

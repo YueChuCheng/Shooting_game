@@ -100,6 +100,12 @@ void Small_Alien::AutomaticFire(mat4 Alien_mxTran) {
 
 }
 
-void Small_Alien::AutoCheckHurtDie() {
+void Small_Alien::AutoCheckHurtDie(GLfloat Bullet_x , GLfloat Bullet_y, bool *HurtAlien) {
+
+		if (_x- 0.5 <= Bullet_x-0.1 && _x + 0.5 >= Bullet_x + 0.1 && _y + 0.5  >= Bullet_y + 0.1 && _y - 0.5 <= Bullet_y - 0.1)  { //判斷是否在中彈的範圍內
+
+			*HurtAlien = true; //設定該子彈有打到Alien
+		
+		}
 
 }

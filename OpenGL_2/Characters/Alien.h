@@ -8,16 +8,11 @@ const int Alien_Point_NUM = 6; //最大點子總數
 class Alien
 {
 public:
-	Alien() {
-	
-	
-	
-	
-	};
+	Alien() {};
 	~Alien() {};
 
-	GLfloat _x = 0;
-	GLfloat _y = 0;
+	GLfloat _x = -1.5;
+	GLfloat _y = 1.5;
 
 	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
 	GLuint GetShaderHandle() { return _Program; }
@@ -40,7 +35,7 @@ public:
 	virtual void AutomaticFire(mat4 Alien_mxTran) = 0;
 
 	//自動檢查是否有受傷、死亡函式
-	virtual void AutoCheckHurtDie() = 0;
+	virtual void AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y , bool *HurtAlien) = 0;
 
 
 
@@ -86,11 +81,11 @@ public:
 	 void AutomaticFire(mat4 Alien_mxTran) ;
 
 	//自動檢查是否有受傷、死亡函式
-	 void AutoCheckHurtDie();
+	 void AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, bool *HurtAlien);
 
 private:
 
-	
+	int Blood = 4;
 
 
 };
@@ -119,7 +114,7 @@ public:
 	void AutoCheckHurtDie();
 
 private:
-
+	int Blood = 8;
 
 
 
@@ -146,7 +141,7 @@ public:
 	void AutoCheckHurtDie();
 
 private:
-
+	int Blood = 12;
 
 
 

@@ -23,7 +23,7 @@ MainRole *mainrole;	// 宣告 指標物件，結束時記得釋放
 MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
 Cloud* cloud[6];
 Bullet_Main* bullet_main;
-Alien* alien[3];
+Alien* alien[5];
 
 // For Model View and Projection Matrix
 mat4 g_mxModelView(1.0f);
@@ -100,11 +100,25 @@ void CreateGameObject() {
 
 	}
 
-	alien[0] = new Small_Alien;
-	alien[0]->SetShader(g_mxModelView, g_mxProjection);
+	
+	mat4 mxSAlien;
+	for (int i = 0; i < 5; i++)
+	{
+		alien[i] = new Small_Alien;
+		alien[i]->SetShader(g_mxModelView, g_mxProjection);
+		
+		
+		alien[i]->_x += (0.8f * i);
+
+		mxSAlien = Translate(alien[i]->_x, alien[i]->_y,0.0);
+		alien[i]->SetTRSMatrix(mxSAlien);
+
+	}
+
+	
 
 
-	GLfloat *GREEN = new GLfloat[4];
+	/*GLfloat *GREEN = new GLfloat[4];
 	GREEN[0] = 0.0f;
 	GREEN[1] = 1.0f;
 	GREEN[2] = 0.0f;
@@ -123,7 +137,7 @@ void CreateGameObject() {
 
 	alien[2] = new BOSS_Alien;
 	alien[2]->SetShader(g_mxModelView, g_mxProjection);
-	alien[2]->SetColor(BLUE);
+	alien[2]->SetColor(BLUE);*/
 	
 }
 
@@ -151,7 +165,7 @@ void GL_Display(void)
 	mainrole->Draw();
 	mainrole_ring->Draw();
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		alien[i]->Draw();
 	}
@@ -248,7 +262,7 @@ void CheckBullet() {
 
 		bullet_main_y = pGet_Check_bullet->bullet_main->_y;
 
-		if (bullet_main_y > 2.0) {
+		if (bullet_main_y > 1.8 || pGet_Check_bullet->bullet_main->HurtAlien) { //超過有效距離或有中彈
 			
 			//若刪除的是第一個節點則更換 pHead的位置
 			if (pGet_Check_bullet == pHead_bullet) {
@@ -320,6 +334,14 @@ void onFrameMove(float delta)
 		for (int i = 0; i < Bullet_Total; i++)
 		{
 			pGet_Draw_bullet->bullet_main->AutoTranslate_Bullet();
+
+			//檢查是否有Alien被子彈打到
+			for (int i = 0; i < 5; i++)
+			{
+				alien[i]->AutoCheckHurtDie(pGet_Draw_bullet->bullet_main->_x, pGet_Draw_bullet->bullet_main->_y , &pGet_Draw_bullet->bullet_main->HurtAlien);
+
+			}
+
 			pGet_Draw_bullet = pGet_Draw_bullet->link;
 
 
