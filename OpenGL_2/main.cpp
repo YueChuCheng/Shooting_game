@@ -23,7 +23,8 @@ MainRole *mainrole;	// 宣告 指標物件，結束時記得釋放
 MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
 Cloud* cloud[6];
 Bullet_Main* bullet_main;
-Alien* alien[5];
+const short small_alien = 4; //螢幕上small alien 出現的最大數量
+Alien* alien[small_alien];
 
 // For Model View and Projection Matrix
 mat4 g_mxModelView(1.0f);
@@ -44,7 +45,9 @@ typedef struct Bullet_Node_struct {
 } Bullet_NODE , *Bullet_PNODE ;
 
 
-Bullet_PNODE pSpace[50];
+const short Bullet_space_NUM = 20; //
+Bullet_PNODE pSpace[Bullet_space_NUM];
+bool pSpace_use[Bullet_space_NUM] = { false };
 Bullet_PNODE pHead_bullet = NULL;
 Bullet_PNODE pTail_bullet = NULL;
 Bullet_PNODE pGet_bullet;
@@ -103,18 +106,26 @@ void CreateGameObject() {
 	}
 
 	
-	mat4 mxSAlien;
-	for (int i = 0; i < 5; i++)
+	//mat4 mxSAlien;
+	for (int i = 0; i < small_alien; i++)
 	{
 		alien[i] = new Small_Alien;
 		alien[i]->SetShader(g_mxModelView, g_mxProjection);
 		
 		
-		alien[i]->_x += (0.8f * i);
+		/*alien[i]->_x += (0.8f * i);
 
 		mxSAlien = Translate(alien[i]->_x, alien[i]->_y,0.0);
-		alien[i]->SetTRSMatrix(mxSAlien);
+		alien[i]->SetTRSMatrix(mxSAlien);*/
 
+	}
+
+
+	//存放子彈的儲存空間
+	for (int i = 0; i < Bullet_space_NUM; i++)
+	{
+		pSpace[i] = (Bullet_PNODE)malloc(sizeof(Bullet_NODE));
+	
 	}
 
 	
@@ -154,23 +165,24 @@ void GL_Display(void)
 
 	pGet_Draw_bullet = pHead_bullet;
 	
-		for (int i = 0; i < Bullet_Total; i++)
+	for (int i = 0; i < Bullet_Total; i++)
+	{
+		pGet_Draw_bullet->bullet_main->Draw();
+		pGet_Draw_bullet = pGet_Draw_bullet->link;
+
+	}
+	
+	for (int i = 0; i < small_alien; i++)
 		{
-			pGet_Draw_bullet->bullet_main->Draw();
-			pGet_Draw_bullet = pGet_Draw_bullet->link;
-
-
+			if(alien[i]->alife){
+				alien[i]->Draw();
+			}
 		}
 	
-
 
 	mainrole->Draw();
 	mainrole_ring->Draw();
 
-	for (int i = 0; i < 5; i++)
-	{
-		alien[i]->Draw();
-	}
 	
 
 	glutSwapBuffers();	// 交換 Frame Buffer
@@ -183,16 +195,27 @@ void CreateBullet_Main() {
 
 	if( Bullet_Total == 0){ //若第一顆子彈
 		
-		if ((pHead_bullet = (Bullet_PNODE)malloc(sizeof(Bullet_NODE))) == NULL) { //成功取得空間
+		/*if ((pHead_bullet = (Bullet_PNODE)malloc(sizeof(Bullet_NODE))) == NULL) { //成功取得空間
 			printf("記憶體空間不足\n");
 			exit(0);
 		
-		}
+		}*/
 		
+		for (int i = 0; i < Bullet_space_NUM; i++)
+		{
+			if (pSpace_use[i]==false) {
+			
+				pHead_bullet = pSpace[i];
+				pHead_bullet->bullet_main = new Bullet_Main;
+				pHead_bullet->bullet_main->Bullet_UseSpace = i;
+				pSpace_use[i] = true;
+				break;
+			}
+		}
 
 		//設定Bullet 內容
 
-		pHead_bullet->bullet_main = new Bullet_Main;
+		//pHead_bullet->bullet_main = new Bullet_Main;
 		pHead_bullet->bullet_main->SetShader(g_mxModelView, g_mxProjection);
 		
 		//複製mainrole 的資訊
@@ -212,16 +235,26 @@ void CreateBullet_Main() {
 
 	else if (Bullet_Total>0) { //若不為第一顆子彈
 
-		if ((pGet_bullet = (Bullet_PNODE)malloc(sizeof(Bullet_NODE))) == NULL) { //成功取得空間
+		/*if ((pGet_bullet = (Bullet_PNODE)malloc(sizeof(Bullet_NODE))) == NULL) { //成功取得空間
 			printf("記憶體空間不足\n");
 			exit(0);
 
-		}
+		}*/
+		for (int i = 0; i < Bullet_space_NUM; i++)
+		{
+			if (pSpace_use[i] == false) {
 
+				pGet_bullet = pSpace[i];
+				pGet_bullet->bullet_main = new Bullet_Main;
+				pGet_bullet->bullet_main->Bullet_UseSpace = i;
+				pSpace_use[i] = true;
+				break;
+			}
+		}
 	
 		//設定Bullet內容
 
-		pGet_bullet->bullet_main = new Bullet_Main;
+		//pGet_bullet->bullet_main = new Bullet_Main;
 		pGet_bullet->bullet_main->SetShader(g_mxModelView, g_mxProjection);
 
 		//複製mainrole 的資訊
@@ -243,6 +276,11 @@ void CreateBullet_Main() {
 		Bullet_Total++;
 	}
 
+
+	/*if (Bullet_Total ==5) {
+		printf("ten bullet");
+	
+	}*/
 	
 
 }
@@ -286,10 +324,10 @@ void CheckBullet() {
 				pGet_Last_Draw_bullet->link = pGet_Check_bullet->link; //前一次的link，連接到下一個節點的起頭
 			}
 			
-			
+			pSpace_use[pGet_Check_bullet->bullet_main->Bullet_UseSpace] = false;
 
 			
-			delete pGet_Check_bullet;
+			//delete pGet_Check_bullet;
 			//free(pGet_Check_bullet); //刪除節點
 			
 			Bullet_Total--;
@@ -312,10 +350,13 @@ void CheckBullet() {
 
 float timer_onFrameMove = 0; //rotation's timer
 
+
 void onFrameMove(float delta)
 {
 	timer_onFrameMove += delta;
-	if (timer_onFrameMove > 1.0 / 1000.0) { //每1/1000更新一次
+	
+
+	if (timer_onFrameMove > 1.0 / 1000.0) { //每1/1000秒更新一次
 		
 		//test 是否有回收記憶體
 		/*if (pHead_bullet == NULL) {
@@ -325,6 +366,7 @@ void onFrameMove(float delta)
 		
 		mainrole_ring->AutomaticRotation( mainrole->mxTran_Main );//星環自動選轉 傳入父層
 
+		//更新雲朵位置
 		for (int i = 0; i < 6; i++)
 		{
 			cloud[i]->AutoTranslate_Background();
@@ -338,9 +380,9 @@ void onFrameMove(float delta)
 			pGet_Draw_bullet->bullet_main->AutoTranslate_Bullet();
 
 			//檢查是否有Alien被子彈打到
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < small_alien; i++)
 			{
-				alien[i]->AutoCheckHurtDie(pGet_Draw_bullet->bullet_main->_x, pGet_Draw_bullet->bullet_main->_y , &pGet_Draw_bullet->bullet_main->HurtAlien);
+				alien[i]->AutoCheckHurtDie(pGet_Draw_bullet->bullet_main->_x, pGet_Draw_bullet->bullet_main->_y , &pGet_Draw_bullet->bullet_main->HurtAlien );
 
 			}
 
@@ -351,9 +393,19 @@ void onFrameMove(float delta)
 
 		//檢查是否有子彈超過有效區
 		CheckBullet();
-		
+
+		//更新Small Alien 位置
+		for (int i = 0; i < small_alien; i++)
+		{
+			alien[i]->AutomaticMotion();
+		}
+
 		timer_onFrameMove = 0;
 	}
+
+
+	
+	
 	
 	GL_Display();
 	
@@ -524,20 +576,30 @@ int main( int argc, char **argv )
     
 	glutInit(&argc, argv);
     glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE );
+
+	
+
     glutInitWindowSize(SCREENWIDTH, SCREENHEIGHT );
 
 	// If you use freeglut the two lines of code can be added to your application 
 	glutInitContextVersion( 3, 2 );
 	glutInitContextProfile( GLUT_CORE_PROFILE );
 
+
     glutCreateWindow( "Draw two triangles" );
 
 	// The glewExperimental global switch can be turned on by setting it to GL_TRUE before calling glewInit(), 
 	// which ensures that all extensions with valid entry points will be exposed.
 	glewExperimental = GL_TRUE; 
-    glewInit();  
-
+	
+	//允許透明度設定
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
+	glewInit();  
     init();
+
+	
 
 	
 	glutKeyboardFunc(win_keyFunc);//test _defenceBallNUM

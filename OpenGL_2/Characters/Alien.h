@@ -11,15 +11,17 @@ public:
 	Alien() {};
 	~Alien() {};
 
-	GLfloat _x = -1.5;
-	GLfloat _y = 1.5;
+	GLfloat _x = 0.0f;
+	GLfloat _y = -3.0f; //一開始不得出現於螢幕上
+	bool alife = true;
+	float alphea = 1.0;
 
 	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
 	GLuint GetShaderHandle() { return _Program; }
 	void SetViewMatrix(mat4& mat);
 	void SetProjectionMatrix(mat4& mat);
 	void SetTRSMatrix(mat4& mat);
-	void SetColor(GLfloat vColor[4]); // Single color
+	void SetColor(GLfloat vColorx, GLfloat vColory, GLfloat vColorz, GLfloat vColorw); // Single color
 	void SetVtxColors(GLfloat vLFColor[], GLfloat vLRColor[], GLfloat vTRColor[], GLfloat vTLColor[]); // four Vertices' Color
 
 	virtual void Draw() = 0; //宣告為虛擬類別，於各自類別中設計
@@ -36,6 +38,7 @@ public:
 
 	//自動檢查是否有受傷、死亡函式
 	virtual void AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y , bool *HurtAlien) = 0;
+
 
 
 
@@ -60,6 +63,9 @@ public:
 	bool  _bUpdateMV;
 	bool  _bUpdateProj;
 
+
+	bool if_first_alien = true; //第一次發出Alien
+
 	void CreateBufferObject();
 };
 
@@ -83,9 +89,16 @@ public:
 	//自動檢查是否有受傷、死亡函式
 	 void AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, bool *HurtAlien);
 
+	
+
+
 private:
 
-	int Blood = 4;
+	const int Blood_original = 4;
+	int Blood = Blood_original;
+	
+
+	
 
 
 };

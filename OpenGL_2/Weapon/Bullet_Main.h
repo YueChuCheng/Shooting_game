@@ -14,6 +14,7 @@ public:
 	~Bullet_Main();
 	GLfloat _x = 0.0f;
 	GLfloat _y = 0.0f;
+	int Bullet_UseSpace; //計算使用哪個陣列
 	GLfloat _scale = 1.0f;
 	GLfloat _speed = 0.0f;
 	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);

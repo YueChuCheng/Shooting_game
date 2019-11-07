@@ -63,13 +63,13 @@ void Alien::SetTRSMatrix(mat4& mat)
 }
 
 
-void Alien::SetColor(GLfloat vColor[4])
+void Alien::SetColor(GLfloat vColorx , GLfloat vColory , GLfloat vColorz , GLfloat vColorw)
 {
 	for (int i = 0; i < Alien_Point_NUM; i++) {
-		_Colors[i].x = vColor[0];
-		_Colors[i].y = vColor[1];
-		_Colors[i].z = vColor[2];
-		_Colors[i].w = vColor[3];
+		_Colors[i].x = vColorx;
+		_Colors[i].y = vColory;
+		_Colors[i].z = vColorz;
+		_Colors[i].w = vColorw;
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(_Points), sizeof(_Colors), _Colors);
