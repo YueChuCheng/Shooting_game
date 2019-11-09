@@ -14,7 +14,7 @@ public:
 	~MainRole_Ring();
 
 	GLfloat _x = 0;
-	GLfloat _y = -0.05; //-0.05使戰機於圓的正中心
+	GLfloat _y = -0.03; //-0.05使戰機於圓的正中心
 	GLfloat _scale = 1;
 	GLfloat _rotate = 0;
 	int _defenceBallNUM = 3;

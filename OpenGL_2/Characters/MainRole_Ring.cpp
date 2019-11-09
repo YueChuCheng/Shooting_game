@@ -242,8 +242,8 @@ void MainRole_Ring:: AutomaticRotation(mat4 mainrole_mxTran) {
 	mxAutoRotate_Ring = RotateZ(_rotate += 0.5);
 
 	//rotate 需要做校正 
-	mxAutoRotate_Ring._m[0] *= (6.5 / 10.0);
-	mxAutoRotate_Ring._m[1] *= (360.0 / 640.0) * (6.5 / 10.0);
+	mxAutoRotate_Ring._m[0] *= (3.5 / 10.0);
+	mxAutoRotate_Ring._m[1] *= (360.0 / 640.0) * (3.5 / 10.0);
 
 	SetTRSMatrix(mainrole_mxTran * mxTran_Ring * mxAutoRotate_Ring);
 

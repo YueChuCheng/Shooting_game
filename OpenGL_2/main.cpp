@@ -54,6 +54,7 @@ Bullet_PNODE pGet_bullet;
 Bullet_PNODE pGet_Draw_bullet;
 Bullet_PNODE pGet_Last_Draw_bullet = NULL;
 Bullet_PNODE pGet_Check_bullet = NULL;
+GLuint ShaderHandle_Bullet; //取得 Shader 的序號
 
 
 //雲朵位置、大小陣列
@@ -86,6 +87,8 @@ void init( void )
 //取得物件
 void CreateGameObject() {
 
+	GLuint ShaderHandle;
+
 	mainrole = new MainRole;
 	mainrole->SetShader(g_mxModelView, g_mxProjection);
 
@@ -98,6 +101,7 @@ void CreateGameObject() {
 	{
 		cloud[i] = new Cloud;
 		cloud[i]->SetShader(g_mxModelView, g_mxProjection);
+		
 		cloud[i]->_x = cloud_info[i][0];
 		cloud[i]->_y = cloud_info[i][1];
 		cloud[i]->_scale = cloud_info[i][2];
@@ -107,11 +111,24 @@ void CreateGameObject() {
 
 	
 	//mat4 mxSAlien;
+
+	
+
 	for (int i = 0; i < small_alien; i++)
 	{
-		alien[i] = new Small_Alien;
-		alien[i]->SetShader(g_mxModelView, g_mxProjection);
+		if(i == 0){ //只須設定第一個Shader
+			alien[i] = new Small_Alien;
+			alien[i]->SetShader(g_mxModelView, g_mxProjection);
+			ShaderHandle = alien[i]->GetShaderHandle();
+		}
 		
+		else //沿用前面的Shader
+		{
+			alien[i] = new Small_Alien;
+			alien[i]->SetShader(g_mxModelView, g_mxProjection , ShaderHandle);
+			
+		}
+
 		
 		/*alien[i]->_x += (0.8f * i);
 
@@ -158,6 +175,8 @@ void CreateGameObject() {
 void GL_Display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT); // clear the window
+	
+	
 	for (int i = 0; i < 6; i++)
 	{
 		cloud[i]->Draw();
@@ -172,10 +191,11 @@ void GL_Display(void)
 
 	}
 	
-	for (int i = 0; i < small_alien; i++)
+	alien[0]->Draw();
+	for (int i = 1; i < small_alien; i++)
 		{
 			if(alien[i]->alife){
-				alien[i]->Draw();
+				alien[i]->DrawW();
 			}
 		}
 	
@@ -192,6 +212,8 @@ void GL_Display(void)
 
 
 void CreateBullet_Main() { 
+
+	
 
 	if( Bullet_Total == 0){ //若第一顆子彈
 		
@@ -217,6 +239,7 @@ void CreateBullet_Main() {
 
 		//pHead_bullet->bullet_main = new Bullet_Main;
 		pHead_bullet->bullet_main->SetShader(g_mxModelView, g_mxProjection);
+		ShaderHandle_Bullet = pHead_bullet->bullet_main->GetShaderHandle();
 		
 		//複製mainrole 的資訊
 		pHead_bullet->bullet_main ->_x = mainrole->_x;
@@ -255,7 +278,7 @@ void CreateBullet_Main() {
 		//設定Bullet內容
 
 		//pGet_bullet->bullet_main = new Bullet_Main;
-		pGet_bullet->bullet_main->SetShader(g_mxModelView, g_mxProjection);
+		pGet_bullet->bullet_main->SetShader(g_mxModelView, g_mxProjection , ShaderHandle_Bullet);
 
 		//複製mainrole 的資訊
 		pGet_bullet->bullet_main->_x = mainrole->_x;
@@ -400,6 +423,14 @@ void onFrameMove(float delta)
 			alien[i]->AutomaticMotion();
 		}
 
+		
+		//更新Main Role 是否受傷 , 傳入alien 位置
+			
+	
+
+
+
+
 		timer_onFrameMove = 0;
 	}
 
@@ -430,7 +461,7 @@ void onBulletLaunch(float delta) {
 		 
 	}
 
-	if (timer_bullet - BulletLaunchSecStart > 0.1f ) { //每隔0.6秒可發射一發子彈
+	if (timer_bullet - BulletLaunchSecStart > 0.2f ) { //每隔0.6秒可發射一發子彈
 		
 		canLaunchBullet = true;
 		if(mouse_down == GLUT_UP){ 
@@ -513,6 +544,17 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 		mainrole_ring->_defenceBallNUM = 3;
 		break;
 
+	case 033:
+
+		for (int i = 0; i < Bullet_space_NUM; i++)
+		{
+			free(pSpace[i]);
+
+		}
+		exit(EXIT_SUCCESS);
+
+		break;
+
 	}
 
 }
@@ -537,7 +579,7 @@ void win_mouse(int button , int state , int x , int y ) {
 			break;
 
 		default:
-
+			
 			break;
 	}
 	

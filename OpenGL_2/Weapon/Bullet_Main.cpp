@@ -7,19 +7,33 @@ Bullet_Main::~Bullet_Main()
 
 Bullet_Main::Bullet_Main()
 {
+	float w = 0.045f; //half width
+	float h = 0.08f;
 
-	for (int i = 0; i < Bullet_Main_Point_NUM; i++)
+	for (int i = 0; i < Bullet_Main_Head; i++)
 	{
+		
+		float x = w - (i * (( 2.0f * w ) / (float)Bullet_Main_Head));
+		float y = ((-2.0f * h) / ( w * w )) * x * x + h;
 
-		_Points[i] = vec4(0.1 * cos(2.0f * M_PI * i / Bullet_Main_Point_NUM) , 0.1 * sin(2.0f * M_PI * i / Bullet_Main_Point_NUM) , 0.0f , 1.0f);
-
+		_Points[i ] = vec4(x, y, 0.0f, 1.0f);
+		
 	}
 
+	_Points[0 + Bullet_Main_Head] = vec4(-w , h   - h  - 0.02, 0.0f, 1.0f);
+	_Points[1 + Bullet_Main_Head] = vec4(-w, -h  - h - 0.02, 0.0f, 1.0f);
+	_Points[2 + Bullet_Main_Head] = vec4(w, -h  - h - 0.02, 0.0f, 1.0f);
+	_Points[3 + Bullet_Main_Head] = vec4(-w, h  - h - 0.02, 0.0f, 1.0f);
+	_Points[4 + Bullet_Main_Head] = vec4(w, -h  - h - 0.02, 0.0f, 1.0f);
+	_Points[5 + Bullet_Main_Head] = vec4(w, h  - h - 0.02, 0.0f, 1.0f);
+
+
+
 
 	for (int i = 0; i < Bullet_Main_Point_NUM; i++)
 	{
 
-		_Colors[i] = vec4(1.0f , 0.0f , 1.0f, 1.0f);
+		_Colors[i] = vec4(0.9960f , 0.5507f , 0.25f, 1.0f);
 
 	}
 
@@ -28,7 +42,7 @@ Bullet_Main::Bullet_Main()
 	for (int i = 0; i < Bullet_Main_Point_NUM; i++)
 	{
 		_Points[i].x = _Points[i].x;
-		_Points[i].y = _Points[i].y * (360.0 / 640.0) + 0.22f; // + 0.2 子彈射出的起始位置校正
+		_Points[i].y = _Points[i].y * (360.0 / 640.0) + 0.2f; // + 0.2 子彈射出的起始位置校正
 	}
 
 	CreateBufferObject();
@@ -170,7 +184,8 @@ void Bullet_Main::Draw()
 	}
 
 	
-	glDrawArrays(GL_TRIANGLE_FAN, 0, Bullet_Main_Point_NUM);
+	glDrawArrays(GL_TRIANGLE_FAN, 0, Bullet_Main_Head);
+	glDrawArrays(GL_TRIANGLE_FAN, Bullet_Main_Head, Bullet_Main_Button);
 	
 }
 
@@ -202,7 +217,7 @@ void Bullet_Main::Draw()
 //子彈往前飛
 void Bullet_Main::AutoTranslate_Bullet() {
 
-	_y += 0.02;
+	_y += 0.01;
 	BulletTrans = Translate(_x , _y , 0.0);
 	SetTRSMatrix(BulletTrans);
 

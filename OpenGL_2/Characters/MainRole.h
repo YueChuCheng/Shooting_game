@@ -32,6 +32,8 @@ public:
 	void Draw();
 	void DrawW();
 
+	void AutoCheckHurt_MainRole();
+
 	//²¾°Ê¯x°}
 	mat4 mxTran_Main;
 

@@ -238,8 +238,9 @@ void Cloud::Draw()
 
 
 
-/*void Cloud::DrawW()
+void Cloud::DrawW()
 {
+	glUseProgram(_Program);
 	glBindVertexArray( _VAO );
 
 	if( _bUpdateMV ) {
@@ -252,9 +253,14 @@ void Cloud::Draw()
 		glUniformMatrix4fv( _Projection, 1, GL_TRUE, _mxProjection );
 		_bUpdateProj = false;
 	}
-	glDrawArrays( GL_TRIANGLE_FAN, 0, body_circle);
-	glDrawArrays(GL_TRIANGLE_FAN, body_circle, head_circle);
-}*/
+	glDrawArrays(GL_TRIANGLE_FAN, 0, Cloud_circle);
+	glDrawArrays(GL_TRIANGLES, Cloud_circle, Cloud_rectangle);
+	glDrawArrays(GL_TRIANGLE_FAN, Cloud_circle + Cloud_rectangle, Cloud_circle);
+	glDrawArrays(GL_TRIANGLE_FAN, (Cloud_circle * 2) + Cloud_rectangle, Cloud_circle);
+	glDrawArrays(GL_TRIANGLES, (Cloud_circle * 3) + Cloud_rectangle, Cloud_rectangle);
+	glDrawArrays(GL_TRIANGLE_FAN, (Cloud_circle * 3) + (Cloud_rectangle * 2), Cloud_circle);
+
+}
 
 
 

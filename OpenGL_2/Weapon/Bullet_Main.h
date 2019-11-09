@@ -3,9 +3,10 @@
 typedef Angel::vec4 color4;
 typedef Angel::vec4 point4; 
 
+const int Bullet_Main_Head = 80;
+const int Bullet_Main_Button = 6;
 
-
-const int Bullet_Main_Point_NUM = 200 ;
+const int Bullet_Main_Point_NUM = Bullet_Main_Head + Bullet_Main_Button;
 
 class Bullet_Main
 {
@@ -25,6 +26,7 @@ public:
 	void SetVtxColors(GLfloat vLFColor[], GLfloat vLRColor[], GLfloat vTRColor[], GLfloat vTLColor[]); // four Vertices' Color
 	void Draw();
 	void DrawW();
+	GLuint GetShaderHandle() { return _Program; }
 
 	mat4 BulletTrans;
 

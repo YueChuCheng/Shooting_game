@@ -192,8 +192,8 @@ MainRole::MainRole()
 	//®Õ¥¿¤ñ¨Ò
 	for (int i = 0; i < Point_NUM; i++)
 	{
-		_Points[i].x = _Points[i].x * (6.5 / 10.0);
-		_Points[i].y = _Points[i].y  * (360.0/640.0) * (6.5 / 10.0);
+		_Points[i].x = _Points[i].x * (3.5 / 10.0);
+		_Points[i].y = _Points[i].y  * (360.0/640.0) * (3.5 / 10.0);
 
 	}
 
@@ -360,3 +360,13 @@ void MainRole::Draw()
 	glDrawArrays( GL_TRIANGLE_FAN, 0, body_circle);
 	glDrawArrays(GL_TRIANGLE_FAN, body_circle, head_circle);
 }*/
+
+
+void MainRole::AutoCheckHurt_MainRole() {
+	/*if () {
+	
+	
+	
+	}*/
+
+}
