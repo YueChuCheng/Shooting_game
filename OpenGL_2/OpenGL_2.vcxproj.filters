@@ -69,6 +69,9 @@
     <ClCompile Include="Characters\BOSS_Alien.cpp">
       <Filter>Characters\Alien</Filter>
     </ClCompile>
+    <ClCompile Include="Weapon\Bullet_SAlien.cpp">
+      <Filter>Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Angel.h">

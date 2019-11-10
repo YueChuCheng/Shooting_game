@@ -91,6 +91,7 @@
     <ClCompile Include="InitShader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Weapon\Bullet_Main.cpp" />
+    <ClCompile Include="Weapon\Bullet_SAlien.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background\Cloud.h" />

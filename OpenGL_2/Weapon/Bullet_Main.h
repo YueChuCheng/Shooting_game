@@ -32,11 +32,11 @@ public:
 
 
 	//自動移動物件
-	void AutoTranslate_Bullet();
+	virtual void AutoTranslate_Bullet();
 
 	bool HurtAlien =false ;  //是否打中Alien
 
-private:
+protected:
 	vec4 _Points[Bullet_Main_Point_NUM];
 	vec4 _Colors[Bullet_Main_Point_NUM];
 
@@ -58,4 +58,26 @@ private:
 
 	void CreateBufferObject();
 };
+
+
+
+
+
+
+
+
+class Bullet_SAlien :public Bullet_Main
+{
+public:
+	Bullet_SAlien ();
+	~Bullet_SAlien ();
+
+	//void CreateBullet_SmallAlien();
+
+	void AutoTranslate_Bullet();
+private:
+
+};
+
+
 
