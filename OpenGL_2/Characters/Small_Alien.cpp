@@ -30,8 +30,8 @@ Small_Alien::Small_Alien()
 	//校正比例
 	for (int i = 0; i < Alien_Point_NUM; i++)
 	{
-		_Points[i].x = _Points[i].x * (6.5 / 10.0);
-		_Points[i].y = _Points[i].y * (360.0 / 640.0) * (6.5 / 10.0);
+		_Points[i].x = _Points[i].x * (3.5 / 10.0);
+		_Points[i].y = _Points[i].y * (360.0 / 640.0) * (3.5 / 10.0);
 
 	}
 
@@ -125,6 +125,7 @@ void Small_Alien::AutomaticMotion() {
 		if_first_alien = true;
 		Blood = Blood_original; //血量重新計算
 		alife = true;//重生
+		
 	}
 
 	 
@@ -142,7 +143,7 @@ void Small_Alien::AutomaticFire(mat4 Alien_mxTran) {
 void Small_Alien::AutoCheckHurtDie(GLfloat Bullet_x , GLfloat Bullet_y, bool *HurtAlien) {
 
 		
-		if (_x- 0.5 <= Bullet_x-0.1 && _x + 0.5 >= Bullet_x + 0.1 && _y + 0.5  >= Bullet_y + 0.1 && _y - 0.5 <= Bullet_y - 0.1)  { //判斷是否在中彈的範圍內
+		if (_x- MAX_X <= Bullet_x- 0.1 && _x + MAX_X >= Bullet_x + 0.1 && _y + MAX_Y >= Bullet_y + 0.1 && _y - MAX_Y <= Bullet_y - 0.2)  { //判斷是否在中彈的範圍內
 
 			*HurtAlien = true; //設定該子彈有打到Alien
 			Blood--;

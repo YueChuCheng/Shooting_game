@@ -89,6 +89,8 @@ public:
 	//自動檢查是否有受傷、死亡函式
 	 void AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, bool *HurtAlien);
 
+	 const double MAX_X = 0.5; //最長寬
+	 const double MAX_Y = 0.5; //最高點
 	
 
 

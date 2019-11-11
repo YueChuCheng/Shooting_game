@@ -8,6 +8,8 @@ const int Bullet_Main_Button = 6;
 
 const int Bullet_Main_Point_NUM = Bullet_Main_Head + Bullet_Main_Button;
 
+
+
 class Bullet_Main
 {
 public:
@@ -29,6 +31,11 @@ public:
 	GLuint GetShaderHandle() { return _Program; }
 
 	mat4 BulletTrans;
+
+
+	const float MAX_X = 0.045f; //最長寬
+	const float MAX_Y = 0.8f; //最高點
+
 
 
 	//自動移動物件

@@ -37,7 +37,7 @@ void CreateGameObject();
 void CheckBullet();
 
 //子彈宣告
-int Bullet_Total = 0;
+
 typedef struct Bullet_Node_struct {
 	Bullet_Main *bullet_main;
 	struct Bullet_Node_struct*link;
@@ -47,16 +47,24 @@ typedef struct Bullet_Node_struct {
 
 
 //主角子彈設定
-const short Bullet_space_NUM = 20; //畫面最多產生的子彈數量
-Bullet_PNODE pSpace[Bullet_space_NUM];
-bool pSpace_use[Bullet_space_NUM] = { false };
-Bullet_PNODE pHead_bullet = NULL;
-Bullet_PNODE pTail_bullet = NULL;
-Bullet_PNODE pGet_bullet;
+const short Bullet_space_NUM = 40; //畫面最多產生的子彈數量
+
+
+Bullet_PNODE pHead_MainBullet_free = NULL;
+Bullet_PNODE pTail_MainBullet_free = NULL;
+Bullet_PNODE pGet_MainBullet_free;
+Bullet_PNODE pHead_MainBullet_used = NULL;
+Bullet_PNODE pTail_MainBullet_used = NULL;
+Bullet_PNODE pGet_MainBullet_used;
 Bullet_PNODE pGet_Draw_bullet;
+Bullet_PNODE pGet_Move_bullet;
 Bullet_PNODE pGet_Last_Draw_bullet = NULL;
 Bullet_PNODE pGet_Check_bullet = NULL;
 GLuint ShaderHandle_Bullet; //取得 Shader 的序號
+
+int Bullet_Total_MainBullet_used = 0;
+int Bullet_Total_MainBullet_free = 0;
+
 
 
 //Small Alien 子彈型別宣告
@@ -157,11 +165,6 @@ void CreateGameObject() {
 			
 		}
 
-		
-		/*alien[i]->_x += (0.8f * i);
-
-		mxSAlien = Translate(alien[i]->_x, alien[i]->_y,0.0);
-		alien[i]->SetTRSMatrix(mxSAlien);*/
 
 	}
 
@@ -169,7 +172,47 @@ void CreateGameObject() {
 	//存放子彈的儲存空間
 	for (int i = 0; i < Bullet_space_NUM; i++)
 	{
-		pSpace[i] = (Bullet_PNODE)malloc(sizeof(Bullet_NODE));
+		//pSpace[i] = (Bullet_PNODE)malloc(sizeof(Bullet_NODE));
+		if (i == 0) {
+
+			if ((pHead_MainBullet_free = (Bullet_PNODE)malloc(sizeof(Bullet_NODE))) ==NULL) {
+			
+				printf("記憶體空間不足");
+				exit(0);
+			
+			};
+
+			pHead_MainBullet_free->bullet_main = new Bullet_Main;
+			pHead_MainBullet_free->bullet_main->SetShader(g_mxModelView, g_mxProjection);
+			ShaderHandle = pHead_MainBullet_free->bullet_main->GetShaderHandle();
+			pHead_MainBullet_free->link = NULL;
+			pTail_MainBullet_free = pHead_MainBullet_free;
+
+
+
+		}
+
+
+		else
+		{
+			if ((pGet_MainBullet_free = (Bullet_PNODE)malloc(sizeof(Bullet_NODE))) == NULL) {
+				printf("記憶體空間不足");
+				exit(0);
+			}
+
+			pGet_MainBullet_free->bullet_main = new Bullet_Main;
+			pGet_MainBullet_free->bullet_main->SetShader(g_mxModelView, g_mxProjection, ShaderHandle);
+			pGet_MainBullet_free->link = NULL;
+			pTail_MainBullet_free->link = pGet_MainBullet_free;
+			pTail_MainBullet_free = pGet_MainBullet_free;
+
+
+
+
+		}
+
+		Bullet_Total_MainBullet_free++;
+
 	
 	}
 
@@ -218,27 +261,6 @@ void CreateGameObject() {
 
 	}
 	
-
-	/*GLfloat *GREEN = new GLfloat[4];
-	GREEN[0] = 0.0f;
-	GREEN[1] = 1.0f;
-	GREEN[2] = 0.0f;
-	GREEN[3] = 1.0f;
-
-	alien[1] = new Middle_Alien;
-	alien[1]->SetShader(g_mxModelView, g_mxProjection);
-	alien[1]->SetColor(GREEN);
-
-
-	GLfloat* BLUE = new GLfloat[4];
-	BLUE[0] = 0.0f;
-	BLUE[1] = 0.0f;
-	BLUE[2] = 1.0f;
-	BLUE[3] = 1.0f;
-
-	alien[2] = new BOSS_Alien;
-	alien[2]->SetShader(g_mxModelView, g_mxProjection);
-	alien[2]->SetColor(BLUE);*/
 	
 }
 
@@ -253,14 +275,18 @@ void GL_Display(void)
 		cloud[i]->Draw();
 	}
 
-	pGet_Draw_bullet = pHead_bullet;
+
+
 	
-	for (int i = 0; i < Bullet_Total; i++)
+	pGet_Draw_bullet = pHead_MainBullet_used;
+	for (int i = 0; i < Bullet_Total_MainBullet_used; i++)
 	{
 		pGet_Draw_bullet->bullet_main->Draw();
 		pGet_Draw_bullet = pGet_Draw_bullet->link;
 
 	}
+
+
 
 	//Draw Small Alien Bullet
 	pGet_Draw_SAlienBullet = pHead_SAlienBullet_used;
@@ -296,80 +322,120 @@ void GL_Display(void)
 
 void CreateBullet_Main() { 
 
-	
 
-	if( Bullet_Total == 0){ //若第一顆子彈
-		
-		for (int i = 0; i < Bullet_space_NUM; i++)
-		{
-			if (pSpace_use[i]==false) {
-			
-				pHead_bullet = pSpace[i];
-				pHead_bullet->bullet_main = new Bullet_Main;
-				pHead_bullet->bullet_main->Bullet_UseSpace = i;
-				pSpace_use[i] = true;
-				break;
-			}
-		}
+	if (Bullet_Total_MainBullet_used == 0) {
 
-		//設定Bullet 內容
+		pHead_MainBullet_used = pHead_MainBullet_free; 
+		pHead_MainBullet_free = pHead_MainBullet_free->link;
 
-		//pHead_bullet->bullet_main = new Bullet_Main;
-		pHead_bullet->bullet_main->SetShader(g_mxModelView, g_mxProjection);
-		ShaderHandle_Bullet = pHead_bullet->bullet_main->GetShaderHandle();
-		
-		//複製mainrole 的資訊
-		pHead_bullet->bullet_main ->_x = mainrole->_x;
-		pHead_bullet->bullet_main->_y = mainrole->_y;
-		
-		pHead_bullet->bullet_main->BulletTrans = Translate(pHead_bullet->bullet_main->_x, pHead_bullet->bullet_main->_y, 0.0);
+		pHead_MainBullet_used->bullet_main->_x = mainrole->_x;
+		pHead_MainBullet_used->bullet_main->_y = mainrole->_y;
 
-		pHead_bullet->bullet_main->SetTRSMatrix(pHead_bullet->bullet_main->BulletTrans);
+		pHead_MainBullet_used->bullet_main->SetTRSMatrix(Translate(pHead_MainBullet_used->bullet_main->_x, pHead_MainBullet_used->bullet_main->_y,0.0));
 
-		pHead_bullet->link = NULL;
-		pTail_bullet = pHead_bullet;
+		pHead_MainBullet_used->link = NULL;
+		pTail_MainBullet_used = pHead_MainBullet_used;
 
-		Bullet_Total++;
+		Bullet_Total_MainBullet_free--;
+		Bullet_Total_MainBullet_used++;
+
 
 	}
 
-	else if (Bullet_Total>0) { //若不為第一顆子彈
 
-		for (int i = 0; i < Bullet_space_NUM; i++)
-		{
-			if (pSpace_use[i] == false) {
+	else if (Bullet_Total_MainBullet_used > 0) {
 
-				pGet_bullet = pSpace[i];
-				pGet_bullet->bullet_main = new Bullet_Main;
-				pGet_bullet->bullet_main->Bullet_UseSpace = i;
-				pSpace_use[i] = true;
-				break;
-			}
-		}
-	
-		//設定Bullet內容
+		pGet_MainBullet_used = pHead_MainBullet_free;
+		pHead_MainBullet_free = pHead_MainBullet_free->link;
 
-		//pGet_bullet->bullet_main = new Bullet_Main;
-		pGet_bullet->bullet_main->SetShader(g_mxModelView, g_mxProjection , ShaderHandle_Bullet);
+		pGet_MainBullet_used->bullet_main->_x = mainrole->_x;
+		pGet_MainBullet_used->bullet_main->_y = mainrole->_y;
 
-		//複製mainrole 的資訊
-		pGet_bullet->bullet_main->_x = mainrole->_x;
-		pGet_bullet->bullet_main->_y = mainrole->_y;
+		pGet_MainBullet_used->bullet_main->SetTRSMatrix(Translate(pGet_MainBullet_used->bullet_main->_x, pGet_MainBullet_used->bullet_main->_y, 0.0));
+
+		pTail_MainBullet_used->link = pGet_MainBullet_used; //結尾link指向新取得的頭
+		pGet_MainBullet_used->link = NULL;//設定結尾為NULL
+		pTail_MainBullet_used = pGet_MainBullet_used;//設定尾巴為PGet
+
+		Bullet_Total_MainBullet_free--;
+		Bullet_Total_MainBullet_used++;
 
 
-		pGet_bullet->bullet_main->BulletTrans = Translate(pGet_bullet->bullet_main->_x, pGet_bullet->bullet_main->_y, 0.0);
-
-		pGet_bullet->bullet_main->SetTRSMatrix(pGet_bullet->bullet_main->BulletTrans);
-		pGet_bullet->link = NULL;
-
-		pGet_bullet->bullet_main->Draw();
-
-
-		pTail_bullet->link = pGet_bullet; //將前一個節點與新的節點連接
-		pTail_bullet = pGet_bullet; //設定尾巴節點為新拿的空間
-		
-		Bullet_Total++;
 	}
+	
+
+	//if( Bullet_Total_MainBullet_used == 0){ //若第一顆子彈
+	//	
+	//	for (int i = 0; i < Bullet_space_NUM; i++)
+	//	{
+	//		if (pSpace_use[i]==false) {
+	//		
+	//			pHead_MainBullet_used = pSpace[i];
+	//			pHead_MainBullet_used->bullet_main = new Bullet_Main;
+	//			pHead_MainBullet_used->bullet_main->Bullet_UseSpace = i;
+	//			pSpace_use[i] = true;
+	//			break;
+	//		}
+	//	}
+
+	//	//設定Bullet 內容
+
+	//	//pHead_MainBullet_used->bullet_main = new Bullet_Main;
+	//	pHead_MainBullet_used->bullet_main->SetShader(g_mxModelView, g_mxProjection);
+	//	ShaderHandle_Bullet = pHead_MainBullet_used->bullet_main->GetShaderHandle();
+	//	
+	//	//複製mainrole 的資訊
+	//	pHead_MainBullet_used->bullet_main ->_x = mainrole->_x;
+	//	pHead_MainBullet_used->bullet_main->_y = mainrole->_y;
+	//	
+	//	pHead_MainBullet_used->bullet_main->BulletTrans = Translate(pHead_MainBullet_used->bullet_main->_x, pHead_MainBullet_used->bullet_main->_y, 0.0);
+
+	//	pHead_MainBullet_used->bullet_main->SetTRSMatrix(pHead_MainBullet_used->bullet_main->BulletTrans);
+
+	//	pHead_MainBullet_used->link = NULL;
+	//	pTail_MainBullet_used = pHead_MainBullet_used;
+
+	//	Bullet_Total_MainBullet_used++;
+
+	//}
+
+	//else if (Bullet_Total_MainBullet_used>0) { //若不為第一顆子彈
+
+	//	for (int i = 0; i < Bullet_space_NUM; i++)
+	//	{
+	//		if (pSpace_use[i] == false) {
+
+	//			pGet_MainBullet_used = pSpace[i];
+	//			pGet_MainBullet_used->bullet_main = new Bullet_Main;
+	//			pGet_MainBullet_used->bullet_main->Bullet_UseSpace = i;
+	//			pSpace_use[i] = true;
+	//			break;
+	//		}
+	//	}
+	//
+	//	//設定Bullet內容
+
+	//	//pGet_MainBullet_used->bullet_main = new Bullet_Main;
+	//	pGet_MainBullet_used->bullet_main->SetShader(g_mxModelView, g_mxProjection , ShaderHandle_Bullet);
+
+	//	//複製mainrole 的資訊
+	//	pGet_MainBullet_used->bullet_main->_x = mainrole->_x;
+	//	pGet_MainBullet_used->bullet_main->_y = mainrole->_y;
+
+
+	//	pGet_MainBullet_used->bullet_main->BulletTrans = Translate(pGet_MainBullet_used->bullet_main->_x, pGet_MainBullet_used->bullet_main->_y, 0.0);
+
+	//	pGet_MainBullet_used->bullet_main->SetTRSMatrix(pGet_MainBullet_used->bullet_main->BulletTrans);
+	//	pGet_MainBullet_used->link = NULL;
+
+	//	pGet_MainBullet_used->bullet_main->Draw();
+
+
+	//	pTail_MainBullet_used->link = pGet_MainBullet_used; //將前一個節點與新的節點連接
+	//	pTail_MainBullet_used = pGet_MainBullet_used; //設定尾巴節點為新拿的空間
+	//	
+	//	Bullet_Total_MainBullet_used++;
+	//}
 
 	
 
@@ -427,50 +493,67 @@ void CreateBullet_SmallAlien(Alien *alien) {
 
 //----------------------------------------------------------------------------
 
-float bullet_main_y;
-Bullet_PNODE one, two, three;
+
 
 //檢查子彈是否超過有效範圍, 若超過則連結好前後節點，並delete
 void CheckBullet() {
 	
-	pGet_Check_bullet = pHead_bullet;
 
-	
+	//printf("%d\n" , Bullet_Total_MainBullet_used);
+	pGet_Check_bullet = pHead_MainBullet_used;
 
-	for (int i = 0; i < Bullet_Total; i++)
+	for (int i = 0; i < Bullet_Total_MainBullet_used; i++)
 	{
 
-		bullet_main_y = pGet_Check_bullet->bullet_main->_y;
-
-		if (bullet_main_y > 1.8 || pGet_Check_bullet->bullet_main->HurtAlien) { //超過有效距離或有中彈
+		
+		
+		if (pGet_Check_bullet->bullet_main->_y > 1.8 || pGet_Check_bullet->bullet_main->HurtAlien) { //超過有效距離或有中彈   //有問題
 			
 			//若刪除的是第一個節點則更換 pHead的位置
-			if (pGet_Check_bullet == pHead_bullet) {
-				pHead_bullet = pHead_bullet->link;
+			if (pGet_Check_bullet == pHead_MainBullet_used) {
+				//pHead_MainBullet_used = pHead_MainBullet_used->link;
+
+
+				pTail_MainBullet_free->link = pGet_Check_bullet; //將位置與free的尾巴相連
+				pTail_MainBullet_free = pGet_Check_bullet; //free 的尾巴為新增的節點
+				pHead_MainBullet_used = pHead_MainBullet_used->link; //將used的頭指向下個節點
+				pTail_MainBullet_free->bullet_main->HurtAlien = false; //reset子彈狀態
+				pTail_MainBullet_free->link = NULL; //free 尾巴link為NULL
 				
 			}
 
 			//若刪除的是最後一個節點則更換 pTail的位置
-			else if (pGet_Check_bullet == pTail_bullet) {
+			else if (pGet_Check_bullet == pTail_MainBullet_used) {
 
-				pTail_bullet = pGet_Last_Draw_bullet;
-				pTail_bullet->link = NULL;
+				/*pTail_MainBullet_used = pGet_Last_Draw_bullet;
+				pTail_MainBullet_used->link = NULL;*/
+
+
+				pTail_MainBullet_free->link = pGet_Check_bullet;
+				pTail_MainBullet_free = pGet_Check_bullet;
+				pGet_Last_Draw_bullet->link = NULL;
+				pTail_MainBullet_used = pGet_Last_Draw_bullet; //設定used的新尾巴
+				pTail_MainBullet_free->bullet_main->HurtAlien = false; //reset子彈狀態
+				pTail_MainBullet_free->link = NULL;
 
 			}
 
 			//若不為頭也不為尾的節點則連接好頭尾位置
 			else {
 			
-				pGet_Last_Draw_bullet->link = pGet_Check_bullet->link; //前一次的link，連接到下一個節點的起頭
+				//pGet_Last_Draw_bullet->link = pGet_Check_bullet->link; //前一次的link，連接到下一個節點的起頭
+
+				pTail_MainBullet_free->link = pGet_Check_bullet;
+				pTail_MainBullet_free = pGet_Check_bullet;
+				pGet_Last_Draw_bullet->link = pGet_Check_bullet->link;
+				pTail_MainBullet_free->bullet_main->HurtAlien = false; //reset子彈狀態
+				pTail_MainBullet_free->link = NULL;
 			}
 			
-			pSpace_use[pGet_Check_bullet->bullet_main->Bullet_UseSpace] = false;
-
+			//pSpace_use[pGet_Check_bullet->bullet_main->Bullet_UseSpace] = false;
 			
-			//delete pGet_Check_bullet;
-			//free(pGet_Check_bullet); //刪除節點
-			
-			Bullet_Total--;
+			Bullet_Total_MainBullet_used--;
+			Bullet_Total_MainBullet_free++;
 
 			break; //若有刪除節點則跳出迴圈因為節點要重新計算
 		
@@ -492,13 +575,14 @@ void CheckBullet_SAlien(){
 
 	for (int i = 0; i <Bullet_Total_SmallAlien_used; i++)
 	{
-		if (pGet_Check_SAlienBullet->bullet_main->_y < -1.8) {
+		if (pGet_Check_SAlienBullet->bullet_main->_y < -2.) {
 
 			if (pGet_Check_SAlienBullet == pHead_SAlienBullet_used) { //如果刪除的是第一個節點
 
 				pTail_SAlienBullet_free->link = pGet_Check_SAlienBullet; //將位置與free的尾巴相連
 				pTail_SAlienBullet_free = pGet_Check_SAlienBullet; //free 的尾巴為新增的節點
 				pHead_SAlienBullet_used = pHead_SAlienBullet_used->link; //將used的頭指向下個節點
+				pTail_SAlienBullet_free->bullet_main->HurtAlien = false; //reset子彈狀態
 				pTail_SAlienBullet_free->link = NULL; //free 尾巴link為NULL
 
 			}
@@ -509,6 +593,7 @@ void CheckBullet_SAlien(){
 				pTail_SAlienBullet_free = pGet_Check_SAlienBullet; 
 				pGet_Last_Draw_SAlienBullet_used->link = NULL;
 				pTail_SAlienBullet_used = pGet_Last_Draw_SAlienBullet_used; //設定used的新尾巴
+				pTail_SAlienBullet_free->bullet_main->HurtAlien = false; //reset子彈狀態
 				pTail_SAlienBullet_free->link = NULL;
 			}
 
@@ -516,6 +601,7 @@ void CheckBullet_SAlien(){
 				pTail_SAlienBullet_free->link = pGet_Check_SAlienBullet;
 				pTail_SAlienBullet_free = pGet_Check_SAlienBullet;
 				pGet_Last_Draw_SAlienBullet_used->link = pGet_Check_SAlienBullet->link;
+				pTail_SAlienBullet_free->bullet_main->HurtAlien = false; //reset子彈狀態
 				pTail_SAlienBullet_free->link = NULL;
 
 			}
@@ -549,11 +635,7 @@ void onFrameMove(float delta)
 
 	if (timer_onFrameMove > 1.0 / 1000.0) { //每1/1000秒更新一次
 		
-		//test 是否有回收記憶體
-		/*if (pHead_bullet == NULL) {
-			printf("%f\n", test_i);
-			test_i++;
-		}*/
+	
 		
 		mainrole_ring->AutomaticRotation( mainrole->mxTran_Main );//星環自動選轉 傳入父層
 
@@ -565,19 +647,19 @@ void onFrameMove(float delta)
 
 		
 		//更新子彈路線 
-		pGet_Draw_bullet = pHead_bullet;
-		for (int i = 0; i < Bullet_Total; i++)
+		pGet_Move_bullet = pHead_MainBullet_used;
+		for (int i = 0; i < Bullet_Total_MainBullet_used; i++)
 		{
-			pGet_Draw_bullet->bullet_main->AutoTranslate_Bullet();
+			pGet_Move_bullet->bullet_main->AutoTranslate_Bullet();
 
 			//檢查是否有Alien被子彈打到
 			for (int i = 0; i < small_alien; i++)
 			{
-				alien[i]->AutoCheckHurtDie(pGet_Draw_bullet->bullet_main->_x, pGet_Draw_bullet->bullet_main->_y , &pGet_Draw_bullet->bullet_main->HurtAlien );
+				alien[i]->AutoCheckHurtDie(pGet_Move_bullet->bullet_main->_x, pGet_Move_bullet->bullet_main->_y , &pGet_Move_bullet->bullet_main->HurtAlien );
 
 			}
 
-			pGet_Draw_bullet = pGet_Draw_bullet->link;
+			pGet_Move_bullet = pGet_Move_bullet->link;
 
 
 		}
@@ -624,8 +706,10 @@ bool clickLaunchBullet = false; //是否按下發射
 bool mouse_down= GLUT_UP;
 void onBulletLaunch(float delta) {
 
+	
 	timer_bullet += delta;
-	if (clickLaunchBullet && canLaunchBullet) {
+	if (clickLaunchBullet && canLaunchBullet && Bullet_Total_MainBullet_free > 0) {
+		
 		
 		CreateBullet_Main();
 		canLaunchBullet = false;
@@ -661,7 +745,7 @@ void onSAlienBulletLaunch(float delta) {
 	
 		for (int i = 0; i < small_alien; i++) //每個小怪都建置一個子彈
 		{
-			if (alien[i]->_y >-2.0 && alien[i]->_y < 2.0) {
+			if (alien[i]->_y >-2.5 && alien[i]->_y < 2.5) {
 				CreateBullet_SmallAlien(alien[i]);
 			}
 		}
@@ -742,11 +826,48 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 
 	case 033:
 
-		for (int i = 0; i < Bullet_space_NUM; i++)
+		/*for (int i = 0; i < Bullet_space_NUM; i++)
 		{
 			free(pSpace[i]);
 
+		}*/
+
+		
+		
+		for (int i = 0; i < Bullet_Total_SmallAlien_free; i++)
+		{
+			pGet_Draw_SAlienBullet = pHead_SAlienBullet_free->link;
+			free(pHead_SAlienBullet_free);
+			pHead_SAlienBullet_free = pGet_Draw_SAlienBullet;
 		}
+
+
+		for (int i = 0; i < Bullet_Total_SmallAlien_used; i++)
+		{
+			pGet_Draw_SAlienBullet = pHead_SAlienBullet_used->link;
+			free(pHead_SAlienBullet_used);
+			pHead_SAlienBullet_used = pGet_Draw_SAlienBullet;
+		}
+
+
+		for (int i = 0; i < Bullet_Total_MainBullet_free; i++)
+		{
+			pGet_Draw_bullet = pHead_MainBullet_free->link;
+			free(pHead_MainBullet_free);
+			pHead_MainBullet_free = pGet_Draw_bullet;
+		}
+
+
+		for (int i = 0; i < Bullet_Total_MainBullet_used; i++)
+		{
+			pGet_Draw_bullet = pHead_MainBullet_used->link;
+			free(pHead_MainBullet_used);
+			pHead_MainBullet_used = pGet_Draw_bullet;
+		}
+
+
+		
+
 
 		
 		exit(EXIT_SUCCESS);
