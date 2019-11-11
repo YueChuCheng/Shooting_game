@@ -33,8 +33,8 @@ public:
 	mat4 BulletTrans;
 
 
-	const float MAX_X = 0.045f; //程糴
-	const float MAX_Y = 0.8f; //程蔼翴
+	const float MAX_X = 0.1f; //程糴
+	const float MAX_Y = 0.3f; //程蔼翴
 
 
 
@@ -78,6 +78,8 @@ class Bullet_SAlien :public Bullet_Main
 public:
 	Bullet_SAlien ();
 	~Bullet_SAlien ();
+	bool HurtMainRole = false;  //琌ゴいAlien
+
 
 	//void CreateBullet_SmallAlien();
 

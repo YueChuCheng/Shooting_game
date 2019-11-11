@@ -124,13 +124,11 @@ void MainRole_Ring::SetTRSMatrix(mat4& mat)
 	_bUpdateMV = true;
 }
 
-void MainRole_Ring::SetColor(GLfloat vColor[4])
+void MainRole_Ring::SetAlpha(float alpha)
 {
 	for (int i = 0; i < Ring_Point_NUM; i++) {
-		_Colors[i].x = vColor[0];
-		_Colors[i].y = vColor[1];
-		_Colors[i].z = vColor[2];
-		_Colors[i].w = vColor[3];
+
+		_Colors[i].w = alpha;
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(_Points), sizeof(_Colors), _Colors);
@@ -196,11 +194,6 @@ void MainRole_Ring::SetDefenseBall() { //設定有幾顆防禦球
 
 
 	default:
-		glDrawArrays(GL_LINE_LOOP, 0, Ring);
-		glDrawArrays(GL_TRIANGLE_FAN, Ring, Ring_ball);
-		glDrawArrays(GL_TRIANGLE_FAN, Ring + Ring_ball, Ring_ball);
-		glDrawArrays(GL_TRIANGLE_FAN, Ring + (Ring_ball * 2), Ring_ball);
-
 		break;
 	}
 	

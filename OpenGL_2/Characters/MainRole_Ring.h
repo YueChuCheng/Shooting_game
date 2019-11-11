@@ -24,7 +24,7 @@ public:
 	void SetViewMatrix(mat4& mat);
 	void SetProjectionMatrix(mat4& mat);
 	void SetTRSMatrix(mat4& mat);
-	void SetColor(GLfloat vColor[4]); // Single color
+	void SetAlpha(float alpha); // Single color
 	void SetVtxColors(GLfloat vLFColor[], GLfloat vLRColor[], GLfloat vTRColor[], GLfloat vTLColor[]); // four Vertices' Color
 
 	void Draw();

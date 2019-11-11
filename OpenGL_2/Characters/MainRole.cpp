@@ -147,48 +147,6 @@ MainRole::MainRole()
 		_Colors[i + triangle + body_circle + head_circle + (circle * 5) + (rectangle * 2)] = vec4(0.9921f, 0.0039f, 0.0f, 1.0f);
 	}
 
-	//戰機外環
-	/*//big circle_right
-
-	for (int i = 0; i < circle; i++)
-	{
-		float x = 1.2f * cosf(2.0f * M_PI * i / circle);
-		float y = 0.28f * sinf(2.0f * M_PI * i / circle);
-		float p = (float)i / (float)circle;
-
-		if ( p < (1.45/8.0) || p > (2.68/8.0)) {
-			_Points[i + triangle + body_circle + head_circle + (circle * 5) + (rectangle * 3)] = vec4(x * cosf(0.25 * M_PI) - y * sinf(0.25 * M_PI), x * sinf(0.25 * M_PI) + y * cosf(0.25 * M_PI), 0.0f, 1.0f);
-		}
-
-	}
-
-	for (int i = 0; i < circle; i++)
-	{
-		_Colors[i + triangle + body_circle + head_circle + (circle * 5) + (rectangle * 3)] = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	}
-
-
-	
-	//big circle_left
-
-	for (int i = 0; i < circle; i++)
-	{
-		float x = 1.2f * cosf(2.0f * M_PI * i / circle);
-		float y = 0.28f * sinf(2.0f * M_PI * i / circle);
-		float p = (float)i / (float)circle;
-
-		if (p < (1.33 / 8.0) || p >(2.55 / 8.0)) {
-			_Points[i + triangle + body_circle + head_circle + (circle * 6) + (rectangle * 3)] = vec4(x * cosf(-0.25 * M_PI) - y * sinf(-0.25 * M_PI), x * sinf(-0.25 * M_PI) + y * cosf(-0.25 * M_PI), 0.0f, 1.0f);
-		}
-
-	}
-
-	for (int i = 0; i < circle; i++)
-	{
-		_Colors[i + triangle + body_circle + head_circle + (circle * 6) + (rectangle * 3)] = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	}
-	*/
-	
 	//校正比例
 	for (int i = 0; i < Point_NUM; i++)
 	{
@@ -263,13 +221,11 @@ void MainRole::SetTRSMatrix(mat4 &mat)
 	_bUpdateMV = true;
 }
 
-void MainRole::SetColor(GLfloat vColor[4])
+void MainRole::SetAlpha(float alpha)
 {
-	for( int i = 0 ; i < body_circle; i++ ) {
-		_Colors[i].x = vColor[0];
-		_Colors[i].y = vColor[1];
-		_Colors[i].z = vColor[2];
-		_Colors[i].w = vColor[3];
+	for( int i = 0 ; i < Point_NUM; i++ ) {
+		
+		_Colors[i].w = alpha;
 	}
 	glBindBuffer( GL_ARRAY_BUFFER, _VBO );
 	glBufferSubData( GL_ARRAY_BUFFER, sizeof(_Points), sizeof(_Colors), _Colors );
@@ -338,11 +294,6 @@ void MainRole::Draw()
 
 
 
-
-//mainrole Update
-
-
-
 /*void MainRole::DrawW()
 {
 	glBindVertexArray( _VAO );
@@ -362,11 +313,21 @@ void MainRole::Draw()
 }*/
 
 
-void MainRole::AutoCheckHurt_MainRole() {
-	/*if () {
+//偵測main role使否遭受碰撞
+void MainRole::AutoCheckHurt_MainRole(GLfloat x, GLfloat y, float Max_X, float MAX_Y, bool *HurtMainRole , int *defense_ball) {
 	
+
+	if (_x - this->MAX_X <= x - Max_X && _x + this->MAX_X >= x + Max_X && _y + this->MAX_Y >= y + MAX_Y && _y - this->MAX_Y <= y - MAX_Y  && can_change_hurtMain)//偵測是否位於攻擊範圍 且是否為可攻擊狀態
+	{
+		//printf("yes");
+		*HurtMainRole = true;
+		can_change_hurtMain = false;
+		*defense_ball = *defense_ball - 1; //少一命
+		
+
+
+	}
+
 	
-	
-	}*/
 
 }

@@ -26,13 +26,16 @@ public:
 	void SetViewMatrix(mat4 &mat);
 	void SetProjectionMatrix(mat4 &mat);
 	void SetTRSMatrix(mat4 &mat);
-	void SetColor(GLfloat vColor[4]); // Single color
+	void SetAlpha(float alpha); // 設定透明度
 	void SetVtxColors(GLfloat vLFColor[], GLfloat vLRColor[], GLfloat vTRColor[], GLfloat vTLColor[]); // four Vertices' Color
 	
 	void Draw();
 	void DrawW();
 
-	void AutoCheckHurt_MainRole();
+	void AutoCheckHurt_MainRole(GLfloat x , GLfloat y , float Max_Y , float MAX_Y , bool *HurtMainRole, int *defense_ball);
+
+	bool can_change_hurtMain = true; //自己是否有受傷
+	
 
 	//移動矩陣
 	mat4 mxTran_Main;
@@ -57,6 +60,8 @@ private:
 	bool  _bUpdateProj;
 
 	
+	const float MAX_X = 0.3f; //最長寬
+	const float MAX_Y = 0.6f; //最高點
 
 	void CreateBufferObject();
 
