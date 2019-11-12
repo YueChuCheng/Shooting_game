@@ -27,13 +27,13 @@ Middle_Alien::Middle_Alien()
 
 
 
-	//校正比例
-	for (int i = 0; i < Alien_Point_NUM; i++)
+	//校正比例 於跟隨Main Role 時一同做旋轉
+	/*for (int i = 0; i < Alien_Point_NUM; i++)
 	{
-		_Points[i].x = _Points[i].x * (6.5 / 10.0);
-		_Points[i].y = _Points[i].y * (360.0 / 640.0) * (6.5 / 10.0) + 1.0f;
+		_Points[i].x = _Points[i].x * (4.5 / 10.0);
+		_Points[i].y = _Points[i].y * (360.0 / 640.0) * (4.5 / 10.0) ;
 
-	}
+	}*/
 
 
 	// Create and initialize a buffer object 
@@ -91,15 +91,32 @@ void Middle_Alien::DrawW()
 }
 
 
-void Middle_Alien::AutomaticMotion() {
+void Middle_Alien::AutomaticMotion(GLfloat MainRole_x, GLfloat MainRole_y) {
 
-}
+	float dis_x = 0; //相差多少寬
+	float dis_y = 0; //相差多少高
+	
+	dis_x =MainRole_x  - _x;
+	dis_y =MainRole_y  - _y;
+
+	//printf("%f\n" , atan(dis_y / dis_x));
+
+	mxRotate_Alien =  RotateZ(atan(dis_x /dis_y) * -50.0f);
+
+
+	mxRotate_Alien._m[0] *= (4.5 / 10.0);
+	mxRotate_Alien._m[1] *= (360.0 / 640.0) * (4.5 / 10.0);
+
+	SetTRSMatrix(mxTran_Alien * mxRotate_Alien );
+	
+};
+
 
 
 void Middle_Alien::AutomaticFire(mat4 Alien_mxTran) {
 
 }
 
-void Middle_Alien::AutoCheckHurtDie() {
+void Middle_Alien::AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, float MAX_X, float MAX_Y, bool* HurtAlien) {
 
 }

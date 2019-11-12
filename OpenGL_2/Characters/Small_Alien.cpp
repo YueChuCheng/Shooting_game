@@ -140,10 +140,10 @@ void Small_Alien::AutomaticFire(mat4 Alien_mxTran) {
 
 
 
-void Small_Alien::AutoCheckHurtDie(GLfloat Bullet_x , GLfloat Bullet_y, bool *HurtAlien) {
+void Small_Alien::AutoCheckHurtDie(GLfloat Bullet_x , GLfloat Bullet_y, float MAX_X, float MAX_Y ,  bool *HurtAlien) {
 
 		
-		if (_x- MAX_X <= Bullet_x- 0.1 && _x + MAX_X >= Bullet_x + 0.1 && _y + MAX_Y >= Bullet_y + 0.1 && _y - MAX_Y <= Bullet_y - 0.2)  { //判斷是否在中彈的範圍內
+		if (_x- this->MAX_X <= Bullet_x- MAX_X && _x + this->MAX_X >= Bullet_x + MAX_X && _y + this->MAX_Y >= Bullet_y + MAX_Y && _y - this->MAX_Y <= Bullet_y - MAX_Y)  { //判斷是否在中彈的範圍內
 
 			*HurtAlien = true; //設定該子彈有打到Alien
 			Blood--;

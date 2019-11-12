@@ -17,6 +17,11 @@
 #define SCREENHEIGHT_HALF (SCREENHEIGHT/2.0)
 
 
+//玩家總分
+int PlayerTotalPoint = 0;
+
+
+
 
 // 必須在 glewInit(); 執行完後,在執行物件實體的取得
 MainRole *mainrole;	// 宣告 指標物件，結束時記得釋放
@@ -24,7 +29,8 @@ MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
 Cloud* cloud[6];
 Bullet_Main* bullet_main;
 const short small_alien = 4; //螢幕上small alien 出現的最大數量
-Alien* alien[small_alien];
+const short middle_alien = 4; //螢幕上middle alien 出現的最大數量
+Alien* alien[small_alien + middle_alien];
 
 // For Model View and Projection Matrix
 mat4 g_mxModelView(1.0f);
@@ -37,7 +43,6 @@ void CreateGameObject();
 void CheckBullet();
 
 //子彈宣告
-
 typedef struct Bullet_Node_struct {
 	Bullet_Main *bullet_main;
 	struct Bullet_Node_struct*link;
@@ -150,21 +155,60 @@ void CreateGameObject() {
 
 	
 
-	for (int i = 0; i < small_alien; i++)
+	for (int i = 0; i < small_alien + middle_alien; i++)
 	{
-		if(i == 0){ //只須設定第一個Shader
-			alien[i] = new Small_Alien;
-			alien[i]->SetShader(g_mxModelView, g_mxProjection);
-			ShaderHandle = alien[i]->GetShaderHandle();
-		}
+		if(i < small_alien){ //設定small alien 空間
 		
-		else //沿用前面的Shader
-		{
-			alien[i] = new Small_Alien;
-			alien[i]->SetShader(g_mxModelView, g_mxProjection , ShaderHandle);
-			
+			if (i == 0) { //只須設定第一個Shader
+				alien[i] = new Small_Alien;
+				alien[i]->SetShader(g_mxModelView, g_mxProjection);
+				ShaderHandle = alien[i]->GetShaderHandle();
+			}
+
+			else //沿用前面的Shader
+			{
+				alien[i] = new Small_Alien;
+				alien[i]->SetShader(g_mxModelView, g_mxProjection, ShaderHandle);
+
+			}
+
 		}
 
+		else if( i < small_alien + middle_alien)//設定middle alien
+		{
+			
+			if (i == small_alien) //middle alien起始空間
+			{
+				alien[i] = new Middle_Alien;
+				alien[i]->SetShader(g_mxModelView, g_mxProjection);
+				ShaderHandle = alien[i]->GetShaderHandle();
+
+				alien[i]->_x = -1.0f + 0.5f * (float)(i - small_alien);
+				alien[i]->_y = 1.0f;
+				alien[i]->mxTran_Alien = Translate(alien[i]->_x, alien[i]->_y, 0.0f);
+				alien[i]->SetTRSMatrix(alien[i]->mxTran_Alien);
+				
+
+			}
+
+			else //沿用前面的Shader
+			{
+				alien[i] = new Middle_Alien;
+				alien[i]->SetShader(g_mxModelView, g_mxProjection, ShaderHandle);
+				alien[i]->_x = -1.0f + 0.7f * (float)(i - small_alien);
+				alien[i]->_y = 1.0f;
+				alien[i]->mxTran_Alien = Translate(alien[i]->_x, alien[i]->_y, 0.0f);
+				alien[i]->SetTRSMatrix(alien[i]->mxTran_Alien);
+
+			}
+
+			alien[i]->SetColor(0.0, 1.0, 0.0, 1.0); //設定為綠色
+
+
+		}
+
+
+		
 
 	}
 
@@ -204,10 +248,6 @@ void CreateGameObject() {
 			pGet_MainBullet_free->link = NULL;
 			pTail_MainBullet_free->link = pGet_MainBullet_free;
 			pTail_MainBullet_free = pGet_MainBullet_free;
-
-
-
-
 		}
 
 		Bullet_Total_MainBullet_free++;
@@ -298,12 +338,26 @@ void GL_Display(void)
 
 	//Draw Small Alien 
 	alien[0]->Draw();
-	for (int i = 1; i < small_alien; i++)
+	for (int i = 1; i < small_alien ; i++)
 		{
 			if(alien[i]->alife){
 				alien[i]->DrawW();
 			}
+		
 		}
+
+
+
+	//Draw Middle Alien 
+	alien[small_alien]->Draw();
+	for (int i = small_alien + 1; i < small_alien+ middle_alien; i++)
+	{
+		if (alien[i]->alife) {
+			alien[i]->DrawW();
+		}
+
+	}
+
 	
 
 	
@@ -320,7 +374,6 @@ void GL_Display(void)
 
 
 void CreateBullet_Main() { 
-
 
 	if (Bullet_Total_MainBullet_used == 0) {
 
@@ -573,8 +626,8 @@ void onFrameMove(float delta)
 			//檢查是否有Alien被子彈打到
 			for (int i = 0; i < small_alien; i++)
 			{
-				alien[i]->AutoCheckHurtDie(pGet_Move_bullet->bullet_main->_x, pGet_Move_bullet->bullet_main->_y , &pGet_Move_bullet->bullet_main->HurtAlien );
-
+				alien[i]->AutoCheckHurtDie(pGet_Move_bullet->bullet_main->_x, pGet_Move_bullet->bullet_main->_y , pGet_Move_bullet->bullet_main->MAX_X, pGet_Move_bullet->bullet_main->MAX_Y, &pGet_Move_bullet->bullet_main->HurtAlien );
+				
 			}
 
 			pGet_Move_bullet = pGet_Move_bullet->link;
@@ -588,6 +641,11 @@ void onFrameMove(float delta)
 		//更新Small Alien 位置
 		for (int i = 0; i < small_alien; i++)
 		{
+			//若alien 死亡則玩家家一分
+			if (alien[i]->alife == false) { //alien死亡
+				PlayerTotalPoint++; //玩家一分
+			}
+
 			alien[i]->AutomaticMotion();
 		}
 
@@ -615,6 +673,12 @@ void onFrameMove(float delta)
 		CheckBullet_SAlien();
 		
 		
+		//更新middle Alien 位置
+		for (int i = small_alien; i < small_alien + middle_alien; i++)
+		{
+			alien[i]->AutomaticMotion(mainrole->_x , mainrole->_y);
+		}
+
 
 		timer_onFrameMove = 0;
 	}
@@ -626,8 +690,16 @@ void onFrameMove(float delta)
 		mainrole->can_change_hurtMain = true; //可重新攻擊
 		mainrole->SetAlpha(1.0);
 		mainrole_ring->SetAlpha(1.0); 
+
 	}
 	
+
+
+	//若總分到達十分則放出中怪
+	if (PlayerTotalPoint == 10)
+	{
+		
+	}
 	
 	
 	GL_Display();

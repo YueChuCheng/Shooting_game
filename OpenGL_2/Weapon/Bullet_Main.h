@@ -33,8 +33,8 @@ public:
 	mat4 BulletTrans;
 
 
-	const float MAX_X = 0.1f; //程糴
-	const float MAX_Y = 0.3f; //程蔼翴
+	const float MAX_X = 0.05f; //程糴
+	const float MAX_Y = 0.2f; //程蔼翴
 
 
 
@@ -79,9 +79,6 @@ public:
 	Bullet_SAlien ();
 	~Bullet_SAlien ();
 	bool HurtMainRole = false;  //琌ゴいAlien
-
-
-	//void CreateBullet_SmallAlien();
 
 	void AutoTranslate_Bullet();
 private:
