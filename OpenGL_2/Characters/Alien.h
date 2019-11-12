@@ -41,6 +41,9 @@ public:
 	virtual void AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, float MAX_X, float MAX_Y, bool* HurtAlien) = 0;
 
 
+	float dis_x = 0; //相差多少寬
+	float dis_y = 0; //相差多少高
+
 
 
 	protected:
@@ -93,6 +96,9 @@ public:
 	 const double MAX_X = 0.2; //最長寬
 	 const double MAX_Y = 0.35; //最高點
 	
+	 //用於判斷現在為SAlien or MAlien
+	/* bool isSAlien = true;
+	 bool isMAlien = false;*/
 
 
 private:
@@ -129,8 +135,16 @@ public:
 	//自動檢查是否有受傷、死亡函式
 	void AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, float MAX_X, float MAX_Y, bool* HurtAlien);
 
+
+	const double MAX_X = 0.3; //最長寬
+	const double MAX_Y = 0.35; //最高點
+
+	
+
+
 private:
-	int Blood = 8;
+	const int Blood_original = 8;
+	int Blood = Blood_original;
 
 
 

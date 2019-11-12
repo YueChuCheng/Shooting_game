@@ -4,9 +4,9 @@ typedef Angel::vec4  color4;
 typedef Angel::vec4  point4;
 
 
-const int body_circle = 200;
-const int head_circle = 200;
-const int circle = 200;
+const int body_circle = 100;
+const int head_circle = 150;
+const int circle = 100;
 const int rectangle = 6;
 const int triangle = 6;
 const int Point_NUM = body_circle+ head_circle+ (circle*7)+ (rectangle*4) + triangle; // 2 faces, 2 triangles/face 

@@ -114,7 +114,7 @@ void Small_Alien::AutomaticMotion() {
 		if (_y < -2.0 ) { //若超過顯示範圍則重頭顯示
 		
 			if_first_alien = true;
-
+			Blood = Blood_original; //血量重新計算
 		}
 		
 	

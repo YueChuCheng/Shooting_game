@@ -93,14 +93,12 @@ void Middle_Alien::DrawW()
 
 void Middle_Alien::AutomaticMotion(GLfloat MainRole_x, GLfloat MainRole_y) {
 
-	float dis_x = 0; //相差多少寬
-	float dis_y = 0; //相差多少高
+	
 	
 	dis_x =MainRole_x  - _x;
 	dis_y =MainRole_y  - _y;
 
-	//printf("%f\n" , atan(dis_y / dis_x));
-
+	
 	mxRotate_Alien =  RotateZ(atan(dis_x /dis_y) * -50.0f);
 
 
@@ -108,6 +106,45 @@ void Middle_Alien::AutomaticMotion(GLfloat MainRole_x, GLfloat MainRole_y) {
 	mxRotate_Alien._m[1] *= (360.0 / 640.0) * (4.5 / 10.0);
 
 	SetTRSMatrix(mxTran_Alien * mxRotate_Alien );
+
+
+	if (if_first_alien) {
+
+		_x = (double)(rand() % 4000 - 2000.0) / 1000.0;
+		_y = (double)(rand() % 2000 + 2000.0) / 1000.0;
+		mxTran_Alien = Translate(_x, _y, 0.0);
+		SetTRSMatrix(mxTran_Alien * mxRotate_Alien);
+
+		if_first_alien = false;
+
+
+	}
+
+	else {
+		_y -= 0.0025f;
+		mxTran_Alien = Translate(_x, _y, 0.0);
+		SetTRSMatrix(mxTran_Alien * mxRotate_Alien);
+
+		if (_y < -2.0) { //若超過顯示範圍則重頭顯示
+
+			if_first_alien = true;
+			Blood = Blood_original; //血量重新計算
+
+		}
+
+
+	}
+
+	if (alife == false) //若此Alien已死亡
+	{
+		if_first_alien = true;
+		Blood = Blood_original; //血量重新計算
+		alife = true;//重生
+
+	}
+
+
+
 	
 };
 
@@ -118,5 +155,23 @@ void Middle_Alien::AutomaticFire(mat4 Alien_mxTran) {
 }
 
 void Middle_Alien::AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, float MAX_X, float MAX_Y, bool* HurtAlien) {
+	
 
+		if (_x - this->MAX_X <= Bullet_x - MAX_X && _x + this->MAX_X >= Bullet_x + MAX_X && _y + this->MAX_Y >= Bullet_y + MAX_Y && _y - this->MAX_Y <= Bullet_y - MAX_Y) { //判斷是否在中彈的範圍內
+
+			*HurtAlien = true; //設定該子彈有打到Alien
+			
+			Blood--;
+
+
+		}
+
+
+
+		if (Blood <= 0)
+		{
+			alife = false;
+		}
+
+	
 }

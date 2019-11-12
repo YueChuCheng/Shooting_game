@@ -36,7 +36,8 @@ public:
 	const float MAX_X = 0.05f; //最長寬
 	const float MAX_Y = 0.2f; //最高點
 
-
+	
+	
 
 	//自動移動物件
 	virtual void AutoTranslate_Bullet();
@@ -79,6 +80,24 @@ public:
 	Bullet_SAlien ();
 	~Bullet_SAlien ();
 	bool HurtMainRole = false;  //是否打中Alien
+
+	void AutoTranslate_Bullet();
+private:
+
+};
+
+
+
+class Bullet_MAlien :public Bullet_Main
+{
+public:
+	Bullet_MAlien();
+	~Bullet_MAlien();
+	bool HurtMainRole = false;  //是否打中Alien
+
+	mat4 _mxMainRoleRotate = 0.0f; //紀錄Main Role 選轉角度
+	float MainRoleDis_x = 0.0f; //移動x方向位移
+	float MainRoleDis_y = 0.0f; //移動y方向位移
 
 	void AutoTranslate_Bullet();
 private:
