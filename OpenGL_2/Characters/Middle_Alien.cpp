@@ -1,5 +1,5 @@
 #include "Alien.h"
-
+extern bool isBossOut;
 Middle_Alien::~Middle_Alien()
 {
 
@@ -26,14 +26,6 @@ Middle_Alien::Middle_Alien()
 
 
 
-
-	//校正比例 於跟隨Main Role 時一同做旋轉
-	/*for (int i = 0; i < Alien_Point_NUM; i++)
-	{
-		_Points[i].x = _Points[i].x * (4.5 / 10.0);
-		_Points[i].y = _Points[i].y * (360.0 / 640.0) * (4.5 / 10.0) ;
-
-	}*/
 
 
 	// Create and initialize a buffer object 
@@ -127,8 +119,19 @@ void Middle_Alien::AutomaticMotion(GLfloat MainRole_x, GLfloat MainRole_y) {
 
 		if (_y < -2.0) { //若超過顯示範圍則重頭顯示
 
-			if_first_alien = true;
-			Blood = Blood_original; //血量重新計算
+			if (!isBossOut)
+			{
+				if_first_alien = true;
+				Blood = Blood_original; //血量重新計算
+
+			}
+
+
+			else if (isBossOut)
+			{
+				if_first_alien = false;
+				alife = false;
+			}
 
 		}
 
@@ -137,9 +140,19 @@ void Middle_Alien::AutomaticMotion(GLfloat MainRole_x, GLfloat MainRole_y) {
 
 	if (alife == false) //若此Alien已死亡
 	{
-		if_first_alien = true;
-		Blood = Blood_original; //血量重新計算
-		alife = true;//重生
+		if (!isBossOut) {
+
+			if_first_alien = true;
+			Blood = Blood_original; //血量重新計算
+			alife = true;//重生
+
+		}
+
+		else if (isBossOut)
+		{
+			if_first_alien = false;
+			alife = false;
+		}
 
 	}
 

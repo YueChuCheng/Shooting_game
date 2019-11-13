@@ -1,5 +1,8 @@
 #include "Alien.h"
 
+extern bool isBossOut;
+
+
 Small_Alien::~Small_Alien()
 {
 
@@ -94,6 +97,7 @@ void Small_Alien::DrawW()
 
 void Small_Alien::AutomaticMotion() {
 
+
 	if (if_first_alien) {
 		
 		_x = (double)(rand() % 4000 - 2000.0) / 1000.0;
@@ -106,27 +110,53 @@ void Small_Alien::AutomaticMotion() {
 
 	}
 
+	
+
 	else {
 		_y -= 0.0025f;
 		mxTran_Alien = Translate(_x, _y, 0.0);
 		SetTRSMatrix(mxTran_Alien);
 
-		if (_y < -2.0 ) { //若超過顯示範圍則重頭顯示
+		if (_y < -2.0 ) { //若超過顯示範圍 且 大BOSS未出來則重頭顯示
 		
-			if_first_alien = true;
-			Blood = Blood_original; //血量重新計算
+			if (!isBossOut)
+			{
+				if_first_alien = true;
+				Blood = Blood_original; //血量重新計算
+
+			}
+			
+
+			else if (isBossOut)
+			{
+				if_first_alien = false;
+				alife = false;
+			}
+
 		}
 		
 	
 	}
 
-	if (alife==false) //若此Alien已死亡
+	if (alife==false ) //若此Alien已死亡 且 大BOSS未出來
 	{
-		if_first_alien = true;
-		Blood = Blood_original; //血量重新計算
-		alife = true;//重生
+		if(!isBossOut){
+		
+			if_first_alien = true;
+			Blood = Blood_original; //血量重新計算
+			alife = true;//重生
+
+		}
+		
+		else if (isBossOut)
+		{
+			if_first_alien = false;
+			alife = false;
+		}
 		
 	}
+
+	
 
 	 
 

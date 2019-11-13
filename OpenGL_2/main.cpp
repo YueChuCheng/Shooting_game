@@ -19,7 +19,7 @@
 
 //玩家總分
 int PlayerTotalPoint = 0;
-
+bool isBossOut = false; //第二Alien狀態
 
 
 // 必須在 glewInit(); 執行完後,在執行物件實體的取得
@@ -27,7 +27,7 @@ MainRole *mainrole;	// 宣告 指標物件，結束時記得釋放
 MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
 Cloud* cloud[6];
 Bullet_Main* bullet_main;
-short small_alien = 4; //螢幕上small alien 出現的最大數量
+short small_alien = 3; //螢幕上small alien 出現的最大數量
 short middle_alien = 0; //螢幕上middle alien 出現的最大數量
 short SAlien_space = 4;  // SAlien 空間個數
 short MAlien_space = 2;  // MAlien 空間個數
@@ -793,7 +793,7 @@ void onFrameMove(float delta)
 	timer_onFrameMove += delta;
 	timer_canHurtMainRole += delta;
 
-	if (timer_onFrameMove > 1.0 / 1000.0) { //每1/1000秒更新一次
+	if (timer_onFrameMove > 1.0 / 1050.0) { //每1/1000秒更新一次
 		
 	
 		
@@ -826,7 +826,7 @@ void onFrameMove(float delta)
 		//檢查是否有子彈超過有效區
 		CheckBullet();
 
-		//更新Small Alien 位置
+		//更新SAlien 位置
 		for (int i = 0; i < small_alien; i++)
 		{
 			//若alien 死亡則玩家家一分
@@ -880,7 +880,14 @@ void onFrameMove(float delta)
 		//更新middle Alien 位置
 		for (int i = SAlien_space; i < SAlien_space + middle_alien; i++)
 		{
+
+			//若alien 死亡則玩家家一分
+			if (alien[i]->alife == false) { //alien死亡
+				PlayerTotalPoint++; //玩家一分
+			}
+
 			alien[i]->AutomaticMotion(mainrole->_x , mainrole->_y);
+			
 		}
 
 
@@ -902,10 +909,18 @@ void onFrameMove(float delta)
 	//若總分到達十分則放出中怪
 	if (PlayerTotalPoint == 3)
 	{
-		small_alien = 2; //螢幕上small alien 出現的最大數量
-		middle_alien = 2; //螢幕上middle alien 出現的最大數量
+		middle_alien = 1; //螢幕上middle alien 出現的最大數量
 		
 	}
+
+	//若總分到達十分則放出BOSS
+	else if (PlayerTotalPoint == 5)
+	{
+		isBossOut = true; //開啟第二個模式 test
+
+
+	}
+
 	
 	
 	GL_Display();
@@ -961,6 +976,7 @@ void onAlienBulletLaunch(float delta) {
 
 	if (timer_AlienBulletLaunch >= 1.0f && Bullet_Total_Alien_free >0) { //每隔一秒發射一顆子彈
 	
+		
 		
 		for (int i = 0; i < SAlien_space + middle_alien; i++) //每個小怪都建置一個子彈
 		{
