@@ -28,7 +28,7 @@ Timer callback_Timer;
 
 extern void onFrameMove(float delta);
 extern void onBulletLaunch(float delta);
-extern void onSAlienBulletLaunch(float delta);
+extern void onAlienBulletLaunch(float delta);
 void DisplayFSP(int ifps);
 void DrawText(float x, float y, char *string);
 
@@ -56,7 +56,7 @@ void IdleProcess()
 		g_fprev = ckNow; // 記錄這次的時間，當成前一次的時間
 		onFrameMove(delta);
 		onBulletLaunch(delta);
-		onSAlienBulletLaunch(delta);
+		onAlienBulletLaunch(delta);
 		
 				
 	}

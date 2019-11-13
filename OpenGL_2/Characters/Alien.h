@@ -103,7 +103,7 @@ public:
 
 private:
 
-	const int Blood_original = 4;
+	const int Blood_original = 2;
 	int Blood = Blood_original;
 	
 
@@ -143,7 +143,7 @@ public:
 
 
 private:
-	const int Blood_original = 8;
+	const int Blood_original = 4;
 	int Blood = Blood_original;
 
 

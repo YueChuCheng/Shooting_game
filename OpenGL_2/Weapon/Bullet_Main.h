@@ -17,17 +17,16 @@ public:
 	~Bullet_Main();
 	GLfloat _x = 0.0f;
 	GLfloat _y = 0.0f;
-	int Bullet_UseSpace; //計算使用哪個陣列
 	GLfloat _scale = 1.0f;
 	GLfloat _speed = 0.0f;
-	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
+	virtual void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
 	void SetViewMatrix(mat4& mat);
 	void SetProjectionMatrix(mat4& mat);
-	void SetTRSMatrix(mat4& mat);
+	virtual void SetTRSMatrix(mat4& mat);
 	void SetColor(GLfloat vColor[4]); // Single color
 	void SetVtxColors(GLfloat vLFColor[], GLfloat vLRColor[], GLfloat vTRColor[], GLfloat vTLColor[]); // four Vertices' Color
-	void Draw();
-	void DrawW();
+	virtual void Draw();
+	//virtual void DrawW() = 0;
 	GLuint GetShaderHandle() { return _Program; }
 
 	mat4 BulletTrans;
@@ -44,7 +43,7 @@ public:
 
 	bool HurtAlien =false ;  //是否打中Alien
 
-protected:
+private:
 	vec4 _Points[Bullet_Main_Point_NUM];
 	vec4 _Colors[Bullet_Main_Point_NUM];
 
@@ -60,11 +59,15 @@ protected:
 	mat4 _mxView, _mxProjection;
 	mat4 _mxMVFinal, _mxTRS;
 
+
+	void CreateBufferObject();
+
+protected:
 	// 紀錄是否有矩陣的更新
 	bool  _bUpdateMV;
 	bool  _bUpdateProj;
 
-	void CreateBufferObject();
+	
 };
 
 
@@ -72,7 +75,7 @@ protected:
 
 
 
-
+const int Bullet_SAlien_Point_NUM = 100;
 
 class Bullet_SAlien :public Bullet_Main
 {
@@ -82,11 +85,39 @@ public:
 	bool HurtMainRole = false;  //是否打中Alien
 
 	void AutoTranslate_Bullet();
+	void Draw();
+	void DrawW();
+	GLuint GetShaderHandle() { return _Program; }
+
+	void SetTRSMatrix(mat4& mat);
+
+	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
+
 private:
+	vec4 _Points[Bullet_SAlien_Point_NUM];
+	vec4 _Colors[Bullet_SAlien_Point_NUM];
+
+	// VAO
+	GLuint _VAO;
+	// VBO
+	GLuint _VBO;
+	//  for Shader
+	GLuint _Program;
+	// Vertex Position Attribute
+	GLuint _ModelView, _Projection;
+	// Matrix 
+	mat4 _mxView, _mxProjection;
+	mat4 _mxMVFinal, _mxTRS;
+
+	// 紀錄是否有矩陣的更新
+	/*bool  _bUpdateMV;
+	bool  _bUpdateProj;*/
+
+	void CreateBufferObject();
 
 };
 
-
+const int Bullet_MAlien_Point_NUM = 100;
 
 class Bullet_MAlien :public Bullet_Main
 {
@@ -95,12 +126,37 @@ public:
 	~Bullet_MAlien();
 	bool HurtMainRole = false;  //是否打中Alien
 
-	mat4 _mxMainRoleRotate = 0.0f; //紀錄Main Role 選轉角度
 	float MainRoleDis_x = 0.0f; //移動x方向位移
 	float MainRoleDis_y = 0.0f; //移動y方向位移
 
 	void AutoTranslate_Bullet();
+	void Draw();
+	void DrawW();
+	void SetTRSMatrix(mat4& mat);
+	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
+
+	GLuint GetShaderHandle() { return _Program; }
 private:
+	vec4 _Points[Bullet_MAlien_Point_NUM];
+	vec4 _Colors[Bullet_SAlien_Point_NUM];
+
+	// VAO
+	GLuint _VAO;
+	// VBO
+	GLuint _VBO;
+	//  for Shader
+	GLuint _Program;
+	// Vertex Position Attribute
+	GLuint _ModelView, _Projection;
+	// Matrix 
+	mat4 _mxView, _mxProjection;
+	mat4 _mxMVFinal, _mxTRS;
+
+	// 紀錄是否有矩陣的更新
+	/*bool  _bUpdateMV;
+	bool  _bUpdateProj;*/
+
+	void CreateBufferObject();
 
 };
 

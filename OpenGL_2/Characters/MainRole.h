@@ -61,7 +61,7 @@ private:
 
 	
 	const float MAX_X = 0.3f; //最長寬
-	const float MAX_Y = 0.6f; //最高點
+	const float MAX_Y = 0.3f; //最高點
 
 	void CreateBufferObject();
 
