@@ -16,6 +16,17 @@
 #define SCREENWIDTH_HALF (SCREENWIDTH/2.0)
 #define SCREENHEIGHT_HALF (SCREENHEIGHT/2.0)
 
+//BOSS 子彈發射座標
+ int boss_Mode1BulletCount = 0;
+float boss_BulletCoordinate[3][2] = {
+
+	0.75f , -0.6f,
+   -0.75f , -0.6f,
+    0.0f  , -0.2f
+
+};
+
+
 
 //玩家總分
 int PlayerTotalPoint = 0;
@@ -28,10 +39,13 @@ MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
 Cloud* cloud[6];
 Bullet_Main* bullet_main;
 short small_alien = 3; //螢幕上small alien 出現的最大數量
-short middle_alien = 0; //螢幕上middle alien 出現的最大數量
+short middle_alien = 1; //螢幕上middle alien 出現的最大數量
+short BOSS_alien = 0; //螢幕上BOSS alien 出現的最大數量
 short SAlien_space = 4;  // SAlien 空間個數
 short MAlien_space = 2;  // MAlien 空間個數
-const short all_alien = 6; /* small_alien + middle_alien*/
+short BAlien_space = 1;  // BOSS 空間個數
+
+const short all_alien = 7; /* small_alien + middle_alien + BOSS_alien*/
 
 Alien* alien[all_alien];
 
@@ -80,8 +94,9 @@ typedef struct Bullet_Node_struct_SAlien {
 	Bullet_SAlien* bullet_main;
 	Bullet_MAlien* bullet_MAlien;
 	// 用於判斷現在為SAlien or MAlien
-	bool isSAlien_bullet = true;
+	bool isSAlien_bullet = false;
 	bool isMAlien_bullet = false;
+	bool isBAlien_bullet = false;
 	struct Bullet_Node_struct_SAlien* link;
 
 } Bullet_NODE_SAlien, * Bullet_PNODE_SAlien;
@@ -159,10 +174,6 @@ void CreateGameObject() {
 	}
 
 	
-	//mat4 mxSAlien;
-
-	
-
 	for (int i = 0; i < all_alien; i++)
 	{
 		if(i < SAlien_space){ //設定small alien 空間
@@ -204,8 +215,18 @@ void CreateGameObject() {
 
 			}
 
-			alien[i]->SetColor(0.0, 1.0, 0.0, 1.0); //設定為綠色
+			
 
+		}
+
+
+		else if (i < SAlien_space + MAlien_space + BAlien_space)//設定BOSS alien
+		{
+
+				alien[i] = new BOSS_Alien;
+				alien[i]->SetShader(g_mxModelView, g_mxProjection);
+				alien[i]->_y = 1.5f; 
+				alien[i]->SetTRSMatrix(Translate(alien[i]->_x, alien[i]->_y,0.0f));
 
 		}
 
@@ -400,10 +421,20 @@ void GL_Display(void)
 		alien[SAlien_space]->Draw();
 
 	}
+
 	for (int i = SAlien_space + 1; i < SAlien_space + middle_alien; i++)
 	{
 		if (alien[i]->alife) {
 			alien[i]->DrawW();
+		}
+
+	}
+
+
+	for (int i = SAlien_space + MAlien_space; i < SAlien_space + MAlien_space + BOSS_alien; i++)
+	{
+		if (alien[i]->alife) {
+			alien[i]->Draw();
 		}
 
 	}
@@ -474,6 +505,62 @@ void CreateBullet_Alien(Alien *alien , char what_alien ) {
 	
 	switch (what_alien)
 	{
+	case 'B': //若為BOSS Alien 發射的子彈
+		if (Bullet_Total_Alien_used == 0) { //第一個被使用的子彈
+
+			pHead_AlienBullet_used = pHead_AlienBullet_free;  //從頭拿資源
+			pHead_AlienBullet_free = pHead_AlienBullet_free->link;  //將 free 的頭改成下一個節點
+
+
+			pHead_AlienBullet_used->bullet_main->_x = alien->_x + boss_BulletCoordinate[boss_Mode1BulletCount][0];
+			pHead_AlienBullet_used->bullet_main->_y = alien->_y + boss_BulletCoordinate[boss_Mode1BulletCount][1];
+			pHead_AlienBullet_used->isSAlien_bullet = true; //設定子彈為B
+			pHead_AlienBullet_used->isMAlien_bullet = false; //設定子彈為B
+			pHead_AlienBullet_used->isBAlien_bullet = true; //設定子彈為B
+
+
+
+			pHead_AlienBullet_used->bullet_main->SetTRSMatrix( Translate(pHead_AlienBullet_used->bullet_main->_x, pHead_AlienBullet_used->bullet_main->_y, 0.0) );
+
+
+			pHead_AlienBullet_used->link = NULL; //設定結尾為NULL
+			pTail_AlienBullet_used = pHead_AlienBullet_used; //設定尾巴為PHead
+
+
+			Bullet_Total_Alien_used++; //已用空間數量加一
+			Bullet_Total_Alien_free--;//未用空間數量減一
+
+
+
+		}
+
+
+		else if ((Bullet_Total_Alien_used < SAlienBullet_NUM + MAlienBullet_NUM))
+		{
+			pGet_AlienBullet_used = pHead_AlienBullet_free; //從頭拿資源
+			pHead_AlienBullet_free = pHead_AlienBullet_free->link;  //將 free 的頭改成下一個節點
+
+			pGet_AlienBullet_used->bullet_main->_x = alien->_x + boss_BulletCoordinate[boss_Mode1BulletCount][0];
+			pGet_AlienBullet_used->bullet_main->_y = alien->_y + boss_BulletCoordinate[boss_Mode1BulletCount][1];
+			pGet_AlienBullet_used->isSAlien_bullet = true; //設定子彈為B
+			pGet_AlienBullet_used->isMAlien_bullet = false; //設定子彈為B
+			pGet_AlienBullet_used->isBAlien_bullet = true; //設定子彈為B
+
+
+
+			pGet_AlienBullet_used->bullet_main->SetTRSMatrix( Translate(pGet_AlienBullet_used->bullet_main->_x, pGet_AlienBullet_used->bullet_main->_y, 0.0));
+
+			pTail_AlienBullet_used->link = pGet_AlienBullet_used; //結尾link指向新取得的頭
+			pGet_AlienBullet_used->link = NULL;//設定結尾為NULL
+			pTail_AlienBullet_used = pGet_AlienBullet_used;//設定尾巴為PGet
+
+			Bullet_Total_Alien_used++; //已用空間數量加一
+			Bullet_Total_Alien_free--;//未用空間數量減一
+
+		}
+
+
+		break;
 	case 'S'://若為Small Alien 發射的子彈
 
 		if (Bullet_Total_Alien_used == 0) { //第一個被使用的子彈
@@ -486,7 +573,7 @@ void CreateBullet_Alien(Alien *alien , char what_alien ) {
 			pHead_AlienBullet_used->bullet_main->_y = alien->_y;
 			pHead_AlienBullet_used->isSAlien_bullet = true; //設定子彈為S
 			pHead_AlienBullet_used->isMAlien_bullet = false; //設定子彈為S
-
+			pHead_AlienBullet_used->isBAlien_bullet = false; //設定子彈為B
 			
 
 
@@ -514,7 +601,7 @@ void CreateBullet_Alien(Alien *alien , char what_alien ) {
 			pGet_AlienBullet_used->bullet_main->_y = alien->_y;
 			pGet_AlienBullet_used->isSAlien_bullet = true; //設定子彈為S
 			pGet_AlienBullet_used->isMAlien_bullet = false; //設定子彈為S
-
+			pGet_AlienBullet_used->isBAlien_bullet = false; //設定子彈為B
 
 			
 
@@ -550,7 +637,7 @@ void CreateBullet_Alien(Alien *alien , char what_alien ) {
 
 			pHead_AlienBullet_used->isSAlien_bullet = false; //設定子彈為M
 			pHead_AlienBullet_used->isMAlien_bullet = true; //設定子彈為M
-
+			pHead_AlienBullet_used->isBAlien_bullet = false; //設定子彈為B
 			
 
 			pHead_AlienBullet_used->bullet_MAlien->SetTRSMatrix(Translate(pHead_AlienBullet_used->bullet_MAlien->_x, pHead_AlienBullet_used->bullet_MAlien->_y, 0.0));
@@ -581,7 +668,7 @@ void CreateBullet_Alien(Alien *alien , char what_alien ) {
 
 			pGet_AlienBullet_used->isSAlien_bullet = false; //設定子彈為M
 			pGet_AlienBullet_used->isMAlien_bullet = true; //設定子彈為M
-
+			pGet_AlienBullet_used->isBAlien_bullet = false; //設定子彈為B
 
 			
 			pGet_AlienBullet_used->bullet_MAlien->SetTRSMatrix(Translate(pGet_AlienBullet_used->bullet_MAlien->_x, pGet_AlienBullet_used->bullet_MAlien->_y, 0.0));
@@ -793,7 +880,7 @@ void onFrameMove(float delta)
 	timer_onFrameMove += delta;
 	timer_canHurtMainRole += delta;
 
-	if (timer_onFrameMove > 1.0 / 1050.0) { //每1/1000秒更新一次
+	if (timer_onFrameMove > 1.0 / 1500.0) { //每1/1000秒更新一次
 		
 	
 		
@@ -914,12 +1001,12 @@ void onFrameMove(float delta)
 	}
 
 	//若總分到達十分則放出BOSS
-	else if (PlayerTotalPoint == 5)
-	{
-		isBossOut = true; //開啟第二個模式 test
+	//else if (PlayerTotalPoint == 5)
+	//{
+	//	isBossOut = true; //開啟第二個模式 test
 
 
-	}
+	//}
 
 	
 	
@@ -997,6 +1084,17 @@ void onAlienBulletLaunch(float delta) {
 			}
 			
 		}
+
+		//BOSS三重子彈
+		for (boss_Mode1BulletCount = 0; boss_Mode1BulletCount < 3 && BOSS_alien > 0; boss_Mode1BulletCount++) //Boss存在則發射子彈
+		{
+			CreateBullet_Alien(alien[SAlien_space + MAlien_space] , 'B');
+		}
+		
+
+
+
+
 
 		timer_AlienBulletLaunch = 0.0f;
 	

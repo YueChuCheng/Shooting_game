@@ -23,7 +23,7 @@ Small_Alien::Small_Alien()
 
 	for (int i = 0; i < Alien_Point_NUM; i++)
 	{
-		_Colors[i] = vec4(1.0, 0.0, 0.0, alphea);
+		_Colors[i] = vec4(1.0, 0.0, 0.0, 1.0);
 	}
 	
 
@@ -188,4 +188,52 @@ void Small_Alien::AutoCheckHurtDie(GLfloat Bullet_x , GLfloat Bullet_y, float MA
 			alife = false;
 		}
 
+}
+
+
+void Small_Alien::SetShader(mat4& mxView, mat4& mxProjection, GLuint uiShaderHandle)
+{
+	// Load shaders and use the resulting shader program
+	if (uiShaderHandle == MAX_UNSIGNED_INT) _Program = InitShader("vsMainRole.glsl", "fsMainRole.glsl");
+	else _Program = uiShaderHandle;
+
+	// set up vertex arrays
+	GLuint vPosition = glGetAttribLocation(_Program, "vPosition");
+	glEnableVertexAttribArray(vPosition);
+	glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+
+	GLuint vColor = glGetAttribLocation(_Program, "vColor");
+	glEnableVertexAttribArray(vColor);
+	glVertexAttribPointer(vColor, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(_Points)));
+
+	_ModelView = glGetUniformLocation(_Program, "ModelView");
+	_mxView = mxView;
+	glUniformMatrix4fv(_ModelView, 1, GL_TRUE, _mxView);
+
+	_Projection = glGetUniformLocation(_Program, "Projection");
+	_mxProjection = mxProjection;
+	glUniformMatrix4fv(_Projection, 1, GL_TRUE, _mxProjection);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Small_Alien::SetTRSMatrix(mat4& mat)
+{
+	_mxTRS = mat;
+	_bUpdateMV = true;
+}
+
+
+void Small_Alien::CreateBufferObject()
+{
+	glGenVertexArrays(1, &_VAO);
+	glBindVertexArray(_VAO);
+
+	// Create and initialize a buffer object
+
+	glGenBuffers(1, &_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(_Points) + sizeof(_Colors), NULL, GL_STATIC_DRAW);
+
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(_Points), _Points);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(_Points), sizeof(_Colors), _Colors);
 }

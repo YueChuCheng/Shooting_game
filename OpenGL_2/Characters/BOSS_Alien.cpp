@@ -10,28 +10,63 @@ BOSS_Alien::~BOSS_Alien()
 BOSS_Alien::BOSS_Alien()
 {
 
-	_Points[0] = vec4(-0.5, 0.5, 0.0, 1.0);
-	_Points[1] = vec4(-0.5, -0.5, 0.0, 1.0);
-	_Points[2] = vec4(0.5, -0.5, 0.0, 1.0);
-	_Points[3] = vec4(-0.5, 0.5, 0.0, 1.0);
-	_Points[4] = vec4(0.5, -0.5, 0.0, 1.0);
-	_Points[5] = vec4(0.5, 0.5, 0.0, 1.0);
+	_Points[0] = vec4(-0.75, 0.4, 0.0, 1.0);
+	_Points[1] = vec4(-0.75, -0.4, 0.0, 1.0);
+	_Points[2] = vec4(0.75, -0.4, 0.0, 1.0);
+	_Points[3] = vec4(-0.75, 0.4, 0.0, 1.0);
+	_Points[4] = vec4(0.75, -0.4, 0.0, 1.0);
+	_Points[5] = vec4(0.75, 0.4, 0.0, 1.0);
 
 
-	for (int i = 0; i < Alien_Point_NUM; i++)
+	_Points[rectangle_BAlien+0] = vec4(-0.9, 0.0, 0.0, 1.0);
+	_Points[rectangle_BAlien+1] = vec4(-0.9, -0.8, 0.0, 1.0);
+	_Points[rectangle_BAlien+2] = vec4(-0.6, -0.8, 0.0, 1.0);
+	_Points[rectangle_BAlien+3] = vec4(-0.9, 0.0, 0.0, 1.0);
+	_Points[rectangle_BAlien+4] = vec4(-0.6, -0.8, 0.0, 1.0);
+	_Points[rectangle_BAlien+5] = vec4(-0.6, 0.0, 0.0, 1.0);
+
+	_Points[(rectangle_BAlien * 2) + 0] = vec4(0.9, 0.0, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 2) + 1] = vec4(0.9, -0.8, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 2) + 2] = vec4(0.6, -0.8, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 2) + 3] = vec4(0.9, 0.0, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 2) + 4] = vec4(0.6, -0.8, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 2) + 5] = vec4(0.6, 0.0, 0.0, 1.0);
+
+	//circle
+	/*for (int i = 0; i < circle_BAlien; i++)
 	{
-		_Colors[i] = vec4(1.0, 0.0, 0.0, 1.0);
+		
+		_Points[(rectangle_BAlien * 3) + i] = vec4(0.2f * cosf(2.0f * M_PI * i / circle_BAlien) - 0.0f, 0.2f * sinf(2.0f * M_PI * i / circle_BAlien) - 0.4f, 0.0f, 1.0f);
+	}*/
+
+
+
+	//color
+	for (int i = 0; i < rectangle_BAlien; i++)
+	{
+		_Colors[i] = vec4(0.0, 0.0, 1.0, 1.0);
+	}
+
+
+	for (int i = rectangle_BAlien; i < rectangle_BAlien * 3; i++)
+	{
+		_Colors[i] = vec4(1.0, 1.0, 1.0, 1.0);
+	}
+
+
+	for (int i = 0; i < circle_BAlien; i++)
+	{
+		_Colors[(rectangle_BAlien * 3)  + i] = vec4(1.0, 0.0, 0.0, 1.0);
 	}
 
 
 
 
-
 	//®Õ¥¿¤ñ¨Ò
-	for (int i = 0; i < Alien_Point_NUM; i++)
+	for (int i = 0; i < BAlien_Point_NUM; i++)
 	{
-		_Points[i].x = _Points[i].x * (6.5 / 10.0);
-		_Points[i].y = _Points[i].y * (360.0 / 640.0) * (6.5 / 10.0) -1.0f ;
+		
+		_Points[i].y = _Points[i].y * (360.0 / 640.0) ;
 
 	}
 
@@ -62,7 +97,10 @@ void BOSS_Alien::Draw()
 	}*/
 
 
-	glDrawArrays(GL_TRIANGLES, 0, Alien_Point_NUM);
+	glDrawArrays(GL_TRIANGLES, 0, rectangle_BAlien);
+	glDrawArrays(GL_TRIANGLES, rectangle_BAlien, rectangle_BAlien * 2);
+	glDrawArrays(GL_TRIANGLES, rectangle_BAlien * 2, rectangle_BAlien * 3);
+	glDrawArrays(GL_TRIANGLE_FAN, rectangle_BAlien * 3, circle_BAlien);
 
 }
 
@@ -87,7 +125,10 @@ void BOSS_Alien::DrawW()
 		glUniformMatrix4fv(_Projection, 1, GL_TRUE, _mxProjection);
 		_bUpdateProj = false;
 	}
-	glDrawArrays(GL_TRIANGLES, 0, Alien_Point_NUM);
+	glDrawArrays(GL_TRIANGLES, 0, rectangle_BAlien);
+	glDrawArrays(GL_TRIANGLES, rectangle_BAlien, rectangle_BAlien * 2);
+	glDrawArrays(GL_TRIANGLES, rectangle_BAlien * 2, rectangle_BAlien * 3);
+	glDrawArrays(GL_TRIANGLE_FAN, rectangle_BAlien * 3, circle_BAlien);
 }
 
 
@@ -100,6 +141,55 @@ void BOSS_Alien::AutomaticFire(mat4 Alien_mxTran) {
 
 }
 
-void BOSS_Alien::AutoCheckHurtDie() {
+void BOSS_Alien::AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, float MAX_X, float MAX_Y, bool* HurtAlien) {
 
+}
+
+
+void BOSS_Alien::SetShader(mat4& mxView, mat4& mxProjection, GLuint uiShaderHandle)
+{
+	// Load shaders and use the resulting shader program
+	if (uiShaderHandle == MAX_UNSIGNED_INT) _Program = InitShader("vsMainRole.glsl", "fsMainRole.glsl");
+	else _Program = uiShaderHandle;
+
+	// set up vertex arrays
+	GLuint vPosition = glGetAttribLocation(_Program, "vPosition");
+	glEnableVertexAttribArray(vPosition);
+	glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+
+	GLuint vColor = glGetAttribLocation(_Program, "vColor");
+	glEnableVertexAttribArray(vColor);
+	glVertexAttribPointer(vColor, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(_Points)));
+
+	_ModelView = glGetUniformLocation(_Program, "ModelView");
+	_mxView = mxView;
+	glUniformMatrix4fv(_ModelView, 1, GL_TRUE, _mxView);
+
+	_Projection = glGetUniformLocation(_Program, "Projection");
+	_mxProjection = mxProjection;
+	glUniformMatrix4fv(_Projection, 1, GL_TRUE, _mxProjection);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+
+void BOSS_Alien::SetTRSMatrix(mat4& mat)
+{
+	_mxTRS = mat;
+	_bUpdateMV = true;
+}
+
+
+void BOSS_Alien::CreateBufferObject()
+{
+	glGenVertexArrays(1, &_VAO);
+	glBindVertexArray(_VAO);
+
+	// Create and initialize a buffer object
+
+	glGenBuffers(1, &_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(_Points) + sizeof(_Colors), NULL, GL_STATIC_DRAW);
+
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(_Points), _Points);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(_Points), sizeof(_Colors), _Colors);
 }

@@ -16,16 +16,16 @@ public:
 	bool alife = true; //一開始為活著的狀態
 	float alphea = 1.0;
 
-	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
-	GLuint GetShaderHandle() { return _Program; }
+	virtual void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
+	virtual GLuint GetShaderHandle() { return _Program; }
 	void SetViewMatrix(mat4& mat);
 	void SetProjectionMatrix(mat4& mat);
-	void SetTRSMatrix(mat4& mat);
+	virtual void SetTRSMatrix(mat4& mat);
 	void SetColor(GLfloat vColorx, GLfloat vColory, GLfloat vColorz, GLfloat vColorw); // Single color
 	void SetVtxColors(GLfloat vLFColor[], GLfloat vLRColor[], GLfloat vTRColor[], GLfloat vTLColor[]); // four Vertices' Color
 
-	virtual void Draw() = 0; //宣告為虛擬類別，於各自類別中設計
-	virtual void DrawW() = 0;//宣告為虛擬類別，於各自類別中設計
+	virtual virtual void Draw() = 0; //宣告為虛擬類別，於各自類別中設計
+	virtual virtual void DrawW() = 0;//宣告為虛擬類別，於各自類別中設計
 
 	//移動矩陣
 	mat4 mxTran_Alien;
@@ -46,7 +46,7 @@ public:
 
 
 
-	protected:
+	private:
 
 	vec4 _Points[Alien_Point_NUM];
 	vec4 _Colors[Alien_Point_NUM];
@@ -63,14 +63,16 @@ public:
 	mat4 _mxView, _mxProjection;
 	mat4 _mxMVFinal, _mxTRS;
 
-	// 紀錄是否有矩陣的更新
-	bool  _bUpdateMV;
-	bool  _bUpdateProj;
 
-
-	bool if_first_alien = true; //第一次發出Alien
 
 	void CreateBufferObject();
+
+	protected:
+		// 紀錄是否有矩陣的更新
+		bool  _bUpdateMV;
+		bool  _bUpdateProj;
+		bool if_first_alien = true; //第一次發出Alien
+		
 };
 
 
@@ -81,6 +83,9 @@ class Small_Alien : public Alien
 public:
 	Small_Alien() ;
 	~Small_Alien();
+	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
+	virtual void SetTRSMatrix(mat4& mat);
+	GLuint GetShaderHandle() { return _Program; }
 	void Draw();
 
 	void DrawW();
@@ -96,12 +101,32 @@ public:
 	 const double MAX_X = 0.2; //最長寬
 	 const double MAX_Y = 0.35; //最高點
 	
-	 //用於判斷現在為SAlien or MAlien
-	/* bool isSAlien = true;
-	 bool isMAlien = false;*/
+	 
 
 
 private:
+
+
+	vec4 _Points[Alien_Point_NUM];
+	vec4 _Colors[Alien_Point_NUM];
+
+	// VAO
+	GLuint _VAO;
+	// VBO
+	GLuint _VBO;
+	//  for Shader
+	GLuint _Program;
+	// Vertex Position Attribute
+	GLuint _ModelView, _Projection;
+	// Matrix 
+	mat4 _mxView, _mxProjection;
+	mat4 _mxMVFinal, _mxTRS;
+
+
+
+	void CreateBufferObject();
+
+
 
 	const int Blood_original = 2;
 	int Blood = Blood_original;
@@ -123,6 +148,9 @@ class Middle_Alien : public Alien
 public:
 	Middle_Alien();
 	~Middle_Alien();
+	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
+	virtual void SetTRSMatrix(mat4& mat);
+	GLuint GetShaderHandle() { return _Program; }
 	void Draw();
 
 	void DrawW();
@@ -143,6 +171,31 @@ public:
 
 
 private:
+
+
+
+
+	vec4 _Points[Alien_Point_NUM];
+	vec4 _Colors[Alien_Point_NUM];
+
+	// VAO
+	GLuint _VAO;
+	// VBO
+	GLuint _VBO;
+	//  for Shader
+	GLuint _Program;
+	// Vertex Position Attribute
+	GLuint _ModelView, _Projection;
+	// Matrix 
+	mat4 _mxView, _mxProjection;
+	mat4 _mxMVFinal, _mxTRS;
+
+
+
+	void CreateBufferObject();
+
+
+
 	const int Blood_original = 4;
 	int Blood = Blood_original;
 
@@ -152,12 +205,20 @@ private:
 
 
 
+const int rectangle_BAlien = 6;
+const int circle_BAlien = 100;
+
+const int BAlien_Point_NUM = (rectangle_BAlien * 3) + circle_BAlien; //最大點子總數
+
 //BOSS_Alien 
 class BOSS_Alien : public Alien
 {
 public:
 	BOSS_Alien();
 	~BOSS_Alien();
+	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
+	virtual void SetTRSMatrix(mat4& mat);
+	GLuint GetShaderHandle() { return _Program; }
 	void Draw();
 
 	void DrawW();
@@ -168,18 +229,39 @@ public:
 	void AutomaticFire(mat4 Alien_mxTran);
 
 	//自動檢查是否有受傷、死亡函式
-	void AutoCheckHurtDie();
+	void AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, float MAX_X, float MAX_Y, bool* HurtAlien);
+
 
 private:
+
+
+
+	vec4 _Points[BAlien_Point_NUM];
+	vec4 _Colors[BAlien_Point_NUM];
+
+	// VAO
+	GLuint _VAO;
+	// VBO
+	GLuint _VBO;
+	//  for Shader
+	GLuint _Program;
+	// Vertex Position Attribute
+	GLuint _ModelView, _Projection;
+	// Matrix 
+	mat4 _mxView, _mxProjection;
+	mat4 _mxMVFinal, _mxTRS;
+
+
+
+	void CreateBufferObject();
+
+
+
 	int Blood = 12;
 
 
 
 };
 
-
-
-
-//small Alien 子彈設定
 
 

@@ -109,9 +109,6 @@ private:
 	mat4 _mxView, _mxProjection;
 	mat4 _mxMVFinal, _mxTRS;
 
-	// 紀錄是否有矩陣的更新
-	/*bool  _bUpdateMV;
-	bool  _bUpdateProj;*/
 
 	void CreateBufferObject();
 
@@ -152,9 +149,6 @@ private:
 	mat4 _mxView, _mxProjection;
 	mat4 _mxMVFinal, _mxTRS;
 
-	// 紀錄是否有矩陣的更新
-	/*bool  _bUpdateMV;
-	bool  _bUpdateProj;*/
 
 	void CreateBufferObject();
 
