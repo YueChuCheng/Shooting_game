@@ -75,6 +75,9 @@
     <ClCompile Include="Weapon\Bullet_MAlien.cpp">
       <Filter>Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="Weapon\Bullet_BAlien.cpp">
+      <Filter>Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Angel.h">

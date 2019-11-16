@@ -17,14 +17,23 @@
 #define SCREENHEIGHT_HALF (SCREENHEIGHT/2.0)
 
 //BOSS 子彈發射座標
- int boss_Mode1BulletCount = 0;
+enum Mode
+{
+	None =0, One , Two,Three
+};
+ int boss_Mode1BulletNUM = 0;
+ int boss_Mode3BulletNUM = 0;
+ short BOSSMode = One;
 float boss_BulletCoordinate[3][2] = {
 
-	0.75f , -0.6f,
-   -0.75f , -0.6f,
+	0.75f , -0.5f,
+   -0.75f , -0.5f,
     0.0f  , -0.2f
 
 };
+const short boss_Mode2BulletCount = 4;
+
+Bullet_BAlien *Bmode2_bullet[boss_Mode2BulletCount]; //BOSS第二模式攻擊子彈
 
 
 
@@ -38,9 +47,9 @@ MainRole *mainrole;	// 宣告 指標物件，結束時記得釋放
 MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
 Cloud* cloud[6];
 Bullet_Main* bullet_main;
-short small_alien = 3; //螢幕上small alien 出現的最大數量
-short middle_alien = 1; //螢幕上middle alien 出現的最大數量
-short BOSS_alien = 0; //螢幕上BOSS alien 出現的最大數量
+short small_alien = 0; //螢幕上small alien 出現的最大數量
+short middle_alien = 0; //螢幕上middle alien 出現的最大數量
+short BOSS_alien = 1; //螢幕上BOSS alien 出現的最大數量
 short SAlien_space = 4;  // SAlien 空間個數
 short MAlien_space = 2;  // MAlien 空間個數
 short BAlien_space = 1;  // BOSS 空間個數
@@ -356,6 +365,37 @@ void CreateGameObject() {
 
 	}
 	
+	//設定BOSS 子彈
+	for (int i = 0; i < boss_Mode2BulletCount; i++)
+	{
+		Bmode2_bullet[i] = new Bullet_BAlien;
+		Bmode2_bullet[i]->SetShader(g_mxModelView, g_mxProjection);
+		
+		//設定初始方向
+		if ((i+1)%2)
+		{
+			Bmode2_bullet[i]->first_direction_x = LEFT;
+			Bmode2_bullet[i]->_x = -3.0f;
+
+		}
+		else
+		{
+			Bmode2_bullet[i]->first_direction_x = RIGHT;
+
+			Bmode2_bullet[i]->_x = 3.0f;
+		}
+
+		Bmode2_bullet[i]->first_direction_y = BOTTOM;
+
+		Bmode2_bullet[i]->_y = -0.5f * i + 3.0f;
+
+		Bmode2_bullet[i]->BulletTrans = Translate(Bmode2_bullet[i]->_x , Bmode2_bullet[i]->_y , 0.0f);
+		
+		Bmode2_bullet[i]->SetTRSMatrix(Bmode2_bullet[i]->BulletTrans);
+	}
+
+
+
 }
 
 
@@ -431,6 +471,8 @@ void GL_Display(void)
 	}
 
 
+
+	//Draw BOSS Alien 
 	for (int i = SAlien_space + MAlien_space; i < SAlien_space + MAlien_space + BOSS_alien; i++)
 	{
 		if (alien[i]->alife) {
@@ -439,6 +481,12 @@ void GL_Display(void)
 
 	}
 
+
+	//test Boss mode 2 attack
+	for (int i = 0; i < boss_Mode2BulletCount && BOSSMode == Two; i++)
+	{
+		Bmode2_bullet[i]->Draw();
+	}
 	
 
 	
@@ -512,8 +560,39 @@ void CreateBullet_Alien(Alien *alien , char what_alien ) {
 			pHead_AlienBullet_free = pHead_AlienBullet_free->link;  //將 free 的頭改成下一個節點
 
 
-			pHead_AlienBullet_used->bullet_main->_x = alien->_x + boss_BulletCoordinate[boss_Mode1BulletCount][0];
-			pHead_AlienBullet_used->bullet_main->_y = alien->_y + boss_BulletCoordinate[boss_Mode1BulletCount][1];
+			pHead_AlienBullet_used->bullet_main->_x = alien->_x + boss_BulletCoordinate[boss_Mode1BulletNUM][0];
+			pHead_AlienBullet_used->bullet_main->_y = alien->_y + boss_BulletCoordinate[boss_Mode1BulletNUM][1];
+			if (BOSSMode == One) //第一攻擊模式
+			{
+				pHead_AlienBullet_used->bullet_main->fire_style = NORMAL;
+
+			}
+
+			else if (BOSSMode == Three) {
+
+				if (boss_Mode3BulletNUM % 3 ==1)
+				{
+					pHead_AlienBullet_used->bullet_main->fire_style = LEFT_45;
+				}
+				else if (boss_Mode3BulletNUM % 3 == 2) {
+
+					pHead_AlienBullet_used->bullet_main->fire_style = NORMAL;
+				}
+				
+				else if (boss_Mode3BulletNUM % 3 == 0) {
+
+					pHead_AlienBullet_used->bullet_main->fire_style = RIGHT_45;
+
+				}
+
+			}
+			else
+			{
+				pHead_AlienBullet_used->bullet_main->fire_style = NORMAL;
+			}
+
+
+
 			pHead_AlienBullet_used->isSAlien_bullet = true; //設定子彈為B
 			pHead_AlienBullet_used->isMAlien_bullet = false; //設定子彈為B
 			pHead_AlienBullet_used->isBAlien_bullet = true; //設定子彈為B
@@ -540,8 +619,40 @@ void CreateBullet_Alien(Alien *alien , char what_alien ) {
 			pGet_AlienBullet_used = pHead_AlienBullet_free; //從頭拿資源
 			pHead_AlienBullet_free = pHead_AlienBullet_free->link;  //將 free 的頭改成下一個節點
 
-			pGet_AlienBullet_used->bullet_main->_x = alien->_x + boss_BulletCoordinate[boss_Mode1BulletCount][0];
-			pGet_AlienBullet_used->bullet_main->_y = alien->_y + boss_BulletCoordinate[boss_Mode1BulletCount][1];
+			pGet_AlienBullet_used->bullet_main->_x = alien->_x + boss_BulletCoordinate[boss_Mode1BulletNUM][0];
+			pGet_AlienBullet_used->bullet_main->_y = alien->_y + boss_BulletCoordinate[boss_Mode1BulletNUM][1];
+			
+
+			if (BOSSMode == One) //第一攻擊模式
+			{
+				pGet_AlienBullet_used->bullet_main->fire_style = NORMAL;
+
+			}
+			else if (BOSSMode == Three) {//第二攻擊模式
+
+				if (boss_Mode3BulletNUM % 3 == 1)
+				{
+					pGet_AlienBullet_used->bullet_main->fire_style = LEFT_45;
+				}
+				else if (boss_Mode3BulletNUM % 3 == 2) {
+
+					pGet_AlienBullet_used->bullet_main->fire_style = NORMAL;
+				}
+
+				else if (boss_Mode3BulletNUM % 3 == 0) {
+
+					pGet_AlienBullet_used->bullet_main->fire_style = RIGHT_45;
+
+				}
+
+			}
+			else
+			{
+				pGet_AlienBullet_used->bullet_main->fire_style = NORMAL;
+			}
+
+
+
 			pGet_AlienBullet_used->isSAlien_bullet = true; //設定子彈為B
 			pGet_AlienBullet_used->isMAlien_bullet = false; //設定子彈為B
 			pGet_AlienBullet_used->isBAlien_bullet = true; //設定子彈為B
@@ -571,6 +682,7 @@ void CreateBullet_Alien(Alien *alien , char what_alien ) {
 
 			pHead_AlienBullet_used->bullet_main->_x = alien->_x;
 			pHead_AlienBullet_used->bullet_main->_y = alien->_y;
+			pHead_AlienBullet_used->bullet_main->fire_style = NORMAL;
 			pHead_AlienBullet_used->isSAlien_bullet = true; //設定子彈為S
 			pHead_AlienBullet_used->isMAlien_bullet = false; //設定子彈為S
 			pHead_AlienBullet_used->isBAlien_bullet = false; //設定子彈為B
@@ -599,6 +711,7 @@ void CreateBullet_Alien(Alien *alien , char what_alien ) {
 
 			pGet_AlienBullet_used->bullet_main->_x = alien->_x;
 			pGet_AlienBullet_used->bullet_main->_y = alien->_y;
+			pGet_AlienBullet_used->bullet_main->fire_style = NORMAL;
 			pGet_AlienBullet_used->isSAlien_bullet = true; //設定子彈為S
 			pGet_AlienBullet_used->isMAlien_bullet = false; //設定子彈為S
 			pGet_AlienBullet_used->isBAlien_bullet = false; //設定子彈為B
@@ -770,8 +883,6 @@ void CheckBullet() {
 void CheckBullet_Alien(){
 
 
-	
-
 
 	pGet_Check_AlienBullet = pHead_AlienBullet_used;
 
@@ -779,7 +890,7 @@ void CheckBullet_Alien(){
 	{
 		if(pGet_Check_AlienBullet->isSAlien_bullet){
 		
-			if (!(pGet_Check_AlienBullet->bullet_main->_y > -2.0) || pGet_Check_AlienBullet->bullet_main->HurtMainRole ) {
+			if (!(pGet_Check_AlienBullet->bullet_main->_x > -2.5f && pGet_Check_AlienBullet->bullet_main->_x < 2.5f && pGet_Check_AlienBullet->bullet_main->_y > -2.5f && pGet_Check_AlienBullet->bullet_main->_y < 2.5f) || pGet_Check_AlienBullet->bullet_main->HurtMainRole ) {
 
 				if (pGet_Check_AlienBullet == pHead_AlienBullet_used) { //如果刪除的是第一個節點
 
@@ -900,7 +1011,7 @@ void onFrameMove(float delta)
 			pGet_Move_bullet->bullet_main->AutoTranslate_Bullet();
 
 			//檢查是否有Alien被子彈打到
-			for (int i = 0; i < SAlien_space + middle_alien ; i++)
+			for (int i = 0; i < SAlien_space + MAlien_space + BAlien_space; i++)
 			{
 				
 				alien[i]->AutoCheckHurtDie(pGet_Move_bullet->bullet_main->_x, pGet_Move_bullet->bullet_main->_y , pGet_Move_bullet->bullet_main->MAX_X, pGet_Move_bullet->bullet_main->MAX_Y, &pGet_Move_bullet->bullet_main->HurtAlien );
@@ -925,7 +1036,7 @@ void onFrameMove(float delta)
 		}
 
 		
-		//更新small alien 子彈位置
+		//更新 alien 子彈位置
 		pGet_AlienBullet_used = pHead_AlienBullet_used;
 		for (int i = 0; i < Bullet_Total_Alien_used; i++)
 		{
@@ -943,7 +1054,7 @@ void onFrameMove(float delta)
 			}
 			else if (pGet_AlienBullet_used->isSAlien_bullet == false && pGet_AlienBullet_used->isMAlien_bullet == true) //為MAlien bullet
 			{
-				pGet_AlienBullet_used->bullet_MAlien->AutoTranslate_Bullet(); //要改
+				pGet_AlienBullet_used->bullet_MAlien->AutoTranslate_Bullet(); 
 				mainrole->AutoCheckHurt_MainRole(pGet_AlienBullet_used->bullet_MAlien->_x, pGet_AlienBullet_used->bullet_MAlien->_y, pGet_AlienBullet_used->bullet_MAlien->MAX_X, pGet_AlienBullet_used->bullet_MAlien->MAX_Y, &pGet_AlienBullet_used->bullet_MAlien->HurtMainRole, &mainrole_ring->_defenceBallNUM);//偵測 main role是否被子彈打中			
 
 				//被傷害後無敵狀態計算時間
@@ -978,6 +1089,23 @@ void onFrameMove(float delta)
 		}
 
 
+		// boss mode2 bullet
+		for (int i = 0; i < boss_Mode2BulletCount && BOSSMode == Two; i++)
+		{
+			Bmode2_bullet[i]->AutoTranslate_Bullet();
+			mainrole->AutoCheckHurt_MainRole(Bmode2_bullet[i]->_x, Bmode2_bullet[i]->_y, Bmode2_bullet[i]->MAX_X, Bmode2_bullet[i]->MAX_Y, &Bmode2_bullet[i]->HurtMainRole, &mainrole_ring->_defenceBallNUM);//偵測 main role是否被子彈打中			
+			//被傷害後無敵狀態計算時間
+			if (Bmode2_bullet[i]->HurtMainRole) {
+				timer_canHurtMainRole = 0.0f;
+				mainrole->SetAlpha(0.6); //無敵狀態為半透明
+				mainrole_ring->SetAlpha(0.6); //無敵狀態為半透明
+			}
+
+			Bmode2_bullet[i]->HurtMainRole = false; //reset 狀態
+		}
+
+		
+
 		timer_onFrameMove = 0;
 	}
 
@@ -989,16 +1117,30 @@ void onFrameMove(float delta)
 		mainrole->SetAlpha(1.0);
 		mainrole_ring->SetAlpha(1.0); 
 
+
+
 	}
 	
 
 
+	
+		
+
+
+	//BOSS直條衝擊砲
+	/*if (BOSSMode == Two) {
+
+		alien[SAlien_space + MAlien_space]->StraightRay();
+
+	}*/
+
+
 	//若總分到達十分則放出中怪
-	if (PlayerTotalPoint == 3)
+	/*if (PlayerTotalPoint == 3)
 	{
 		middle_alien = 1; //螢幕上middle alien 出現的最大數量
 		
-	}
+	}*/
 
 	//若總分到達十分則放出BOSS
 	//else if (PlayerTotalPoint == 5)
@@ -1070,6 +1212,7 @@ void onAlienBulletLaunch(float delta) {
 			if(i <  small_alien){ //SAlien 創造子彈
 				if (alien[i]->_y > -2.5 && alien[i]->_y < 2.5) {
 					CreateBullet_Alien(alien[i] , 'S');
+					
 				}
 			}
 
@@ -1086,12 +1229,25 @@ void onAlienBulletLaunch(float delta) {
 		}
 
 		//BOSS三重子彈
-		for (boss_Mode1BulletCount = 0; boss_Mode1BulletCount < 3 && BOSS_alien > 0; boss_Mode1BulletCount++) //Boss存在則發射子彈
+		for (boss_Mode1BulletNUM = 0; boss_Mode1BulletNUM < 3 && BOSS_alien > 0 && BOSSMode == One; boss_Mode1BulletNUM++) //Boss存在則發射子彈
 		{
 			CreateBullet_Alien(alien[SAlien_space + MAlien_space] , 'B');
 		}
-		
 
+
+
+		//BOSS 兩邊三重子彈
+		for ( boss_Mode1BulletNUM = 0; boss_Mode1BulletNUM < 2; boss_Mode1BulletNUM++) //兩個出彈口
+		{
+			for (boss_Mode3BulletNUM = 0; boss_Mode3BulletNUM < 3 && BOSS_alien > 0 && BOSSMode == Three; boss_Mode3BulletNUM++) //三發子彈
+			{
+
+				CreateBullet_Alien(alien[SAlien_space + MAlien_space], 'B');
+
+			}
+		}
+		
+		
 
 
 
@@ -1158,6 +1314,16 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 
 	switch (key)
 	{
+	case '1':
+		BOSSMode = One; //BOSS改變成第一型態test
+		break;
+	case '2':
+		BOSSMode = Two; //BOSS改變成第二型態test
+
+		break;
+	case '3':
+		BOSSMode = Three; //BOSS改變成第二型態test
+		break;
 	case 'a':
 		mainrole_ring->_defenceBallNUM = 0;
 		break;

@@ -1,5 +1,8 @@
 #include "Alien.h"
 
+
+
+
 BOSS_Alien::~BOSS_Alien()
 {
 
@@ -32,14 +35,23 @@ BOSS_Alien::BOSS_Alien()
 	_Points[(rectangle_BAlien * 2) + 4] = vec4(0.6, -0.8, 0.0, 1.0);
 	_Points[(rectangle_BAlien * 2) + 5] = vec4(0.6, 0.0, 0.0, 1.0);
 
-	//circle
-	/*for (int i = 0; i < circle_BAlien; i++)
-	{
-		
-		_Points[(rectangle_BAlien * 3) + i] = vec4(0.2f * cosf(2.0f * M_PI * i / circle_BAlien) - 0.0f, 0.2f * sinf(2.0f * M_PI * i / circle_BAlien) - 0.4f, 0.0f, 1.0f);
-	}*/
+	_Points[(rectangle_BAlien * 3) + 0] = vec4(0.9, -0.7, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 3) + 1] = vec4(0.9, -0.8, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 3) + 2] = vec4(0.6, -0.8, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 3) + 3] = vec4(0.9, -0.7, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 3) + 4] = vec4(0.6, -0.8, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 3) + 5] = vec4(0.6, -0.7, 0.0, 1.0);
 
 
+	_Points[(rectangle_BAlien * 4) + 0] = vec4(-0.9, -0.7, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 4) + 1] = vec4(-0.9, -0.8, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 4) + 2] = vec4(-0.6, -0.8, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 4) + 3] = vec4(-0.9, -0.7, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 4) + 4] = vec4(-0.6, -0.8, 0.0, 1.0);
+	_Points[(rectangle_BAlien * 4) + 5] = vec4(-0.6, -0.7, 0.0, 1.0);
+
+
+	
 
 	//color
 	for (int i = 0; i < rectangle_BAlien; i++)
@@ -54,11 +66,20 @@ BOSS_Alien::BOSS_Alien()
 	}
 
 
-	for (int i = 0; i < circle_BAlien; i++)
+	
+
+	for (int i = (rectangle_BAlien * 3); i < (rectangle_BAlien * 4); i++)
 	{
-		_Colors[(rectangle_BAlien * 3)  + i] = vec4(1.0, 0.0, 0.0, 1.0);
+		_Colors[i] = vec4(1.0, 1.0, 0.0, 1.0);
 	}
 
+
+	for (int i = (rectangle_BAlien * 4); i < (rectangle_BAlien * 5); i++)
+	{
+		_Colors[i] = vec4(1.0, 1.0, 0.0, 1.0);
+	}
+
+	
 
 
 
@@ -98,9 +119,15 @@ void BOSS_Alien::Draw()
 
 
 	glDrawArrays(GL_TRIANGLES, 0, rectangle_BAlien);
-	glDrawArrays(GL_TRIANGLES, rectangle_BAlien, rectangle_BAlien * 2);
-	glDrawArrays(GL_TRIANGLES, rectangle_BAlien * 2, rectangle_BAlien * 3);
-	glDrawArrays(GL_TRIANGLE_FAN, rectangle_BAlien * 3, circle_BAlien);
+	glDrawArrays(GL_TRIANGLES, rectangle_BAlien, rectangle_BAlien );
+	glDrawArrays(GL_TRIANGLES, rectangle_BAlien * 2, rectangle_BAlien );
+	glDrawArrays(GL_TRIANGLES, rectangle_BAlien * 3, rectangle_BAlien );
+	glDrawArrays(GL_TRIANGLES, rectangle_BAlien * 4, rectangle_BAlien );
+
+
+
+
+
 
 }
 
@@ -126,9 +153,10 @@ void BOSS_Alien::DrawW()
 		_bUpdateProj = false;
 	}
 	glDrawArrays(GL_TRIANGLES, 0, rectangle_BAlien);
-	glDrawArrays(GL_TRIANGLES, rectangle_BAlien, rectangle_BAlien * 2);
-	glDrawArrays(GL_TRIANGLES, rectangle_BAlien * 2, rectangle_BAlien * 3);
-	glDrawArrays(GL_TRIANGLE_FAN, rectangle_BAlien * 3, circle_BAlien);
+	glDrawArrays(GL_TRIANGLES, rectangle_BAlien, rectangle_BAlien);
+	glDrawArrays(GL_TRIANGLES, rectangle_BAlien * 2, rectangle_BAlien);
+	glDrawArrays(GL_TRIANGLES, rectangle_BAlien * 3, rectangle_BAlien);
+	glDrawArrays(GL_TRIANGLES, rectangle_BAlien * 4, rectangle_BAlien);
 }
 
 
@@ -142,6 +170,24 @@ void BOSS_Alien::AutomaticFire(mat4 Alien_mxTran) {
 }
 
 void BOSS_Alien::AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, float MAX_X, float MAX_Y, bool* HurtAlien) {
+
+	if (_x - this->MAX_X <= Bullet_x - MAX_X && _x + this->MAX_X >= Bullet_x + MAX_X && _y + this->MAX_Y >= Bullet_y + MAX_Y && _y - this->MAX_Y <= Bullet_y - MAX_Y) { //判斷是否在中彈的範圍內
+
+		*HurtAlien = true; //設定該子彈有打到Alien
+
+		//Blood--;
+
+
+	}
+
+
+
+	if (Blood <= 0)
+	{
+		alife = false;
+	}
+
+
 
 }
 

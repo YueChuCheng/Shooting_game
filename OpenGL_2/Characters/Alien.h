@@ -46,6 +46,7 @@ public:
 
 
 
+
 	private:
 
 	vec4 _Points[Alien_Point_NUM];
@@ -206,9 +207,7 @@ private:
 
 
 const int rectangle_BAlien = 6;
-const int circle_BAlien = 100;
-
-const int BAlien_Point_NUM = (rectangle_BAlien * 3) + circle_BAlien; //程翴羆计
+const int BAlien_Point_NUM = (rectangle_BAlien * 5 ); //程翴羆计
 
 //BOSS_Alien 
 class BOSS_Alien : public Alien
@@ -230,6 +229,10 @@ public:
 
 	//笆浪琩琌Τ端ㄧΑ
 	void AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, float MAX_X, float MAX_Y, bool* HurtAlien);
+
+	const double MAX_X = 0.95; //程糴
+	const double MAX_Y = 0.6; //程蔼翴
+
 
 
 private:

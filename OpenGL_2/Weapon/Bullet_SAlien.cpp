@@ -30,9 +30,38 @@ Bullet_SAlien::~Bullet_SAlien() {};
 
 void Bullet_SAlien::AutoTranslate_Bullet() {
 
-	_y -= 0.0035;
-	BulletTrans = Translate(_x, _y, 0.0);
-	SetTRSMatrix(BulletTrans);
+	
+	
+	switch (fire_style)
+	{
+	case NORMAL:
+		_y -= 0.0035;
+		BulletTrans = Translate(_x, _y, 0.0);
+		SetTRSMatrix(BulletTrans);
+
+		break;
+	case LEFT_45:
+		_x -= 0.0035 / 1.4;//pow(0.5)
+		_y -= 0.0035 / 1.4;//pow(0.5)
+		BulletTrans = Translate(_x, _y, 0.0);
+		SetTRSMatrix(BulletTrans);
+
+		break;
+	case RIGHT_45:
+		_x += 0.0035 / 1.4;//pow(0.5)
+		_y -= 0.0035 / 1.4;//pow(0.5)
+		BulletTrans = Translate(_x, _y, 0.0);
+		SetTRSMatrix(BulletTrans);
+
+
+		break;
+	
+
+	default:
+		break;
+	}
+
+
 
 
 }

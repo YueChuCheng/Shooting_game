@@ -316,7 +316,7 @@ void MainRole::Draw()
 //°»´úmain role¨Ï§_¾D¨ü¸I¼²
 void MainRole::AutoCheckHurt_MainRole(GLfloat x, GLfloat y, float Max_X, float MAX_Y, bool *HurtMainRole , int *defense_ball) {
 	
-
+	
 	if (_x - this->MAX_X <= x - Max_X && _x + this->MAX_X >= x + Max_X && _y + this->MAX_Y >= y + MAX_Y && _y - this->MAX_Y <= y - MAX_Y  && can_change_hurtMain)//°»´ú¬O§_¦ì©ó§ðÀ»½d³ò ¥B¬O§_¬°¥i§ðÀ»ª¬ºA
 	{
 		//printf("yes");

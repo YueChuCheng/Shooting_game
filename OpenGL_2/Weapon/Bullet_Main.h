@@ -19,6 +19,8 @@ public:
 	GLfloat _y = 0.0f;
 	GLfloat _scale = 1.0f;
 	GLfloat _speed = 0.0f;
+	short fire_style; //小子彈打擊方式
+
 	virtual void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
 	void SetViewMatrix(mat4& mat);
 	void SetProjectionMatrix(mat4& mat);
@@ -73,7 +75,10 @@ protected:
 
 
 
-
+enum sSBullet_direction //小怪子彈打擊方向
+{
+	LEFT_45, RIGHT_45, NORMAL
+};
 
 const int Bullet_SAlien_Point_NUM = 100;
 
@@ -83,7 +88,6 @@ public:
 	Bullet_SAlien ();
 	~Bullet_SAlien ();
 	bool HurtMainRole = false;  //是否打中Alien
-
 	void AutoTranslate_Bullet();
 	void Draw();
 	void DrawW();
@@ -92,6 +96,8 @@ public:
 	void SetTRSMatrix(mat4& mat);
 
 	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
+
+
 
 private:
 	vec4 _Points[Bullet_SAlien_Point_NUM];
@@ -135,7 +141,7 @@ public:
 	GLuint GetShaderHandle() { return _Program; }
 private:
 	vec4 _Points[Bullet_MAlien_Point_NUM];
-	vec4 _Colors[Bullet_SAlien_Point_NUM];
+	vec4 _Colors[Bullet_MAlien_Point_NUM];
 
 	// VAO
 	GLuint _VAO;
@@ -155,4 +161,50 @@ private:
 };
 
 
+enum direction
+{
+	LEFT , RIGHT , TOP , BOTTOM
+};
+const int Bullet_BAlienMode2_Point_NUM = 100;
+
+//BOSS 第二模式攻擊子彈
+class Bullet_BAlien :public Bullet_Main
+{
+public:
+	Bullet_BAlien();
+	~Bullet_BAlien();
+	bool HurtMainRole = false;  //是否打中Alien
+
+	
+	void AutoTranslate_Bullet();
+	void Draw();
+	void DrawW();
+	void SetTRSMatrix(mat4& mat);
+	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
+
+	GLuint GetShaderHandle() { return _Program; }
+
+	short first_direction_x; //子彈第一個行徑方向
+	short first_direction_y; //子彈第一個行徑方向
+
+private:
+	vec4 _Points[Bullet_BAlienMode2_Point_NUM];
+	vec4 _Colors[Bullet_BAlienMode2_Point_NUM];
+
+	// VAO
+	GLuint _VAO;
+	// VBO
+	GLuint _VBO;
+	//  for Shader
+	GLuint _Program;
+	// Vertex Position Attribute
+	GLuint _ModelView, _Projection;
+	// Matrix 
+	mat4 _mxView, _mxProjection;
+	mat4 _mxMVFinal, _mxTRS;
+
+
+	void CreateBufferObject();
+
+};
 

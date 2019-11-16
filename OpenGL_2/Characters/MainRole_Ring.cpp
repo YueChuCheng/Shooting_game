@@ -53,14 +53,7 @@ MainRole_Ring::MainRole_Ring()
 	}
 
 
-	//校正大小已於AutomaticRotation處校正
-	/*for (int i = 0; i < Ring_Point_NUM; i++)
-	{
-		_Points[i].x = _Points[i].x * (6.5 / 10.0);
-		_Points[i].y = _Points[i].y * (360.0 / 640.0) * (6.5 / 10.0);
-		
-	}
-	*/
+	
 	CreateBufferObject();
 	_bUpdateProj = false;
 }
