@@ -39,7 +39,10 @@ Bullet_BAlien *Bmode2_bullet[boss_Mode2BulletCount]; //BOSS第二模式攻擊子彈
 
 //玩家總分
 int PlayerTotalPoint_SAlien = 0; //打小怪
-int PlayerTotalPoint_MAlien = 0; //打小怪
+int PlayerTotalPoint_MAlien = 0; //打中怪
+int PlayerTotalPoint_BAlien = 0; //打BOSS
+bool Game_Over = false; //遊戲結束
+
 bool isBossOut = false; //放出BOSS
 bool isSMAlienClear = true; //SMAlien是否都已經消失於畫面
 
@@ -254,9 +257,7 @@ void CreateGameObject() {
 
 				alien[i] = new BOSS_Alien;
 				alien[i]->SetShader(g_mxModelView, g_mxProjection);
-				alien[i]->_y = 1.5f; 
-				alien[i]->SetTRSMatrix(Translate(alien[i]->_x, alien[i]->_y,0.0f));
-
+				
 				if (i < SAlien_space + MAlien_space + BOSS_alien) { //空間是否被利用
 
 					alien[i]->used = true;
@@ -979,12 +980,13 @@ void CheckBullet_Alien(){
 
 float timer_onFrameMove = 0; //rotation's timer
 float timer_canHurtMainRole = 0; //rotation's timer
-
+float timer_BAlien = 0;
 
 void onFrameMove(float delta)
 {
 	timer_onFrameMove += delta;
 	timer_canHurtMainRole += delta;
+	timer_BAlien += delta;
 
 	if (timer_onFrameMove > 1.0 / 1500.0) { //每1/1000秒更新一次
 		
@@ -1092,7 +1094,7 @@ void onFrameMove(float delta)
 				PlayerTotalPoint_MAlien++; //玩家一分
 			}
 
-			alien[i]->AutomaticMotion();
+			alien[i]->AutomaticMotion(timer_BAlien);
 
 		}
 
@@ -1109,6 +1111,13 @@ void onFrameMove(float delta)
 			}
 
 			Bmode2_bullet[i]->HurtMainRole = false; //reset 狀態
+
+			if ((Bmode2_bullet[i]->_x >3.0f || Bmode2_bullet[i]->_x < -3.0f) && Game_Over) //若超過距離且game over則不需再新增mode2的x y位置
+			{
+				BOSSMode = None;
+			}
+
+
 		}
 
 		
@@ -1129,30 +1138,6 @@ void onFrameMove(float delta)
 
 
 	}
-	
-
-	
-	
-
-
-	//BOSS直條衝擊砲
-	/*if (BOSSMode == Two) {
-
-		alien[SAlien_space + MAlien_space]->StraightRay();
-
-	}*/
-
-
-	
-
-	//若總分到達十分則放出BOSS
-	//else if (PlayerTotalPoint_SAlien == 5)
-	//{
-	//	isBossOut = true; //開啟第二個模式 test
-
-
-	//}
-
 	
 	
 	GL_Display();
@@ -1232,7 +1217,7 @@ void onAlienBulletLaunch(float delta) {
 		}
 
 		//BOSS三重子彈
-		for (boss_Mode1BulletNUM = 0; boss_Mode1BulletNUM < 3 && BOSS_alien > 0 && BOSSMode == One; boss_Mode1BulletNUM++) //Boss存在則發射子彈
+		for (boss_Mode1BulletNUM = 0; boss_Mode1BulletNUM < 3 && BOSS_alien > 0 && BOSSMode == One && timer_BAlien > 5.0f; boss_Mode1BulletNUM++) //Boss存在則發射子彈 且模式為Mode1
 		{
 			CreateBullet_Alien(alien[SAlien_space + MAlien_space] , 'B');
 		}
@@ -1242,7 +1227,7 @@ void onAlienBulletLaunch(float delta) {
 		//BOSS 兩邊三重子彈
 		for ( boss_Mode1BulletNUM = 0; boss_Mode1BulletNUM < 2; boss_Mode1BulletNUM++) //兩個出彈口
 		{
-			for (boss_Mode3BulletNUM = 0; boss_Mode3BulletNUM < 3 && BOSS_alien > 0 && BOSSMode == Three; boss_Mode3BulletNUM++) //三發子彈
+			for (boss_Mode3BulletNUM = 0; boss_Mode3BulletNUM < 3 && BOSS_alien > 0 && BOSSMode == Three; boss_Mode3BulletNUM++) //Boss存在則發射子彈 且模式為Mode3
 			{
 
 				CreateBullet_Alien(alien[SAlien_space + MAlien_space], 'B');
@@ -1278,7 +1263,7 @@ void GameProcessUpdate() {
 		isBossOut = true; //放出BOSS
 
 		isSMAlienClear = true; //關閉flag
-		for (int i = 0; i < SAlien_space + MAlien_space; i++)
+		for (int i = 0; i < SAlien_space + MAlien_space + BAlien_space; i++)
 		{
 			if (alien[i]->used == true) //有一Alien 存在於畫面
 			{
@@ -1293,9 +1278,11 @@ void GameProcessUpdate() {
 		{
 			BOSS_alien = 1; //放出一隻BOSS
 			alien[SAlien_space + MAlien_space]->used = true;
-
+			timer_BAlien = 0.0f;
 		}
 		
+		
+
 	}
 
 

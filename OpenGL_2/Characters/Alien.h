@@ -35,6 +35,7 @@ public:
 	//自動移動函式
 	virtual void AutomaticMotion() {};
 	virtual void AutomaticMotion(GLfloat MainRole_x, GLfloat MainRole_y) {};
+	virtual void AutomaticMotion(float timer) {};
 
 	//自動發射飛彈函式
 	virtual void AutomaticFire(mat4 Alien_mxTran) = 0;
@@ -224,7 +225,7 @@ public:
 
 	void DrawW();
 
-	void AutomaticMotion();
+	void AutomaticMotion(float timer);
 
 	bool first_direction_x = true;
 	bool first_direction_y = true;
@@ -265,9 +266,8 @@ private:
 
 
 
-	int Blood = 12;
-
-
+	const int Blood_original = 30;
+	int Blood = Blood_original;
 
 };
 

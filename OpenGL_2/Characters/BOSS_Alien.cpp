@@ -1,7 +1,8 @@
 #include "Alien.h"
 
-
-
+extern int PlayerTotalPoint_BAlien;
+extern short BOSSMode;
+extern bool Game_Over;
 
 BOSS_Alien::~BOSS_Alien()
 {
@@ -157,38 +158,77 @@ void BOSS_Alien::DrawW()
 }
 
 
-void BOSS_Alien::AutomaticMotion() {
-
-	if(first_direction_x){
-		_x -= 0.0015;
-	}
-
-	else
-	{
-		_x += 0.0015;
-	}
-
-
-	if (first_direction_y) {
-		_y -= 0.0005;
-	}
-
-	else
-	{
-		_y += 0.0005;
-	}
+void BOSS_Alien::AutomaticMotion(float timer) {
 	
-
-	if (_x > 1.3f || _x < -1.3f)
+	
+	if (timer < 2.0f) //在螢幕外
 	{
-		first_direction_x = !first_direction_x;
+		_y = 3.0f;
 	}
 
-	if (_y > 1.5f || _y < 1.2f)
+	else if (timer < 5.0f)//在螢幕外
 	{
-		first_direction_y = !first_direction_y;
+		if (_y > 1.5f)
+		{
+			_y -= 0.0015f;
+		}
+
+		
 	}
 
+	else if(timer > 5.0f)
+	{
+		if (first_direction_x) {
+			_x -= 0.0015;
+		}
+
+		else
+		{
+			_x += 0.0015;
+		}
+
+
+		if (first_direction_y) {
+			_y -= 0.0005;
+		}
+
+		else
+		{
+			_y += 0.0005;
+		}
+
+
+		if (_x > 1.3f || _x < -1.3f)
+		{
+			first_direction_x = !first_direction_x;
+		}
+
+		if (_y > 1.5f || _y < 1.2f)
+		{
+			first_direction_y = !first_direction_y;
+		}
+
+		//轉換攻擊模式
+		switch (PlayerTotalPoint_BAlien)
+		{
+
+		case 10:
+			BOSSMode = 3;
+			break;
+
+		case 20:
+			BOSSMode = 2;
+			break;
+
+
+		default:
+			break;
+		}
+
+
+	}
+
+	
 
 	mxTran_Alien = Translate(_x, _y, 0.0);
 	SetTRSMatrix(mxTran_Alien);
@@ -207,8 +247,8 @@ void BOSS_Alien::AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, float MAX_
 
 		*HurtAlien = true; //設定該子彈有打到Alien
 
-		//Blood--;
-
+		Blood--;
+		PlayerTotalPoint_BAlien++;
 
 	}
 
@@ -216,7 +256,9 @@ void BOSS_Alien::AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, float MAX_
 
 	if (Blood <= 0)
 	{
+
 		alife = false;
+		Game_Over = true;
 	}
 
 

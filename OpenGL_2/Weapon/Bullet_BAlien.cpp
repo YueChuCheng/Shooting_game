@@ -1,5 +1,8 @@
 #include "Bullet_Main.h"
 
+extern bool Game_Over;
+
+
 Bullet_BAlien::Bullet_BAlien() {
 
 	for (int i = 0; i < Bullet_BAlienMode2_Point_NUM; i++)
@@ -34,7 +37,7 @@ void Bullet_BAlien::AutoTranslate_Bullet() {
 	if (first_direction_x==LEFT)
 	{
 		_x += 0.004;
-		if (_x > 2.0f ) { //禬筁絛瞅玥传玡秈よ
+		if (_x > 2.0f && !Game_Over) { //禬筁絛瞅玥传玡秈よ
 			first_direction_x = RIGHT;
 		}
 	}
@@ -42,7 +45,7 @@ void Bullet_BAlien::AutoTranslate_Bullet() {
 	else if (first_direction_x==RIGHT)
 	{
 		_x -= 0.004;
-		if (_x < -2.0f) {//禬筁絛瞅玥传玡秈よ
+		if (_x < -2.0f && !Game_Over) {//禬筁絛瞅玥传玡秈よ
 			first_direction_x = LEFT;
 		}
 	}
