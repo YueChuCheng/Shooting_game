@@ -11,6 +11,8 @@ public:
 	Alien() {};
 	~Alien() {};
 
+	bool used = false;//空間是否被利用
+
 	GLfloat _x = 0.0f;
 	GLfloat _y = -3.0f; //一開始不得出現於螢幕上
 	bool alife = true; //一開始為活著的狀態
@@ -223,6 +225,9 @@ public:
 	void DrawW();
 
 	void AutomaticMotion();
+
+	bool first_direction_x = true;
+	bool first_direction_y = true;
 
 	//自動發射飛彈函式
 	void AutomaticFire(mat4 Alien_mxTran);

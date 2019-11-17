@@ -129,6 +129,7 @@ void Middle_Alien::AutomaticMotion(GLfloat MainRole_x, GLfloat MainRole_y) {
 
 			else if (isBossOut)
 			{
+				used = false;
 				if_first_alien = false;
 				alife = false;
 			}
@@ -150,6 +151,7 @@ void Middle_Alien::AutomaticMotion(GLfloat MainRole_x, GLfloat MainRole_y) {
 
 		else if (isBossOut)
 		{
+			used = false;
 			if_first_alien = false;
 			alife = false;
 		}

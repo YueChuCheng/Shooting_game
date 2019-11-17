@@ -90,6 +90,7 @@
     <ClCompile Include="Common\Timer.cpp" />
     <ClCompile Include="InitShader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Main\GL_Display_func.cpp" />
     <ClCompile Include="Weapon\Bullet_BAlien.cpp" />
     <ClCompile Include="Weapon\Bullet_Main.cpp" />
     <ClCompile Include="Weapon\Bullet_MAlien.cpp" />

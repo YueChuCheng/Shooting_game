@@ -87,9 +87,10 @@ BOSS_Alien::BOSS_Alien()
 	for (int i = 0; i < BAlien_Point_NUM; i++)
 	{
 		
-		_Points[i].y = _Points[i].y * (360.0 / 640.0) ;
+		_Points[i].y = _Points[i].y * (360.0 / 640.0);
 
 	}
+
 
 
 	// Create and initialize a buffer object 
@@ -125,10 +126,6 @@ void BOSS_Alien::Draw()
 	glDrawArrays(GL_TRIANGLES, rectangle_BAlien * 4, rectangle_BAlien );
 
 
-
-
-
-
 }
 
 
@@ -161,6 +158,41 @@ void BOSS_Alien::DrawW()
 
 
 void BOSS_Alien::AutomaticMotion() {
+
+	if(first_direction_x){
+		_x -= 0.0015;
+	}
+
+	else
+	{
+		_x += 0.0015;
+	}
+
+
+	if (first_direction_y) {
+		_y -= 0.0005;
+	}
+
+	else
+	{
+		_y += 0.0005;
+	}
+	
+
+	if (_x > 1.3f || _x < -1.3f)
+	{
+		first_direction_x = !first_direction_x;
+	}
+
+	if (_y > 1.5f || _y < 1.2f)
+	{
+		first_direction_y = !first_direction_y;
+	}
+
+
+	mxTran_Alien = Translate(_x, _y, 0.0);
+	SetTRSMatrix(mxTran_Alien);
+
 
 }
 

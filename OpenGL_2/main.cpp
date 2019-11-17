@@ -38,18 +38,19 @@ Bullet_BAlien *Bmode2_bullet[boss_Mode2BulletCount]; //BOSS第二模式攻擊子彈
 
 
 //玩家總分
-int PlayerTotalPoint = 0;
-bool isBossOut = false; //第二Alien狀態
-
+int PlayerTotalPoint_SAlien = 0; //打小怪
+int PlayerTotalPoint_MAlien = 0; //打小怪
+bool isBossOut = false; //放出BOSS
+bool isSMAlienClear = true; //SMAlien是否都已經消失於畫面
 
 // 必須在 glewInit(); 執行完後,在執行物件實體的取得
 MainRole *mainrole;	// 宣告 指標物件，結束時記得釋放
 MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
 Cloud* cloud[6];
 Bullet_Main* bullet_main;
-short small_alien = 0; //螢幕上small alien 出現的最大數量
+short small_alien = 4; //螢幕上small alien 出現的最大數量
 short middle_alien = 0; //螢幕上middle alien 出現的最大數量
-short BOSS_alien = 1; //螢幕上BOSS alien 出現的最大數量
+short BOSS_alien = 0; //螢幕上BOSS alien 出現的最大數量
 short SAlien_space = 4;  // SAlien 空間個數
 short MAlien_space = 2;  // MAlien 空間個數
 short BAlien_space = 1;  // BOSS 空間個數
@@ -67,6 +68,7 @@ mat4 g_mxProjection;
 void IdleProcess();
 void CreateGameObject();
 void CheckBullet();
+void GameProcessUpdate();
 
 //子彈宣告
 typedef struct Bullet_Node_struct {
@@ -143,6 +145,9 @@ float cloud_info[6][3] = {
 };
 
 
+
+
+
 void init( void )
 {
 	
@@ -186,7 +191,9 @@ void CreateGameObject() {
 	for (int i = 0; i < all_alien; i++)
 	{
 		if(i < SAlien_space){ //設定small alien 空間
-		
+
+			
+	
 			if (i == 0) { //只須設定第一個Shader
 				alien[i] = new Small_Alien;
 				alien[i]->SetShader(g_mxModelView, g_mxProjection);
@@ -200,11 +207,18 @@ void CreateGameObject() {
 
 			}
 
+			if (i < small_alien) { //空間是否被利用
+
+				alien[i]->used = true;
+
+			}
+
 		}
 
 		else if( i < SAlien_space + MAlien_space)//設定middle alien
 		{
 			
+
 			if (i == SAlien_space) //middle alien起始空間
 			{
 				alien[i] = new Middle_Alien;
@@ -225,17 +239,29 @@ void CreateGameObject() {
 			}
 
 			
+			if (i < SAlien_space + middle_alien) { //空間是否被利用
 
+				alien[i]->used = true;
+
+			}
 		}
 
 
 		else if (i < SAlien_space + MAlien_space + BAlien_space)//設定BOSS alien
 		{
 
+			
+
 				alien[i] = new BOSS_Alien;
 				alien[i]->SetShader(g_mxModelView, g_mxProjection);
 				alien[i]->_y = 1.5f; 
 				alien[i]->SetTRSMatrix(Translate(alien[i]->_x, alien[i]->_y,0.0f));
+
+				if (i < SAlien_space + MAlien_space + BOSS_alien) { //空間是否被利用
+
+					alien[i]->used = true;
+
+				}
 
 		}
 
@@ -243,6 +269,8 @@ void CreateGameObject() {
 		
 
 	}
+
+
 
 
 	//存放子彈的儲存空間
@@ -402,9 +430,9 @@ void CreateGameObject() {
 void GL_Display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT); // clear the window
+	int i; //for count
 	
-	
-	for (int i = 0; i < 6; i++)
+	for ( i= 0; i < 6; i++)
 	{
 		cloud[i]->Draw();
 	}
@@ -413,7 +441,7 @@ void GL_Display(void)
 
 	
 	pGet_Draw_bullet = pHead_MainBullet_used;
-	for (int i = 0; i < Bullet_Total_MainBullet_used; i++)
+	for ( i = 0; i < Bullet_Total_MainBullet_used; i++)
 	{
 		pGet_Draw_bullet->bullet_main->Draw();
 		pGet_Draw_bullet = pGet_Draw_bullet->link;
@@ -422,16 +450,15 @@ void GL_Display(void)
 
 
 
-	//Draw Small Alien Bullet
+	//Draw Small + Middle Alien Bullet
 	pGet_Draw_AlienBullet = pHead_AlienBullet_used;
-	for (int i = 0; i < Bullet_Total_Alien_used; i++)
+	for ( i = 0; i < Bullet_Total_Alien_used; i++)
 	{
 		if (pGet_Draw_AlienBullet->isSAlien_bullet)
 		{
 			pGet_Draw_AlienBullet->bullet_main->Draw();
 		}
-
-		else if (pGet_Draw_AlienBullet->isMAlien_bullet)
+		else// if (pGet_Draw_AlienBullet->isMAlien_bullet)
 		{
 			pGet_Draw_AlienBullet->bullet_MAlien->Draw();
 		}
@@ -440,57 +467,25 @@ void GL_Display(void)
 	}
 
 
-	//Draw Small Alien 
-	if (small_alien > 0) {
-		alien[0]->Draw();
-	}
-	
-	for (int i = 1; i < small_alien ; i++)
-		{
-			if(alien[i]->alife){
-				alien[i]->DrawW();
-			}
-		
-		}
-
-
-
-	//Draw Middle Alien 
-	if(middle_alien > 0){  //若有中怪存在
-
-		alien[SAlien_space]->Draw();
-
-	}
-
-	for (int i = SAlien_space + 1; i < SAlien_space + middle_alien; i++)
+	//Draw Alien
+	for ( i = 0; i < SAlien_space + MAlien_space + BAlien_space; i++)
 	{
-		if (alien[i]->alife) {
-			alien[i]->DrawW();
-		}
 
-	}
+		if (alien[i]->used && alien[i]->alife) { //有使用到的alien空間 且 為存活Alien
 
-
-
-	//Draw BOSS Alien 
-	for (int i = SAlien_space + MAlien_space; i < SAlien_space + MAlien_space + BOSS_alien; i++)
-	{
-		if (alien[i]->alife) {
 			alien[i]->Draw();
+
 		}
 
 	}
+
 
 
 	//test Boss mode 2 attack
-	for (int i = 0; i < boss_Mode2BulletCount && BOSSMode == Two; i++)
+	for ( i = 0; i < boss_Mode2BulletCount && BOSSMode == Two; i++)
 	{
 		Bmode2_bullet[i]->Draw();
 	}
-	
-
-	
-	
 	
 	
 	mainrole->Draw();
@@ -1011,10 +1006,10 @@ void onFrameMove(float delta)
 			pGet_Move_bullet->bullet_main->AutoTranslate_Bullet();
 
 			//檢查是否有Alien被子彈打到
-			for (int i = 0; i < SAlien_space + MAlien_space + BAlien_space; i++)
+			for (int i = 0; i < SAlien_space + MAlien_space + BAlien_space   ; i++) // *注意 alien的空間須被使用
 			{
-				
-				alien[i]->AutoCheckHurtDie(pGet_Move_bullet->bullet_main->_x, pGet_Move_bullet->bullet_main->_y , pGet_Move_bullet->bullet_main->MAX_X, pGet_Move_bullet->bullet_main->MAX_Y, &pGet_Move_bullet->bullet_main->HurtAlien );
+				if(alien[i]->used)
+					alien[i]->AutoCheckHurtDie(pGet_Move_bullet->bullet_main->_x, pGet_Move_bullet->bullet_main->_y , pGet_Move_bullet->bullet_main->MAX_X, pGet_Move_bullet->bullet_main->MAX_Y, &pGet_Move_bullet->bullet_main->HurtAlien );
 				
 			}
 
@@ -1029,7 +1024,7 @@ void onFrameMove(float delta)
 		{
 			//若alien 死亡則玩家家一分
 			if (alien[i]->alife == false) { //alien死亡
-				PlayerTotalPoint++; //玩家一分
+				PlayerTotalPoint_SAlien++; //玩家一分
 			}
 
 			alien[i]->AutomaticMotion();
@@ -1081,13 +1076,25 @@ void onFrameMove(float delta)
 
 			//若alien 死亡則玩家家一分
 			if (alien[i]->alife == false) { //alien死亡
-				PlayerTotalPoint++; //玩家一分
+				PlayerTotalPoint_MAlien++; //玩家一分
 			}
 
 			alien[i]->AutomaticMotion(mainrole->_x , mainrole->_y);
 			
 		}
 
+
+		//更新BOSS alien 位置
+		for (int i = SAlien_space + MAlien_space; i < SAlien_space + MAlien_space + BOSS_alien; i++)
+		{
+			//若alien 死亡則玩家家一分
+			if (alien[i]->alife == false) { //alien死亡
+				PlayerTotalPoint_MAlien++; //玩家一分
+			}
+
+			alien[i]->AutomaticMotion();
+
+		}
 
 		// boss mode2 bullet
 		for (int i = 0; i < boss_Mode2BulletCount && BOSSMode == Two; i++)
@@ -1105,6 +1112,8 @@ void onFrameMove(float delta)
 		}
 
 		
+		//更新遊戲流程
+		GameProcessUpdate();
 
 		timer_onFrameMove = 0;
 	}
@@ -1122,9 +1131,8 @@ void onFrameMove(float delta)
 	}
 	
 
-
 	
-		
+	
 
 
 	//BOSS直條衝擊砲
@@ -1135,15 +1143,10 @@ void onFrameMove(float delta)
 	}*/
 
 
-	//若總分到達十分則放出中怪
-	/*if (PlayerTotalPoint == 3)
-	{
-		middle_alien = 1; //螢幕上middle alien 出現的最大數量
-		
-	}*/
+	
 
 	//若總分到達十分則放出BOSS
-	//else if (PlayerTotalPoint == 5)
+	//else if (PlayerTotalPoint_SAlien == 5)
 	//{
 	//	isBossOut = true; //開啟第二個模式 test
 
@@ -1254,6 +1257,45 @@ void onAlienBulletLaunch(float delta) {
 
 		timer_AlienBulletLaunch = 0.0f;
 	
+	}
+
+
+}
+
+//依據流程跟新怪設狀態
+void GameProcessUpdate() {
+	//若總分到達十分則放出中怪
+	if (PlayerTotalPoint_SAlien == 3)
+	{
+		middle_alien = 1; //放出一隻中怪
+		
+		alien[SAlien_space]->used = true;
+
+	}
+
+	else if(PlayerTotalPoint_SAlien >= 7 && PlayerTotalPoint_MAlien >= 3)
+	{
+		isBossOut = true; //放出BOSS
+
+		isSMAlienClear = true; //關閉flag
+		for (int i = 0; i < SAlien_space + MAlien_space; i++)
+		{
+			if (alien[i]->used == true) //有一Alien 存在於畫面
+			{
+				isSMAlienClear = false; //開啟flag
+				break;
+			}
+			
+		}
+		
+
+		if (isSMAlienClear)
+		{
+			BOSS_alien = 1; //放出一隻BOSS
+			alien[SAlien_space + MAlien_space]->used = true;
+
+		}
+		
 	}
 
 
@@ -1370,6 +1412,7 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 			pHead_MainBullet_used = pGet_Draw_bullet;
 		}
 
+	
 		exit(EXIT_SUCCESS);
 
 		break;

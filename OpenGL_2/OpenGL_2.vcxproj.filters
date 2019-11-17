@@ -78,6 +78,9 @@
     <ClCompile Include="Weapon\Bullet_BAlien.cpp">
       <Filter>Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="Main\GL_Display_func.cpp">
+      <Filter>原始程式檔</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Angel.h">

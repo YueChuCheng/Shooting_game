@@ -129,6 +129,7 @@ void Small_Alien::AutomaticMotion() {
 
 			else if (isBossOut)
 			{
+				used = false;
 				if_first_alien = false;
 				alife = false;
 			}
@@ -150,6 +151,7 @@ void Small_Alien::AutomaticMotion() {
 		
 		else if (isBossOut)
 		{
+			used = false;
 			if_first_alien = false;
 			alife = false;
 		}
