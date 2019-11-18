@@ -80,6 +80,8 @@ public:
 };
 
 
+const int SAlien_circle = 50;
+const int SAlien_Point_NUM = (SAlien_circle * 7); //程翴羆计
 
 //Small Alien 
 class Small_Alien : public Alien
@@ -102,7 +104,7 @@ public:
 	//笆浪琩琌Τ端ㄧΑ
 	 void AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y,float MAX_X, float MAX_Y, bool *HurtAlien);
 
-	 const double MAX_X = 0.2; //程糴
+	 const double MAX_X = 0.3; //程糴
 	 const double MAX_Y = 0.35; //程蔼翴
 	
 	 
@@ -111,8 +113,8 @@ public:
 private:
 
 
-	vec4 _Points[Alien_Point_NUM];
-	vec4 _Colors[Alien_Point_NUM];
+	vec4 _Points[SAlien_Point_NUM];
+	vec4 _Colors[SAlien_Point_NUM];
 
 	// VAO
 	GLuint _VAO;
@@ -145,6 +147,8 @@ private:
 
 
 
+const int MAlien_circle = 50;
+const int MAlien_Point_NUM = (MAlien_circle * 12); //程翴羆计
 
 //Middle Alien 
 class Middle_Alien : public Alien
@@ -168,7 +172,7 @@ public:
 	void AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, float MAX_X, float MAX_Y, bool* HurtAlien);
 
 
-	const double MAX_X = 0.3; //程糴
+	const double MAX_X = 0.65; //程糴
 	const double MAX_Y = 0.35; //程蔼翴
 
 	
@@ -179,8 +183,8 @@ private:
 
 
 
-	vec4 _Points[Alien_Point_NUM];
-	vec4 _Colors[Alien_Point_NUM];
+	vec4 _Points[MAlien_Point_NUM];
+	vec4 _Colors[MAlien_Point_NUM];
 
 	// VAO
 	GLuint _VAO;

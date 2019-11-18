@@ -38,6 +38,7 @@ Bullet_BAlien *Bmode2_bullet[boss_Mode2BulletCount]; //BOSS第二模式攻擊子彈
 
 
 //玩家總分
+float SMAlien_speed = 0.0015f;//中怪小怪速度
 int PlayerTotalPoint_SAlien = 0; //打小怪
 int PlayerTotalPoint_MAlien = 0; //打中怪
 int PlayerTotalPoint_BAlien = 0; //打BOSS
@@ -1197,15 +1198,15 @@ void onAlienBulletLaunch(float delta) {
 		
 		for (int i = 0; i < SAlien_space + middle_alien; i++) //每個小怪都建置一個子彈
 		{
-			if(i <  small_alien){ //SAlien 創造子彈
-				if (alien[i]->_y > -2.5 && alien[i]->_y < 2.5) {
+			if(i <  small_alien){ //SAlien 創造子彈 
+				if (alien[i]->_y > -2.5 && alien[i]->_y < 2.5  && alien[i]->alife) {  //Alien 需再存活狀態
 					CreateBullet_Alien(alien[i] , 'S');
 					
 				}
 			}
 
 			else if(i < SAlien_space + middle_alien){ //MAlien 創造子彈
-				if (alien[i]->_y > -2.5 && alien[i]->_y < 2.5) {
+				if (alien[i]->_y > -2.5 && alien[i]->_y < 2.5 && alien[i]->alife) { //Alien 需再存活狀態
 				
 					CreateBullet_Alien(alien[i], 'M');
 				

@@ -1,6 +1,7 @@
 #include "Alien.h"
 
 extern bool isBossOut;
+extern float SMAlien_speed;
 
 
 Small_Alien::~Small_Alien()
@@ -13,25 +14,116 @@ Small_Alien::~Small_Alien()
 Small_Alien::Small_Alien()
 {
 
-	_Points[0] = vec4(-0.5, 0.5, 0.0, 1.0);
-	_Points[1] = vec4(-0.5, -0.5, 0.0, 1.0);
-	_Points[2] = vec4(0.5,-0.5, 0.0, 1.0);
-	_Points[3] = vec4(-0.5, 0.5, 0.0, 1.0);
-	_Points[4] = vec4(0.5, -0.5, 0.0, 1.0);
-	_Points[5] = vec4(0.5, 0.5, 0.0, 1.0);
-
-
-	for (int i = 0; i < Alien_Point_NUM; i++)
+	for (int i = 0; i < SAlien_circle; i++)
 	{
-		_Colors[i] = vec4(1.0, 0.0, 0.0, 1.0);
+		float x = 0.2f * cosf(2.0f * M_PI * i / SAlien_circle);
+		float y = 0.35f * sinf(2.0f * M_PI * i / SAlien_circle);
+
+		_Points[i] = vec4(x * cosf(-0.125 * M_PI) - y * sinf(-0.125 * M_PI) + 0.38f, x * sinf(-0.125 * M_PI) + y * cosf(-0.125 * M_PI) + 0.65f, 0.0f, 1.0f);
+
+
+	}
+
+
+	for (int i = 0; i < SAlien_circle; i++)
+	{
+		_Colors[i] = vec4(0.4179, 0.6953, 0.7812, 1.0);
 	}
 	
 
+
+	for (int i = SAlien_circle; i < (SAlien_circle * 2 ); i++)
+	{
+		float x = 0.2f * cosf(2.0f * M_PI * i / SAlien_circle);
+		float y = 0.35f * sinf(2.0f * M_PI * i / SAlien_circle);
+
+		_Points[i] = vec4(x * cosf(0.125 * M_PI) - y * sinf(0.125 * M_PI) - 0.38f, x * sinf(0.125 * M_PI) + y * cosf(0.125 * M_PI) + 0.65f, 0.0f, 1.0f);
+
+	}
+
+	for (int i = SAlien_circle; i < (SAlien_circle * 2); i++)
+	{
+		_Colors[i] = vec4(0.4179, 0.6953, 0.7812, 1.0);
+	}
+
+
+
+
+	for (int i = (SAlien_circle * 2); i < (SAlien_circle * 3); i++)
+	{
+		_Points[i] = vec4(0.75f * cosf(2.0f * M_PI * i / SAlien_circle), 0.67f * sinf(2.0f * M_PI * i / SAlien_circle), 0.0f, 1.0f);
+
+	}
+
+	for (int i = (SAlien_circle * 2); i < (SAlien_circle * 3); i++)
+	{
+		_Colors[i] = vec4(0.5234, 0.7773, 0.8554, 1.0);
+	}
+
+
+	for (int i = (SAlien_circle * 3); i < (SAlien_circle * 4); i++)
+	{
+		_Points[i] = vec4(0.4f * cosf(2.0f * M_PI * i / SAlien_circle), 0.4f * sinf(2.0f * M_PI * i / SAlien_circle) + 0.07f, 0.0f, 1.0f);
+
+	}
+
+	for (int i = (SAlien_circle * 3); i < (SAlien_circle * 4); i++)
+	{
+		_Colors[i] = vec4(0.9960, 0.9531, 0.8828, 1.0);
+	}
+
+
+
+
+	for (int i = (SAlien_circle * 4); i < (SAlien_circle * 5); i++)
+	{
+		_Points[i] = vec4(0.2f * cosf(2.0f * M_PI * i / SAlien_circle), 0.2f * sinf(2.0f * M_PI * i / SAlien_circle) + 0.07f, 0.0f, 1.0f);
+
+	}
+
+	for (int i = (SAlien_circle * 4); i < (SAlien_circle * 5); i++)
+	{
+		_Colors[i] = vec4(0.8867, 0.2929, 0.5156, 1.0);
+	}
+
+
+
+
+
+	for (int i = (SAlien_circle * 5); i < (SAlien_circle * 6); i++)
+	{
+
+		_Points[i] = vec4(0.1f * cosf(2.0f * M_PI * i / SAlien_circle), 0.1f * sinf(2.0f * M_PI * i / SAlien_circle) + 0.07f, 0.0f, 1.0f);
+
+	}
+
+	for (int i = (SAlien_circle * 5); i < (SAlien_circle * 6); i++)
+	{
+		_Colors[i] = vec4(0.4062, 0.2460, 0.3085, 1.0);
+	}
 	
 
 
+
+
+
+
+	for (int i = (SAlien_circle * 6); i < (SAlien_circle * 7); i++)
+	{
+
+		_Points[i] = vec4(0.25f * cosf(2.0f * M_PI * i / SAlien_circle), 0.2f * sinf(2.0f * M_PI * i / SAlien_circle) - 0.4f, 0.0f, 1.0f);
+
+
+	}
+
+	for (int i = (SAlien_circle * 6); i < (SAlien_circle * 7); i++)
+	{
+		_Colors[i] = vec4(0.9687, 0.8203, 0.4960, 1.0);
+	}
+
+
 	//®Õ¥¿¤ñ¨Ò
-	for (int i = 0; i < Alien_Point_NUM; i++)
+	for (int i = 0; i < SAlien_Point_NUM; i++)
 	{
 		_Points[i].x = _Points[i].x * (3.5 / 10.0);
 		_Points[i].y = _Points[i].y * (360.0 / 640.0) * (3.5 / 10.0);
@@ -65,8 +157,13 @@ void Small_Alien::Draw()
 	}*/
 
 
-	glDrawArrays(GL_TRIANGLES, 0 , Alien_Point_NUM);
-
+	glDrawArrays(GL_TRIANGLE_FAN, 0 , SAlien_circle);
+	glDrawArrays(GL_TRIANGLE_FAN, SAlien_circle, SAlien_circle);
+	glDrawArrays(GL_TRIANGLE_FAN, SAlien_circle * 2, SAlien_circle);
+	glDrawArrays(GL_TRIANGLE_FAN, SAlien_circle * 3, SAlien_circle);
+	glDrawArrays(GL_TRIANGLE_FAN, SAlien_circle * 4, SAlien_circle);
+	glDrawArrays(GL_TRIANGLE_FAN, SAlien_circle * 5, SAlien_circle);
+	glDrawArrays(GL_TRIANGLE_FAN, SAlien_circle * 6, SAlien_circle);
 }
 
 
@@ -90,7 +187,13 @@ void Small_Alien::DrawW()
 		glUniformMatrix4fv( _Projection, 1, GL_TRUE, _mxProjection );
 		_bUpdateProj = false;
 	}
-	glDrawArrays(GL_TRIANGLES, 0, Alien_Point_NUM);
+	glDrawArrays(GL_TRIANGLE_FAN, 0, SAlien_circle);
+	glDrawArrays(GL_TRIANGLE_FAN, SAlien_circle, SAlien_circle);
+	glDrawArrays(GL_TRIANGLE_FAN, SAlien_circle * 2, SAlien_circle);
+	glDrawArrays(GL_TRIANGLE_FAN, SAlien_circle * 3, SAlien_circle);
+	glDrawArrays(GL_TRIANGLE_FAN, SAlien_circle * 4, SAlien_circle);
+	glDrawArrays(GL_TRIANGLE_FAN, SAlien_circle * 5, SAlien_circle);
+	glDrawArrays(GL_TRIANGLE_FAN, SAlien_circle * 6, SAlien_circle);
 }
 
 
@@ -113,7 +216,10 @@ void Small_Alien::AutomaticMotion() {
 	
 
 	else {
-		_y -= 0.0025f;
+
+		
+		_y -= SMAlien_speed;
+		
 		mxTran_Alien = Translate(_x, _y, 0.0);
 		SetTRSMatrix(mxTran_Alien);
 
@@ -159,8 +265,9 @@ void Small_Alien::AutomaticMotion() {
 	}
 
 	
+	
 
-	 
+
 
 
 }

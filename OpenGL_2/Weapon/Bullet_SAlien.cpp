@@ -15,8 +15,8 @@ Bullet_SAlien::Bullet_SAlien() {
 
 	for (int i = 0; i < Bullet_SAlien_Point_NUM; i++)
 	{
-		_Points[i].x = _Points[i].x * (3.5 / 10.0);
-		_Points[i].y = _Points[i].y * (360.0 / 640.0) * (3.5 / 10.0);
+		_Points[i].x = _Points[i].x * (3 / 10.0);
+		_Points[i].y = _Points[i].y * (360.0 / 640.0) * (3 / 10.0);
 
 	}
 

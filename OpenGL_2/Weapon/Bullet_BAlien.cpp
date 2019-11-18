@@ -36,7 +36,7 @@ void Bullet_BAlien::AutoTranslate_Bullet() {
 
 	if (first_direction_x==LEFT)
 	{
-		_x += 0.004;
+		_x += 0.007;
 		if (_x > 2.0f && !Game_Over) { //禬筁絛瞅玥传玡秈よ
 			first_direction_x = RIGHT;
 		}
@@ -44,7 +44,7 @@ void Bullet_BAlien::AutoTranslate_Bullet() {
 	
 	else if (first_direction_x==RIGHT)
 	{
-		_x -= 0.004;
+		_x -= 0.007;
 		if (_x < -2.0f && !Game_Over) {//禬筁絛瞅玥传玡秈よ
 			first_direction_x = LEFT;
 		}
@@ -54,7 +54,7 @@ void Bullet_BAlien::AutoTranslate_Bullet() {
 
 	if (first_direction_y == BOTTOM)
 	{
-		_y -= 0.002f;
+		_y -= 0.004f;
 		if (_y < -1.8f) { //禬筁絛瞅玥传玡秈よ
 			first_direction_y = TOP;
 		}
@@ -62,7 +62,7 @@ void Bullet_BAlien::AutoTranslate_Bullet() {
 
 	else if (first_direction_y == TOP)
 	{
-		_y += 0.002f;
+		_y += 0.004f;
 		if (_y > 2.0f) {//禬筁絛瞅玥传玡秈よ
 			first_direction_y = BOTTOM;
 		}
