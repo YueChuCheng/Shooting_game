@@ -212,9 +212,9 @@ private:
 };
 
 
-
-const int rectangle_BAlien = 6;
-const int BAlien_Point_NUM = (rectangle_BAlien * 5 ); //程翴羆计
+const int BAlien_circle = 50;
+const int BAlien_rectangle = 4;
+const int BAlien_Point_NUM = (BAlien_circle * 12) + (BAlien_rectangle * 6 ) ; //程翴羆计
 
 //BOSS_Alien 
 class BOSS_Alien : public Alien

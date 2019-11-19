@@ -26,9 +26,9 @@ enum Mode
  short BOSSMode = One;
 float boss_BulletCoordinate[3][2] = {
 
-	0.75f , -0.5f,
-   -0.75f , -0.5f,
-    0.0f  , -0.2f
+	0.75f , -0.3f,
+   -0.75f , -0.3f,
+    0.0f  , -0.1f
 
 };
 const short boss_Mode2BulletCount = 4;
@@ -52,9 +52,9 @@ MainRole *mainrole;	// 宣告 指標物件，結束時記得釋放
 MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
 Cloud* cloud[6];
 Bullet_Main* bullet_main;
-short small_alien = 4; //螢幕上small alien 出現的最大數量
+short small_alien = 0; //螢幕上small alien 出現的最大數量
 short middle_alien = 0; //螢幕上middle alien 出現的最大數量
-short BOSS_alien = 0; //螢幕上BOSS alien 出現的最大數量
+short BOSS_alien = 1; //螢幕上BOSS alien 出現的最大數量
 short SAlien_space = 4;  // SAlien 空間個數
 short MAlien_space = 2;  // MAlien 空間個數
 short BAlien_space = 1;  // BOSS 空間個數
