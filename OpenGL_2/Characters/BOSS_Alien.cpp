@@ -3,7 +3,7 @@
 extern int PlayerTotalPoint_BAlien;
 extern short BOSSMode;
 extern bool Game_Over;
-
+extern void CreateSmoke(float _x, float _y);
 BOSS_Alien::~BOSS_Alien()
 {
 
@@ -14,73 +14,7 @@ BOSS_Alien::~BOSS_Alien()
 BOSS_Alien::BOSS_Alien()
 {
 
-	/*_Points[0] = vec4(-0.75, 0.4, 0.0, 1.0);
-	_Points[1] = vec4(-0.75, -0.4, 0.0, 1.0);
-	_Points[2] = vec4(0.75, -0.4, 0.0, 1.0);
-	_Points[3] = vec4(-0.75, 0.4, 0.0, 1.0);
-	_Points[4] = vec4(0.75, -0.4, 0.0, 1.0);
-	_Points[5] = vec4(0.75, 0.4, 0.0, 1.0);
-
-
-	_Points[rectangle_BAlien+0] = vec4(-0.9, 0.0, 0.0, 1.0);
-	_Points[rectangle_BAlien+1] = vec4(-0.9, -0.8, 0.0, 1.0);
-	_Points[rectangle_BAlien+2] = vec4(-0.6, -0.8, 0.0, 1.0);
-	_Points[rectangle_BAlien+3] = vec4(-0.9, 0.0, 0.0, 1.0);
-	_Points[rectangle_BAlien+4] = vec4(-0.6, -0.8, 0.0, 1.0);
-	_Points[rectangle_BAlien+5] = vec4(-0.6, 0.0, 0.0, 1.0);
-
-	_Points[(rectangle_BAlien * 2) + 0] = vec4(0.9, 0.0, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 2) + 1] = vec4(0.9, -0.8, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 2) + 2] = vec4(0.6, -0.8, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 2) + 3] = vec4(0.9, 0.0, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 2) + 4] = vec4(0.6, -0.8, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 2) + 5] = vec4(0.6, 0.0, 0.0, 1.0);
-
-	_Points[(rectangle_BAlien * 3) + 0] = vec4(0.9, -0.7, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 3) + 1] = vec4(0.9, -0.8, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 3) + 2] = vec4(0.6, -0.8, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 3) + 3] = vec4(0.9, -0.7, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 3) + 4] = vec4(0.6, -0.8, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 3) + 5] = vec4(0.6, -0.7, 0.0, 1.0);
-
-
-	_Points[(rectangle_BAlien * 4) + 0] = vec4(-0.9, -0.7, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 4) + 1] = vec4(-0.9, -0.8, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 4) + 2] = vec4(-0.6, -0.8, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 4) + 3] = vec4(-0.9, -0.7, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 4) + 4] = vec4(-0.6, -0.8, 0.0, 1.0);
-	_Points[(rectangle_BAlien * 4) + 5] = vec4(-0.6, -0.7, 0.0, 1.0);*/
-
-
 	
-
-	//color
-	/*for (int i = 0; i < rectangle_BAlien; i++)
-	{
-		_Colors[i] = vec4(0.0, 0.0, 1.0, 1.0);
-	}
-
-
-	for (int i = rectangle_BAlien; i < rectangle_BAlien * 3; i++)
-	{
-		_Colors[i] = vec4(1.0, 1.0, 1.0, 1.0);
-	}
-
-
-	
-
-	for (int i = (rectangle_BAlien * 3); i < (rectangle_BAlien * 4); i++)
-	{
-		_Colors[i] = vec4(1.0, 1.0, 0.0, 1.0);
-	}
-
-
-	for (int i = (rectangle_BAlien * 4); i < (rectangle_BAlien * 5); i++)
-	{
-		_Colors[i] = vec4(1.0, 1.0, 0.0, 1.0);
-	}*/
-
-
 
 
 	//bottom_middle
@@ -332,13 +266,7 @@ BOSS_Alien::BOSS_Alien()
 
 
 
-	//rectangle_right
-	/*_Points[i] = vec4(0.15f * cosf(2.0f * M_PI * i / BAlien_circle) + 0.4f, 0.1 * sinf(2.0f * M_PI * i / BAlien_circle) - 0.32f, 0.0f, 1.0f);
-
-	for (size_t i = 0; i < BAlien_rectangle; i++)
-	{
-		_Colors[i] = vec4(1.0, 1.0, 1.0, 1.0);
-	}*/
+	
 
 
 
@@ -458,7 +386,7 @@ void BOSS_Alien::AutomaticMotion(float timer) {
 
 	else if (timer < 5.0f)//¦b¿Ã¹õ¥~
 	{
-		if (_y > 1.0f)
+		if (_y > 1.3f)
 		{
 			_y -= 0.0015f;
 		}
@@ -493,7 +421,7 @@ void BOSS_Alien::AutomaticMotion(float timer) {
 			first_direction_x = !first_direction_x;
 		}
 
-		if (_y > 1.0f || _y < 0.7f)
+		if (_y > 1.3f || _y < 1.0f)
 		{
 			first_direction_y = !first_direction_y;
 		}
@@ -547,7 +475,12 @@ void BOSS_Alien::AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, float MAX_
 
 	if (Blood <= 0)
 	{
+		if (used) {
+			CreateSmoke(this->_x, this->_y);
 
+		}
+		
+		used = false;
 		alife = false;
 		Game_Over = true;
 	}

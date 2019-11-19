@@ -6,6 +6,7 @@
 #include "Background/Cloud.h"
 #include "Characters/Alien.h"
 #include "Weapon/Bullet_Main.h"
+#include"Deco/Explo.h"
 
 
 #define SPACE_KEY 32
@@ -15,6 +16,11 @@
 #define SCREENHEIGHT 640
 #define SCREENWIDTH_HALF (SCREENWIDTH/2.0)
 #define SCREENHEIGHT_HALF (SCREENHEIGHT/2.0)
+
+//Deco
+Explo* explo_alien[5];
+
+
 
 //BOSS 子彈發射座標
 enum Mode
@@ -52,9 +58,9 @@ MainRole *mainrole;	// 宣告 指標物件，結束時記得釋放
 MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
 Cloud* cloud[6];
 Bullet_Main* bullet_main;
-short small_alien = 0; //螢幕上small alien 出現的最大數量
+short small_alien = 3; //螢幕上small alien 出現的最大數量
 short middle_alien = 0; //螢幕上middle alien 出現的最大數量
-short BOSS_alien = 1; //螢幕上BOSS alien 出現的最大數量
+short BOSS_alien = 0; //螢幕上BOSS alien 出現的最大數量
 short SAlien_space = 4;  // SAlien 空間個數
 short MAlien_space = 2;  // MAlien 空間個數
 short BAlien_space = 1;  // BOSS 空間個數
@@ -423,6 +429,22 @@ void CreateGameObject() {
 		
 		Bmode2_bullet[i]->SetTRSMatrix(Bmode2_bullet[i]->BulletTrans);
 	}
+	
+
+	//test explo
+	/*explo_alien = new Explo;
+	explo_alien->SetShader(g_mxModelView, g_mxProjection);*/
+
+	for (int i = 0; i < 5; i++)
+	{
+		explo_alien[i] = new Explo;
+		explo_alien[i]->SetShader(g_mxModelView, g_mxProjection);
+
+
+	}
+
+
+
 
 
 
@@ -489,9 +511,22 @@ void GL_Display(void)
 		Bmode2_bullet[i]->Draw();
 	}
 	
+	//Draw Alien smoke
+	for ( i = 0; i < 5; i++)
+	{
+		if (explo_alien[i]->used) {
+
+			explo_alien[i]->Draw();
+		}
+
+	}
+
+
 	
 	mainrole->Draw();
 	mainrole_ring->Draw();
+
+	
 
 	glutSwapBuffers();	// 交換 Frame Buffer
 }
@@ -808,6 +843,30 @@ void CreateBullet_Alien(Alien *alien , char what_alien ) {
 //----------------------------------------------------------------------------
 
 
+//產生煙霧
+void CreateSmoke( float _x , float _y ) {
+
+	for (int i = 0; i < 5  && !Game_Over; i++)
+	{
+		if (explo_alien[i]->used == false) {
+			
+			explo_alien[i]->used=true;
+			explo_alien[i]->_x = _x;
+			explo_alien[i]->_y = _y;
+			explo_alien[i]->mxTran_Smoke = Translate(explo_alien[i]->_x, explo_alien[i]->_y, 0.0f);
+			explo_alien[i]->SetTRSMatrix(explo_alien[i]->mxTran_Smoke);
+			break;
+		}
+
+
+	}
+
+
+}
+
+
+
+
 
 //檢查子彈是否超過有效範圍, 若超過則連結好前後節點，並delete
 void CheckBullet() {
@@ -1121,7 +1180,17 @@ void onFrameMove(float delta)
 
 		}
 
-		
+		//更新smoke
+		for (int i = 0; i < 5 ; i++)
+		{
+			if (explo_alien[i]->used) {
+				explo_alien[i]->AutomaticMotion(delta);
+				
+			}
+			
+		}
+
+
 		//更新遊戲流程
 		GameProcessUpdate();
 
@@ -1478,16 +1547,16 @@ int main( int argc, char **argv )
 	glutInitContextProfile( GLUT_CORE_PROFILE );
 
 
-    glutCreateWindow( "Draw two triangles" );
+    glutCreateWindow( "Shooting Game" );
 
 	// The glewExperimental global switch can be turned on by setting it to GL_TRUE before calling glewInit(), 
 	// which ensures that all extensions with valid entry points will be exposed.
 	glewExperimental = GL_TRUE; 
 	
 	//允許透明度設定
-	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
+    glEnable(GL_BLEND);
+
 	glewInit();  
     init();
 

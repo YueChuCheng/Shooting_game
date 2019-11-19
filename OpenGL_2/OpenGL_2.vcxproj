@@ -88,6 +88,7 @@
     <ClCompile Include="Characters\Small_Alien.cpp" />
     <ClCompile Include="Common\common.cpp" />
     <ClCompile Include="Common\Timer.cpp" />
+    <ClCompile Include="Deco\Explo.cpp" />
     <ClCompile Include="InitShader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Main\GL_Display_func.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="Characters\MainRole.h" />
     <ClInclude Include="Characters\MainRole_Ring.h" />
     <ClInclude Include="Common\Timer.h" />
+    <ClInclude Include="Deco\Explo.h" />
     <ClInclude Include="Header\Angel.h" />
     <ClInclude Include="Header\CheckError.h" />
     <ClInclude Include="Header\mat.h" />
@@ -113,10 +115,12 @@
     <None Include="fsCloud_1.glsl" />
     <None Include="fsMainRole.glsl" />
     <None Include="fsMainRole_Ring.glsl" />
+    <None Include="fsSmoke.glsl" />
     <None Include="vsBullet_Main.glsl" />
     <None Include="vsCloud_1.glsl" />
     <None Include="vsMainRole.glsl" />
     <None Include="vsMainRole_Ring.glsl" />
+    <None Include="vsSmoke.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

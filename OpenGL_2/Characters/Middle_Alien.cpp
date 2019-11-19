@@ -1,7 +1,7 @@
 #include "Alien.h"
 extern bool isBossOut;
 extern float SMAlien_speed;
-
+extern void CreateSmoke(float _x, float _y);
 
 Middle_Alien::~Middle_Alien()
 {
@@ -322,6 +322,7 @@ void Middle_Alien::AutomaticMotion(GLfloat MainRole_x, GLfloat MainRole_y) {
 
 			if (!isBossOut)
 			{
+				
 				if_first_alien = true;
 				Blood = Blood_original; //血量重新計算
 
@@ -342,8 +343,13 @@ void Middle_Alien::AutomaticMotion(GLfloat MainRole_x, GLfloat MainRole_y) {
 
 	if (alife == false) //若此Alien已死亡
 	{
-		if (!isBossOut) {
+		if (used) {
+			CreateSmoke(this->_x, this->_y);
 
+		}
+		
+		if (!isBossOut) {
+			
 			if_first_alien = true;
 			Blood = Blood_original; //血量重新計算
 			alife = true;//重生

@@ -31,6 +31,9 @@
     <Filter Include="Characters\Alien">
       <UniqueIdentifier>{a04f6ff8-f7a9-40ca-8323-1cede9ef8ddd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Deco">
+      <UniqueIdentifier>{b80ada12-67ff-4f06-a4b4-d3e17458efd4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InitShader.cpp">
@@ -81,6 +84,9 @@
     <ClCompile Include="Main\GL_Display_func.cpp">
       <Filter>原始程式檔</Filter>
     </ClCompile>
+    <ClCompile Include="Deco\Explo.cpp">
+      <Filter>Deco</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Angel.h">
@@ -113,6 +119,9 @@
     <ClInclude Include="Characters\Alien.h">
       <Filter>Characters\Alien</Filter>
     </ClInclude>
+    <ClInclude Include="Deco\Explo.h">
+      <Filter>Deco</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fsMainRole.glsl">
@@ -137,6 +146,12 @@
       <Filter>原始程式檔\Shader</Filter>
     </None>
     <None Include="vsBullet_Main.glsl">
+      <Filter>原始程式檔\Shader</Filter>
+    </None>
+    <None Include="fsSmoke.glsl">
+      <Filter>原始程式檔\Shader</Filter>
+    </None>
+    <None Include="vsSmoke.glsl">
       <Filter>原始程式檔\Shader</Filter>
     </None>
   </ItemGroup>

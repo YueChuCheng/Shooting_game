@@ -319,7 +319,7 @@ void MainRole::AutoCheckHurt_MainRole(GLfloat x, GLfloat y, float Max_X, float M
 	
 	if (_x - this->MAX_X <= x - Max_X && _x + this->MAX_X >= x + Max_X && _y + this->MAX_Y >= y + MAX_Y && _y - this->MAX_Y <= y - MAX_Y  && can_change_hurtMain)//偵測是否位於攻擊範圍 且是否為可攻擊狀態
 	{
-		//printf("yes");
+		
 		*HurtMainRole = true;
 		can_change_hurtMain = false;
 		*defense_ball = *defense_ball - 1; //少一命

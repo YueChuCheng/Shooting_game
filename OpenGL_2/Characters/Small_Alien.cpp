@@ -2,6 +2,7 @@
 
 extern bool isBossOut;
 extern float SMAlien_speed;
+extern void CreateSmoke(float _x, float _y);
 
 
 Small_Alien::~Small_Alien()
@@ -247,8 +248,12 @@ void Small_Alien::AutomaticMotion() {
 
 	if (alife==false ) //若此Alien已死亡 且 大BOSS未出來
 	{
+		if (used) {
+			CreateSmoke(this->_x, this->_y);
+
+		}
 		if(!isBossOut){
-		
+			
 			if_first_alien = true;
 			Blood = Blood_original; //血量重新計算
 			alife = true;//重生
