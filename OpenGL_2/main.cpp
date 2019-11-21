@@ -7,7 +7,7 @@
 #include "Characters/Alien.h"
 #include "Weapon/Bullet_Main.h"
 #include"Deco/Explo.h"
-
+#include"Bonus/SuperCub.h"
 
 #define SPACE_KEY 32
 
@@ -17,10 +17,13 @@
 #define SCREENWIDTH_HALF (SCREENWIDTH/2.0)
 #define SCREENHEIGHT_HALF (SCREENHEIGHT/2.0)
 
+//Bonus
+SuperCube* superCube;
+bool touch_superCuber = false;
+
+
 //Deco
 Explo* explo_alien[5];
-
-
 
 //BOSS 子彈發射座標
 enum Mode
@@ -431,7 +434,7 @@ void CreateGameObject() {
 	}
 	
 
-	//test explo
+	// explo
 	/*explo_alien = new Explo;
 	explo_alien->SetShader(g_mxModelView, g_mxProjection);*/
 
@@ -444,7 +447,9 @@ void CreateGameObject() {
 	}
 
 
-
+	//test bonus cube;
+	superCube = new SuperCube;
+	superCube->SetShader(g_mxModelView, g_mxProjection);
 
 
 
@@ -505,7 +510,7 @@ void GL_Display(void)
 
 
 
-	//test Boss mode 2 attack
+	// Boss mode 2 attack
 	for ( i = 0; i < boss_Mode2BulletCount && BOSSMode == Two; i++)
 	{
 		Bmode2_bullet[i]->Draw();
@@ -520,6 +525,14 @@ void GL_Display(void)
 		}
 
 	}
+
+
+	//test bouns
+	if (superCube->used)
+	{
+		superCube->Draw();
+	}
+	
 
 
 	
@@ -1190,6 +1203,42 @@ void onFrameMove(float delta)
 			
 		}
 
+		//更新Super Cube
+		
+		if(superCube->used){ //Super有被使用
+			superCube->AutomaticMotion(mainrole->_x , mainrole->_y);
+			if (!touch_superCuber) {
+
+				superCube->CheackMainRole(mainrole->_x, mainrole->_y, mainrole->MAX_X, mainrole->MAX_Y );
+
+				if (touch_superCuber) { //若更新為true 則mainrole 回復原來狀態 且不得攻擊
+					mainrole->can_change_hurtMain = false;
+					mainrole->SetAlpha(1.0);
+					mainrole_ring->SetAlpha(1.0);
+				}
+			}
+
+			else //更新super 是否有打到alien
+			{
+
+				//檢查是否有Alien被main role打到
+				for (int i = 0; i < SAlien_space + MAlien_space ; i++) // *注意 alien的空間須被使用
+				{
+					
+					if (alien[i]->used)
+						alien[i]->CheckSuperHurt(superCube->_x, superCube->_y, superCube->MAX_X, superCube->MAX_Y);
+
+				}
+
+
+			}
+
+		}
+
+		
+		
+		
+
 
 		//更新遊戲流程
 		GameProcessUpdate();
@@ -1199,12 +1248,11 @@ void onFrameMove(float delta)
 
 
 	//更新保護機制
-	if (timer_canHurtMainRole >4.0 && mainrole->can_change_hurtMain ==false) { //維持四秒無敵狀態
+	if (timer_canHurtMainRole >4.0 && mainrole->can_change_hurtMain ==false && !touch_superCuber) { //維持四秒無敵狀態 且不為無敵狀態
 		
 		mainrole->can_change_hurtMain = true; //可重新攻擊
 		mainrole->SetAlpha(1.0);
 		mainrole_ring->SetAlpha(1.0); 
-
 
 
 	}
@@ -1413,6 +1461,11 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 
 	switch (key)
 	{
+	case'x': //test super cube
+		superCube->used = true;
+		superCube->if_first_cube = true;
+		touch_superCuber = false;
+		break;
 	case '1':
 		BOSSMode = One; //BOSS改變成第一型態test
 		break;
@@ -1563,7 +1616,7 @@ int main( int argc, char **argv )
 	
 
 	
-	glutKeyboardFunc(win_keyFunc);//test _defenceBallNUM
+	glutKeyboardFunc(win_keyFunc);
 	
 	glutMotionFunc(win_mousemotion);//滑鼠在按下按鍵時一樣操控船艦
 	glutPassiveMotionFunc(win_PassiveMotion); //用滑鼠操控船艦

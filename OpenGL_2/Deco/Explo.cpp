@@ -3,9 +3,6 @@
 Explo::Explo()
 {
 
-	
-
-
 	for (int i = 0; i < Explo_circle; i++)
 	{
 		_Points[i] = vec4(0.3f * cosf(2.0f * M_PI * i / Explo_circle) + 3.5f, 0.3f * sinf(2.0f * M_PI * i / Explo_circle), 0.0f, 1.0f);

@@ -37,6 +37,9 @@ public:
 	bool can_change_hurtMain = true; //自己是否有受傷
 	
 
+	const float MAX_X = 0.3f; //最長寬
+	const float MAX_Y = 0.3f; //最高點
+
 	//移動矩陣
 	mat4 mxTran_Main;
 
@@ -60,8 +63,7 @@ private:
 	bool  _bUpdateProj;
 
 	
-	const float MAX_X = 0.3f; //最長寬
-	const float MAX_Y = 0.3f; //最高點
+
 
 	void CreateBufferObject();
 

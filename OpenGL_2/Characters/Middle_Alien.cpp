@@ -271,6 +271,33 @@ void Middle_Alien::DrawW()
 
 void Middle_Alien::AutomaticMotion(GLfloat MainRole_x, GLfloat MainRole_y) {
 
+
+	if (alife == false) //若此Alien已死亡
+	{
+		if (used) {
+			CreateSmoke(this->_x, this->_y);
+
+		}
+
+		if (!isBossOut) {
+
+			if_first_alien = true;
+			Blood = Blood_original; //血量重新計算
+			alife = true;//重生
+
+		}
+
+		else if (isBossOut)
+		{
+			used = false;
+			if_first_alien = false;
+			alife = false;
+		}
+
+	}
+
+
+
 	float rotate ;  //旋轉角度
 	float fix_angle = 0; //修正角度
 
@@ -341,29 +368,7 @@ void Middle_Alien::AutomaticMotion(GLfloat MainRole_x, GLfloat MainRole_y) {
 
 	}
 
-	if (alife == false) //若此Alien已死亡
-	{
-		if (used) {
-			CreateSmoke(this->_x, this->_y);
-
-		}
-		
-		if (!isBossOut) {
-			
-			if_first_alien = true;
-			Blood = Blood_original; //血量重新計算
-			alife = true;//重生
-
-		}
-
-		else if (isBossOut)
-		{
-			used = false;
-			if_first_alien = false;
-			alife = false;
-		}
-
-	}
+	
 	
 };
 
@@ -441,4 +446,19 @@ void Middle_Alien::CreateBufferObject()
 
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(_Points), _Points);
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(_Points), sizeof(_Colors), _Colors);
+}
+
+
+
+//偵測super 攻擊
+void Middle_Alien::CheckSuperHurt(GLfloat Super_x, GLfloat Super_y, float MAX_X, float MAX_Y) {
+
+	if (_x - this->MAX_X + 0.3f >= Super_x - MAX_X  && _x + this->MAX_X - 0.3f <= Super_x + MAX_X && _y + this->MAX_Y  <= Super_y + MAX_Y  && _y - this->MAX_Y  >= Super_y - MAX_Y )//偵測是否位於攻擊範圍 且是否為可攻擊狀態
+	{
+
+		alife = false;
+
+	}
+
+
 }

@@ -26,6 +26,8 @@ public:
 	void SetColor(GLfloat vColorx, GLfloat vColory, GLfloat vColorz, GLfloat vColorw); // Single color
 	void SetVtxColors(GLfloat vLFColor[], GLfloat vLRColor[], GLfloat vTRColor[], GLfloat vTLColor[]); // four Vertices' Color
 
+	virtual void CheckSuperHurt(GLfloat Super_x, GLfloat Super_y, float MAX_X, float MAX_Y) {}; //檢查是否被超級狀態撞擊
+
 	virtual virtual void Draw() = 0; //宣告為虛擬類別，於各自類別中設計
 	virtual virtual void DrawW() = 0;//宣告為虛擬類別，於各自類別中設計
 
@@ -106,7 +108,7 @@ public:
 
 	 const double MAX_X = 0.3; //最長寬
 	 const double MAX_Y = 0.35; //最高點
-	
+	 void CheckSuperHurt(GLfloat Super_x, GLfloat Super_y, float MAX_X, float MAX_Y);
 	 
 
 
@@ -170,7 +172,7 @@ public:
 
 	//自動檢查是否有受傷、死亡函式
 	void AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, float MAX_X, float MAX_Y, bool* HurtAlien);
-
+	void CheckSuperHurt(GLfloat Super_x, GLfloat Super_y, float MAX_X, float MAX_Y);
 
 	const double MAX_X = 0.65; //最長寬
 	const double MAX_Y = 0.35; //最高點

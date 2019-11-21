@@ -102,3 +102,6 @@ void Alien::SetVtxColors(GLfloat vLFColor[], GLfloat vLRColor[], GLfloat vTRColo
 	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
 	glBufferSubData(GL_ARRAY_BUFFER, sizeof(_Points), sizeof(_Colors), _Colors);
 }
+
+
+

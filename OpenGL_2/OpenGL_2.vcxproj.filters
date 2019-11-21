@@ -34,6 +34,9 @@
     <Filter Include="Deco">
       <UniqueIdentifier>{b80ada12-67ff-4f06-a4b4-d3e17458efd4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Bonus">
+      <UniqueIdentifier>{be231a4f-1f3f-4e66-9b48-d26d56f0c6bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InitShader.cpp">
@@ -87,6 +90,9 @@
     <ClCompile Include="Deco\Explo.cpp">
       <Filter>Deco</Filter>
     </ClCompile>
+    <ClCompile Include="Bonus\SuperCube.cpp">
+      <Filter>Bonus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Angel.h">
@@ -121,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="Deco\Explo.h">
       <Filter>Deco</Filter>
+    </ClInclude>
+    <ClInclude Include="Bonus\SuperCub.h">
+      <Filter>Bonus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
