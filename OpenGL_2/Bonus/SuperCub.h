@@ -6,6 +6,11 @@ const int SuperCube_triangle = 3;
 const int SuperCube_circle = 50;
 const int SuperCube_Point_NUM = SuperCube_circle + SuperCube_triangle * 2; //最大點子總數
 
+enum Cube_style
+{
+	HIT = 0 , TWO_GUN = 1
+};
+
 
 class SuperCube
 {
@@ -13,6 +18,8 @@ public:
 	SuperCube();
 	~SuperCube();
 
+	int cubeStyle; //cube 的型態
+	
 	bool used = false;//空間是否被利用
 	bool if_first_cube = false;
 

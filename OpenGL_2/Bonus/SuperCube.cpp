@@ -1,7 +1,7 @@
 #include"SuperCub.h"
 
-extern bool touch_superCuber;
-
+extern bool touch_superCube;
+extern bool touch_twoGunStar;
 
 SuperCube::SuperCube()
 {
@@ -166,17 +166,34 @@ void SuperCube::Draw()
 	}*/
 
 
-	if(!touch_superCuber){
+	if (cubeStyle == HIT)
+	{
+		if(!touch_superCube){
 	
-		glDrawArrays(GL_TRIANGLES, 0, SuperCube_triangle);
-		glDrawArrays(GL_TRIANGLES, SuperCube_triangle, SuperCube_triangle);
+				glDrawArrays(GL_TRIANGLES, 0, SuperCube_triangle);
+				glDrawArrays(GL_TRIANGLES, SuperCube_triangle, SuperCube_triangle);
 
 	
-	}
-	else if(touch_superCuber){
+			}
+			else if(touch_superCube){
 	
-		glDrawArrays(GL_TRIANGLE_FAN, SuperCube_triangle * 2, SuperCube_circle);
+				glDrawArrays(GL_TRIANGLE_FAN, SuperCube_triangle * 2, SuperCube_circle);
+			}
 	}
+
+	else if (cubeStyle == TWO_GUN)
+	{
+		if (!touch_twoGunStar) {
+
+			glDrawArrays(GL_TRIANGLES, 0, SuperCube_triangle);
+			glDrawArrays(GL_TRIANGLES, SuperCube_triangle, SuperCube_triangle);
+			
+		}
+	
+	}
+
+
+
 	
 	
 
@@ -187,51 +204,112 @@ void SuperCube::Draw()
 
 void SuperCube::AutomaticMotion( float mainrole_x , float mainrole_y) {
 	
-	if(!touch_superCuber){ //Main Role尚未碰到 superCube
-		if (if_first_cube) { //一開始發射cube
 
-			_x = (double)(rand() % 3000 - 1000.0) / 1000.0;
-			_y = 2.0f;
-			theta = 0.0f;
-			mxRotate_SuperCube = RotateZ(theta);
+	if (cubeStyle == HIT) {
+
+
+		if(!touch_superCube ){ //Main Role尚未碰到 superCube
+			if (if_first_cube) { //一開始發射cube
+
+				_x = (double)(rand() % 3000 - 1000.0) / 1000.0;
+				_y = 2.0f;
+				theta = 0.0f;
+				mxRotate_SuperCube = RotateZ(theta);
+				mxTran_SuperCube = Translate(_x, _y, 0.0);
+				SetTRSMatrix(mxTran_SuperCube * mxRotate_SuperCube);
+
+				if_first_cube = false;
+			}
+
+
+			if (_y < -2.0f) {
+
+				used = false;
+			}
+
+
+			if (theta > 360.0f) {//避免角度溢位
+				theta -= 360.0f;
+
+			}
+
+			_y -= 0.001f;
+
+			mxRotate_SuperCube = RotateZ(theta -= 0.5f);
+			mxRotate_SuperCube._m[0] *= (2.0 / 10.0);
+			mxRotate_SuperCube._m[1] *= (360.0 / 640.0) * (2.0 / 10.0);
+
 			mxTran_SuperCube = Translate(_x, _y, 0.0);
+
+			SetTRSMatrix(mxTran_SuperCube * mxRotate_SuperCube);
+	
+		} 
+
+		else //Main Role碰到 superCube ，跟隨main role 位置
+		{
+			_x = mainrole_x;
+			_y = mainrole_y;
+			mxTran_SuperCube = Translate(_x, _y, 0.0);
+
+			SetTRSMatrix(mxTran_SuperCube);
+
+
+		}
+
+	}
+
+
+
+	else if (cubeStyle == TWO_GUN) {
+
+
+		if (!touch_twoGunStar) { //Main Role尚未碰到 superCube
+			if (if_first_cube) { //一開始發射cube
+
+				_x = (double)(rand() % 3000 - 1000.0) / 1000.0;
+				_y = 2.0f;
+				theta = 0.0f;
+				mxRotate_SuperCube = RotateZ(theta);
+				mxTran_SuperCube = Translate(_x, _y, 0.0);
+				SetTRSMatrix(mxTran_SuperCube * mxRotate_SuperCube);
+
+				if_first_cube = false;
+			}
+
+
+			if (_y < -2.0f) {
+
+				used = false;
+			}
+
+
+			if (theta > 360.0f) {//避免角度溢位
+				theta -= 360.0f;
+
+			}
+
+			_y -= 0.001f;
+
+			mxRotate_SuperCube = RotateZ(theta -= 0.5f);
+			mxRotate_SuperCube._m[0] *= (2.0 / 10.0);
+			mxRotate_SuperCube._m[1] *= (360.0 / 640.0) * (2.0 / 10.0);
+
+			mxTran_SuperCube = Translate(_x, _y, 0.0);
+
 			SetTRSMatrix(mxTran_SuperCube * mxRotate_SuperCube);
 
-			if_first_cube = false;
 		}
 
+		else //Main Role碰到 superCube ，跟隨main role 位置
+		{
+			_x = mainrole_x;
+			_y = mainrole_y;
+			mxTran_SuperCube = Translate(_x, _y, 0.0);
 
-		if (_y < -2.0f) {
+			SetTRSMatrix(mxTran_SuperCube);
 
-			used = false;
+
 		}
-
-
-		if (theta > 360.0f) {//避免角度溢位
-			theta -= 360.0f;
-
-		}
-
-		_y -= 0.001f;
-
-		mxRotate_SuperCube = RotateZ(theta -= 0.5f);
-		mxRotate_SuperCube._m[0] *= (2.0 / 10.0);
-		mxRotate_SuperCube._m[1] *= (360.0 / 640.0) * (2.0 / 10.0);
-
-		mxTran_SuperCube = Translate(_x, _y, 0.0);
-
-		SetTRSMatrix(mxTran_SuperCube * mxRotate_SuperCube);
-	
-	} 
-
-	else //Main Role碰到 superCube ，跟隨main role 位置
-	{
-		_x = mainrole_x;
-		_y = mainrole_y;
-		mxTran_SuperCube = Translate(_x, _y, 0.0);
-
-		SetTRSMatrix(mxTran_SuperCube);
-
 
 	}
 
@@ -246,18 +324,34 @@ void SuperCube::AutomaticMotion( float mainrole_x , float mainrole_y) {
 //檢查是否被main role碰到
 void SuperCube::CheackMainRole(GLfloat x, GLfloat y, float Max_X, float MAX_Y) {
 
-
-	if (_x - this->MAX_X <= x - Max_X && _x + this->MAX_X >= x + Max_X && _y + this->MAX_Y >= y + MAX_Y && _y - this->MAX_Y <= y - MAX_Y )//偵測是否位於攻擊範圍 且是否為可攻擊狀態
+	if (cubeStyle == HIT)
 	{
+		if (_x - this->MAX_X <= x - Max_X && _x + this->MAX_X >= x + Max_X && _y + this->MAX_Y >= y + MAX_Y && _y - this->MAX_Y <= y - MAX_Y )//偵測是否位於攻擊範圍 且是否為可攻擊狀態
+			{
 		
-		touch_superCuber = true;
+				touch_superCube = true;
 
-		this->MAX_X = 0.7f; //最長寬
-		this->MAX_Y = 0.7f; //最高點
+				this->MAX_X = 0.7f; //最長寬
+				this->MAX_Y = 0.7f; //最高點
 
 		
 		
+			}
 	}
+
+	else if (cubeStyle == TWO_GUN) {
+
+
+		if (_x - this->MAX_X <= x - Max_X && _x + this->MAX_X >= x + Max_X && _y + this->MAX_Y >= y + MAX_Y && _y - this->MAX_Y <= y - MAX_Y)//偵測是否位於攻擊範圍 且是否為可攻擊狀態
+		{
+			touch_twoGunStar = true;
+			used = false;
+		}
+
+	}
+
+	
+
 
 
 

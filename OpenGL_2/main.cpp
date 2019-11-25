@@ -19,8 +19,10 @@
 
 //Bonus
 SuperCube* superCube;
-bool touch_superCuber = false;
+bool touch_superCube = false;
 
+SuperCube* superCube_twoGun;
+bool touch_twoGunStar = false;
 
 //Deco
 Explo* explo_alien[5];
@@ -450,8 +452,12 @@ void CreateGameObject() {
 	//test bonus cube;
 	superCube = new SuperCube;
 	superCube->SetShader(g_mxModelView, g_mxProjection);
+	superCube->cubeStyle = 0; //設定cube樣式
 
-
+	//test two gun
+	superCube_twoGun = new SuperCube;
+	superCube_twoGun->SetShader(g_mxModelView, g_mxProjection);
+	superCube_twoGun->cubeStyle = 1; //設定cube樣式
 
 }
 
@@ -532,6 +538,13 @@ void GL_Display(void)
 	{
 		superCube->Draw();
 	}
+
+
+	//test two gun
+	if (superCube_twoGun->used)
+	{
+		superCube_twoGun->Draw();
+	}
 	
 
 
@@ -591,6 +604,115 @@ void CreateBullet_Main() {
 	
 	
 }
+
+
+//test雙槍管
+
+enum Gun_Main
+{
+	LEFT_GUNMAIN = 0 , RIGHT_GUNMAIN = 1
+};
+
+int gunSide = LEFT_GUNMAIN; //子彈出口
+
+void CreateTwoGunBullet_Main() {
+
+	if (gunSide == LEFT_GUNMAIN) //左邊槍口
+	{
+		if (Bullet_Total_MainBullet_used == 0) {
+
+		pHead_MainBullet_used = pHead_MainBullet_free;
+		pHead_MainBullet_free = pHead_MainBullet_free->link;
+
+		pHead_MainBullet_used->bullet_main->_x = mainrole->_x - 0.2f;
+		pHead_MainBullet_used->bullet_main->_y = mainrole->_y - 0.2f;
+
+		pHead_MainBullet_used->bullet_main->SetTRSMatrix(Translate(pHead_MainBullet_used->bullet_main->_x, pHead_MainBullet_used->bullet_main->_y, 0.0));
+
+		pHead_MainBullet_used->link = NULL;
+		pTail_MainBullet_used = pHead_MainBullet_used;
+
+		Bullet_Total_MainBullet_free--;
+		Bullet_Total_MainBullet_used++;
+
+
+	}
+
+
+	else if (Bullet_Total_MainBullet_used > 0) {
+
+		pGet_MainBullet_used = pHead_MainBullet_free;
+		pHead_MainBullet_free = pHead_MainBullet_free->link;
+
+		pGet_MainBullet_used->bullet_main->_x = mainrole->_x - 0.2f;
+		pGet_MainBullet_used->bullet_main->_y = mainrole->_y - 0.2f;
+
+		pGet_MainBullet_used->bullet_main->SetTRSMatrix(Translate(pGet_MainBullet_used->bullet_main->_x, pGet_MainBullet_used->bullet_main->_y, 0.0));
+
+		pTail_MainBullet_used->link = pGet_MainBullet_used; //結尾link指向新取得的頭
+		pGet_MainBullet_used->link = NULL;//設定結尾為NULL
+		pTail_MainBullet_used = pGet_MainBullet_used;//設定尾巴為PGet
+
+		Bullet_Total_MainBullet_free--;
+		Bullet_Total_MainBullet_used++;
+
+
+	}
+		gunSide = RIGHT_GUNMAIN;
+
+	}
+	
+
+	else {
+
+
+		if (Bullet_Total_MainBullet_used == 0) {
+
+			pHead_MainBullet_used = pHead_MainBullet_free;
+			pHead_MainBullet_free = pHead_MainBullet_free->link;
+
+			pHead_MainBullet_used->bullet_main->_x = mainrole->_x + 0.2f;
+			pHead_MainBullet_used->bullet_main->_y = mainrole->_y - 0.2f;
+
+			pHead_MainBullet_used->bullet_main->SetTRSMatrix(Translate(pHead_MainBullet_used->bullet_main->_x, pHead_MainBullet_used->bullet_main->_y, 0.0));
+
+			pHead_MainBullet_used->link = NULL;
+			pTail_MainBullet_used = pHead_MainBullet_used;
+
+			Bullet_Total_MainBullet_free--;
+			Bullet_Total_MainBullet_used++;
+
+
+		}
+
+
+		else if (Bullet_Total_MainBullet_used > 0) {
+
+			pGet_MainBullet_used = pHead_MainBullet_free;
+			pHead_MainBullet_free = pHead_MainBullet_free->link;
+
+			pGet_MainBullet_used->bullet_main->_x = mainrole->_x + 0.2f;
+			pGet_MainBullet_used->bullet_main->_y = mainrole->_y - 0.2f;
+
+			pGet_MainBullet_used->bullet_main->SetTRSMatrix(Translate(pGet_MainBullet_used->bullet_main->_x, pGet_MainBullet_used->bullet_main->_y, 0.0));
+
+			pTail_MainBullet_used->link = pGet_MainBullet_used; //結尾link指向新取得的頭
+			pGet_MainBullet_used->link = NULL;//設定結尾為NULL
+			pTail_MainBullet_used = pGet_MainBullet_used;//設定尾巴為PGet
+
+			Bullet_Total_MainBullet_free--;
+			Bullet_Total_MainBullet_used++;
+
+
+		}
+		gunSide = LEFT_GUNMAIN;
+
+	}
+
+
+
+}
+
 
 
 void CreateBullet_Alien(Alien *alien , char what_alien ) {
@@ -1207,11 +1329,11 @@ void onFrameMove(float delta)
 		
 		if(superCube->used){ //Super有被使用
 			superCube->AutomaticMotion(mainrole->_x , mainrole->_y);
-			if (!touch_superCuber) {
+			if (!touch_superCube) {
 
 				superCube->CheackMainRole(mainrole->_x, mainrole->_y, mainrole->MAX_X, mainrole->MAX_Y );
 
-				if (touch_superCuber) { //若更新為true 則mainrole 回復原來狀態 且不得攻擊
+				if (touch_superCube) { //若更新為true 則mainrole 回復原來狀態 且不得攻擊
 					mainrole->can_change_hurtMain = false;
 					mainrole->SetAlpha(1.0);
 					mainrole_ring->SetAlpha(1.0);
@@ -1235,6 +1357,15 @@ void onFrameMove(float delta)
 
 		}
 
+
+		//test two gun 
+		if (superCube_twoGun->used) {
+
+			superCube_twoGun->AutomaticMotion(mainrole->_x, mainrole->_y);
+			superCube_twoGun->CheackMainRole(mainrole->_x, mainrole->_y, mainrole->MAX_X, mainrole->MAX_Y);
+
+		}
+
 		
 		
 		
@@ -1248,7 +1379,7 @@ void onFrameMove(float delta)
 
 
 	//更新保護機制
-	if (timer_canHurtMainRole >4.0 && mainrole->can_change_hurtMain ==false && !touch_superCuber) { //維持四秒無敵狀態 且不為無敵狀態
+	if (timer_canHurtMainRole >4.0 && mainrole->can_change_hurtMain ==false && !touch_superCube) { //維持四秒無敵狀態 且不為無敵狀態
 		
 		mainrole->can_change_hurtMain = true; //可重新攻擊
 		mainrole->SetAlpha(1.0);
@@ -1278,8 +1409,17 @@ void onBulletLaunch(float delta) {
 	timer_bullet += delta;
 	if (clickLaunchBullet && canLaunchBullet && Bullet_Total_MainBullet_free > 0) {
 		
+		if (touch_twoGunStar) { //兩槍管
+			CreateTwoGunBullet_Main();
+			CreateTwoGunBullet_Main();
+		}
 		
-		CreateBullet_Main();
+		else//一般狀態
+		{
+			CreateBullet_Main();
+		}
+
+		
 		canLaunchBullet = false;
 		
 		BulletLaunchSecStart = timer_bullet;
@@ -1461,10 +1601,16 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 
 	switch (key)
 	{
+	case't': //雙槍管
+		superCube_twoGun->used = true;
+		superCube_twoGun->if_first_cube = true;
+		touch_twoGunStar = false;
+		break;
+
 	case'x': //test super cube
 		superCube->used = true;
 		superCube->if_first_cube = true;
-		touch_superCuber = false;
+		touch_superCube = false;
 		break;
 	case '1':
 		BOSSMode = One; //BOSS改變成第一型態test
