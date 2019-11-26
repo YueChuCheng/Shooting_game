@@ -427,7 +427,7 @@ void BOSS_Alien::AutomaticMotion(float timer) {
 		}
 
 		//Âà´«§ðÀ»¼Ò¦¡
-		switch (PlayerTotalPoint_BAlien)
+		/*switch (PlayerTotalPoint_BAlien)
 		{
 
 		case 10:
@@ -441,7 +441,22 @@ void BOSS_Alien::AutomaticMotion(float timer) {
 
 		default:
 			break;
+		}*/
+
+		if (PlayerTotalPoint_BAlien > 20) {
+		
+			BOSSMode = 2;
+		
 		}
+
+		else if (PlayerTotalPoint_BAlien > 10) {
+
+			BOSSMode = 3;
+		}
+		
+
+
+
 
 
 	}

@@ -1550,7 +1550,7 @@ void GameProcessUpdate() {
 		}
 		
 
-		if (isSMAlienClear)
+		if (isSMAlienClear && BOSS_alien == 0)
 		{
 			BOSS_alien = 1; //放出一隻BOSS
 			alien[SAlien_space + MAlien_space]->used = true;
@@ -1573,12 +1573,14 @@ void GameProcessUpdate() {
 	}
 
 
-	if ((superCubeFlag == true || super_twoGunFlag==true) && superCube_timer > 10.0f) {
+	if ((superCubeFlag == true || super_twoGunFlag==true) && superCube_timer > 6.0f) {
 		
+		touch_superCube = false;
+		mainrole->can_change_hurtMain = true; //可重新攻擊
 		superCube->used = false; //SuperCube 消失
-		
 		touch_twoGunStar = false; //停止雙槍射擊
-
+		superCubeFlag = false;
+		super_twoGunFlag = false;
 	}
 
 
