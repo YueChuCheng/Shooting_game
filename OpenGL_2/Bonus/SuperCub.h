@@ -16,7 +16,7 @@ class SuperCube
 {
 public:
 	SuperCube();
-	~SuperCube();
+	~SuperCube() {};
 
 	int cubeStyle; //cube 的型態
 	
@@ -47,7 +47,7 @@ public:
 	//自動移動函式
 	void AutomaticMotion(float mainrole_x, float mainrole_y);
 
-	void SetAlpha(GLfloat alpha);
+	void SetColor(GLfloat r, GLfloat g, GLfloat b);
 	
 	
 	float MAX_X = 0.5f; //最長寬

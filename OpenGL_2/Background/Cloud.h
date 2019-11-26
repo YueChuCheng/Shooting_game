@@ -14,7 +14,7 @@ class Cloud
 {
 public:
 	Cloud();
-	~Cloud();
+	~Cloud() {};
 	GLfloat _x = 0;
 	GLfloat _y = 0;
 	GLfloat _scale = 1;

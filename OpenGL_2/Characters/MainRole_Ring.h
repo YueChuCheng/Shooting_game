@@ -11,7 +11,7 @@ class MainRole_Ring
 {
 public:
 	MainRole_Ring();
-	~MainRole_Ring();
+	~MainRole_Ring() {};
 
 	GLfloat _x = 0;
 	GLfloat _y = -0.03; //-0.05使戰機於圓的正中心

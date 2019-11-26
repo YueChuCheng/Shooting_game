@@ -17,6 +17,7 @@ class MainRole
 public:
 
 	MainRole();
+	~MainRole() {};
 	GLfloat _x = 0;
 	GLfloat _y = 0;
 	GLfloat _scale = 1;

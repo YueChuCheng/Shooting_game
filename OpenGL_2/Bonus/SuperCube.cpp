@@ -111,10 +111,13 @@ void SuperCube::SetTRSMatrix(mat4& mat)
 	_bUpdateMV = true;
 }
 
-void SuperCube::SetAlpha(GLfloat alpha)
+void SuperCube::SetColor(GLfloat r , GLfloat g , GLfloat b)
 {
 	for (int i = 0; i < SuperCube_Point_NUM; i++) {
-		_Colors[i].w = alpha;
+		_Colors[i].x = r;
+		_Colors[i].y = g;
+		_Colors[i].z = b;
+		
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, _VBO);
@@ -175,10 +178,10 @@ void SuperCube::Draw()
 
 	
 			}
-			else if(touch_superCube){
+		else if(touch_superCube){
 	
-				glDrawArrays(GL_TRIANGLE_FAN, SuperCube_triangle * 2, SuperCube_circle);
-			}
+			glDrawArrays(GL_TRIANGLE_FAN, SuperCube_triangle * 2, SuperCube_circle);
+		}
 	}
 
 	else if (cubeStyle == TWO_GUN)
@@ -189,6 +192,7 @@ void SuperCube::Draw()
 			glDrawArrays(GL_TRIANGLES, SuperCube_triangle, SuperCube_triangle);
 			
 		}
+		
 	
 	}
 

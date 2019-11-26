@@ -90,7 +90,7 @@ class Small_Alien : public Alien
 {
 public:
 	Small_Alien() ;
-	~Small_Alien();
+	~Small_Alien() ;
 	void SetShader(mat4& mxModelView, mat4& mxProjection, GLuint uiShaderHandle = MAX_UNSIGNED_INT);
 	virtual void SetTRSMatrix(mat4& mat);
 	GLuint GetShaderHandle() { return _Program; }

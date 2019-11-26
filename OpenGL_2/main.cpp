@@ -458,7 +458,7 @@ void CreateGameObject() {
 	superCube_twoGun = new SuperCube;
 	superCube_twoGun->SetShader(g_mxModelView, g_mxProjection);
 	superCube_twoGun->cubeStyle = 1; //設定cube樣式
-
+	superCube_twoGun->SetColor(1.0f, 1.0f, 0.0f);
 }
 
 
@@ -1397,6 +1397,10 @@ void onFrameMove(float delta)
 
 
 
+
+
+
+
 float timer_bullet = 0.0; //時間計時器
 float BulletLaunchSecStart = 0.0; //紀錄子彈發射的時間 
 bool canLaunchBullet = true; //是否允許發射子彈
@@ -1505,6 +1509,11 @@ void onAlienBulletLaunch(float delta) {
 
 }
 
+
+
+bool super_twoGunFlag = false;
+bool superCubeFlag = false;
+float superCube_timer = 0.0f;
 //依據流程跟新怪設狀態
 void GameProcessUpdate() {
 	//若總分到達十分則放出中怪
@@ -1514,8 +1523,17 @@ void GameProcessUpdate() {
 		
 		alien[SAlien_space]->used = true;
 
+		if (!superCubeFlag) { //放出superCube
+			superCube->used = true;
+			superCube->if_first_cube = true;
+			touch_superCube = false;
+			superCubeFlag = true;
+			superCube_timer = 0.0f;
+		}
+
 	}
 
+	
 	else if(PlayerTotalPoint_SAlien >= 7 && PlayerTotalPoint_MAlien >= 3)
 	{
 		isBossOut = true; //放出BOSS
@@ -1537,9 +1555,29 @@ void GameProcessUpdate() {
 			BOSS_alien = 1; //放出一隻BOSS
 			alien[SAlien_space + MAlien_space]->used = true;
 			timer_BAlien = 0.0f;
+
+			if (!super_twoGunFlag ) { //放出superCube
+				superCube_twoGun->used = true;
+				superCube_twoGun->if_first_cube = true;
+				touch_twoGunStar = false;
+				super_twoGunFlag = true;
+				superCube_timer = 0.0f;
+			}
+
+
+
 		}
 		
 		
+
+	}
+
+
+	if ((superCubeFlag == true || super_twoGunFlag==true) && superCube_timer > 10.0f) {
+		
+		superCube->used = false; //SuperCube 消失
+		
+		touch_twoGunStar = false; //停止雙槍射擊
 
 	}
 
@@ -1605,12 +1643,14 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 		superCube_twoGun->used = true;
 		superCube_twoGun->if_first_cube = true;
 		touch_twoGunStar = false;
+		superCube_timer = 0.0f;
 		break;
 
 	case'x': //test super cube
 		superCube->used = true;
 		superCube->if_first_cube = true;
 		touch_superCube = false;
+		superCube_timer = 0.0f;
 		break;
 	case '1':
 		BOSSMode = One; //BOSS改變成第一型態test
@@ -1640,7 +1680,7 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 		for (int i = 0; i < Bullet_Total_Alien_free; i++)
 		{
 			pGet_Draw_AlienBullet = pHead_AlienBullet_free->link;
-			free(pHead_AlienBullet_free);
+			delete pHead_AlienBullet_free;
 			pHead_AlienBullet_free = pGet_Draw_AlienBullet;
 		}
 
@@ -1648,7 +1688,7 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 		for (int i = 0; i < Bullet_Total_Alien_used; i++)
 		{
 			pGet_Draw_AlienBullet = pHead_AlienBullet_used->link;
-			free(pHead_AlienBullet_used);
+			delete pHead_AlienBullet_used;
 			pHead_AlienBullet_used = pGet_Draw_AlienBullet;
 		}
 
@@ -1656,7 +1696,7 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 		for (int i = 0; i < Bullet_Total_MainBullet_free; i++)
 		{
 			pGet_Draw_bullet = pHead_MainBullet_free->link;
-			free(pHead_MainBullet_free);
+			delete pHead_MainBullet_free;
 			pHead_MainBullet_free = pGet_Draw_bullet;
 		}
 
@@ -1664,10 +1704,23 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 		for (int i = 0; i < Bullet_Total_MainBullet_used; i++)
 		{
 			pGet_Draw_bullet = pHead_MainBullet_used->link;
-			free(pHead_MainBullet_used);
+			delete pHead_MainBullet_used;
 			pHead_MainBullet_used = pGet_Draw_bullet;
 		}
 
+		delete mainrole;
+		delete mainrole_ring;
+		
+		for (int i = 0; i < 6; i++)
+		{
+			delete cloud[i];
+		}
+
+
+		for (int i = 0; i < 7; i++)
+		{
+			delete alien[i];
+		}
 	
 		exit(EXIT_SUCCESS);
 
