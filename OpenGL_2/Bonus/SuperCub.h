@@ -54,6 +54,8 @@ public:
 	float MAX_Y = 0.5f; //最高點
 
 
+	bool readyToDraw = false; //可以被繪製 bool 避免閃爍
+
 private:
 
 	float theta = 0.0f; //紀錄選轉角度

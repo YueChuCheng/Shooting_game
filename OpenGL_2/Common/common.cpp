@@ -24,6 +24,7 @@ double callback_felapse;
 double callback_fprev;
 Timer callback_Timer;
 
+//extern float test_timer;
 
 extern float superCube_timer;
 extern bool super_twoGunFlag;
@@ -60,6 +61,7 @@ void IdleProcess()
 		onFrameMove(delta);
 		onBulletLaunch(delta);
 		onAlienBulletLaunch(delta);
+		
 		if (superCubeFlag || super_twoGunFlag) {
 			superCube_timer += delta;
 		}

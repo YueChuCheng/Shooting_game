@@ -271,7 +271,7 @@ void Middle_Alien::DrawW()
 
 void Middle_Alien::AutomaticMotion(GLfloat MainRole_x, GLfloat MainRole_y) {
 
-
+	readyToDraw = true;
 	if (alife == false) //­Y¦¹Alien¤w¦º¤`
 	{
 		if (used) {

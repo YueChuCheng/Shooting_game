@@ -1,5 +1,8 @@
 #include "Bullet_Main.h"
 
+
+extern bool addspeed;
+
 Bullet_Main::~Bullet_Main()
 {
 }
@@ -42,7 +45,7 @@ Bullet_Main::Bullet_Main()
 	for (int i = 0; i < Bullet_Main_Point_NUM; i++)
 	{
 		_Points[i].x = _Points[i].x;
-		_Points[i].y = _Points[i].y * (360.0 / 640.0) + 0.2f; // + 0.2 子彈射出的起始位置校正
+		_Points[i].y = _Points[i].y * (GLfloat)(360.0 / 640.0) + (GLfloat)0.2f; // + 0.2 子彈射出的起始位置校正
 	}
 
 	CreateBufferObject();
@@ -217,7 +220,9 @@ void Bullet_Main::Draw()
 //子彈往前飛
 void Bullet_Main::AutoTranslate_Bullet() {
 
-	_y += 0.01;
+	_y += (GLfloat)0.01;
+
+
 	BulletTrans = Translate(_x , _y , 0.0);
 	SetTRSMatrix(BulletTrans);
 

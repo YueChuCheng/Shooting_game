@@ -208,7 +208,7 @@ void SuperCube::Draw()
 
 void SuperCube::AutomaticMotion( float mainrole_x , float mainrole_y) {
 	
-
+	readyToDraw = true;
 	if (cubeStyle == HIT) {
 
 

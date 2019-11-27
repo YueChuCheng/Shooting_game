@@ -506,7 +506,7 @@ void GL_Display(void)
 	for ( i = 0; i < SAlien_space + MAlien_space + BAlien_space; i++)
 	{
 
-		if (alien[i]->used && alien[i]->alife) { //有使用到的alien空間 且 為存活Alien
+		if (alien[i]->used && alien[i]->alife && alien[i]->readyToDraw) { //有使用到的alien空間 且 為存活Alien
 
 			alien[i]->Draw();
 
@@ -534,14 +534,14 @@ void GL_Display(void)
 
 
 	//test bouns
-	if (superCube->used)
+	if (superCube->used && superCube->readyToDraw)
 	{
 		superCube->Draw();
 	}
 
 
 	//test two gun
-	if (superCube_twoGun->used)
+	if (superCube_twoGun->used && superCube->readyToDraw)
 	{
 		superCube_twoGun->Draw();
 	}
@@ -1177,11 +1177,18 @@ float timer_onFrameMove = 0; //rotation's timer
 float timer_canHurtMainRole = 0; //rotation's timer
 float timer_BAlien = 0;
 
+
+
+
 void onFrameMove(float delta)
 {
+
+
 	timer_onFrameMove += delta;
 	timer_canHurtMainRole += delta;
 	timer_BAlien += delta;
+
+
 
 	if (timer_onFrameMove > 1.0 / 1500.0) { //每1/1000秒更新一次
 		
@@ -1196,7 +1203,7 @@ void onFrameMove(float delta)
 		}
 
 		
-		//更新子彈路線 
+		////更新子彈路線 
 		pGet_Move_bullet = pHead_MainBullet_used;
 		for (int i = 0; i < Bullet_Total_MainBullet_used; i++)
 		{
@@ -1388,7 +1395,7 @@ void onFrameMove(float delta)
 
 	}
 	
-	
+
 	GL_Display();
 	
 }
@@ -1453,7 +1460,7 @@ float timer_AlienBulletLaunch = 0.0f;
 void onAlienBulletLaunch(float delta) {
 	timer_AlienBulletLaunch += delta;
 
-	if (timer_AlienBulletLaunch >= 1.0f && Bullet_Total_Alien_free >0) { //每隔一秒發射一顆子彈
+	if (timer_AlienBulletLaunch >= 0.8f && Bullet_Total_Alien_free >0) { //每隔一秒發射一顆子彈
 	
 		
 		
@@ -1514,10 +1521,26 @@ void onAlienBulletLaunch(float delta) {
 bool super_twoGunFlag = false;
 bool superCubeFlag = false;
 float superCube_timer = 0.0f;
+
+bool addspeed; //若碰到super cube 則加速
+
+
+
 //依據流程跟新怪設狀態
 void GameProcessUpdate() {
+
+
+	if (superCube->used == true)
+	{
+		addspeed = touch_superCube; //抓取touch_superCube資料
+		if (addspeed) {
+			SMAlien_speed = 0.0035;
+		}
+		
+	}
+	
 	//若總分到達十分則放出中怪
-	if (PlayerTotalPoint_SAlien == 3)
+	if (PlayerTotalPoint_SAlien == 4)
 	{
 		middle_alien = 1; //放出一隻中怪
 		
@@ -1526,7 +1549,7 @@ void GameProcessUpdate() {
 		if (!superCubeFlag) { //放出superCube
 			superCube->used = true;
 			superCube->if_first_cube = true;
-			touch_superCube = false;
+			//touch_superCube = false;
 			superCubeFlag = true;
 			superCube_timer = 0.0f;
 		}
@@ -1534,7 +1557,7 @@ void GameProcessUpdate() {
 	}
 
 	
-	else if(PlayerTotalPoint_SAlien >= 7 && PlayerTotalPoint_MAlien >= 3)
+	else if(PlayerTotalPoint_SAlien >= 20 && PlayerTotalPoint_MAlien >= 10)
 	{
 		isBossOut = true; //放出BOSS
 
@@ -1573,8 +1596,11 @@ void GameProcessUpdate() {
 	}
 
 
-	if ((superCubeFlag == true || super_twoGunFlag==true) && superCube_timer > 6.0f) {
-		
+	if ((superCubeFlag == true || super_twoGunFlag==true) && superCube_timer > 8.0f) {
+		addspeed = false;
+		SMAlien_speed = 0.0015;
+
+
 		touch_superCube = false;
 		mainrole->can_change_hurtMain = true; //可重新攻擊
 		superCube->used = false; //SuperCube 消失

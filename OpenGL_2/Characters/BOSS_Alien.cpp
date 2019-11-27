@@ -377,7 +377,7 @@ void BOSS_Alien::DrawW()
 
 
 void BOSS_Alien::AutomaticMotion(float timer) {
-	
+	readyToDraw = true;
 	
 	if (timer < 2.0f) //在螢幕外
 	{
@@ -477,7 +477,7 @@ void BOSS_Alien::AutomaticFire(mat4 Alien_mxTran) {
 
 void BOSS_Alien::AutoCheckHurtDie(GLfloat Bullet_x, GLfloat Bullet_y, float MAX_X, float MAX_Y, bool* HurtAlien) {
 
-	if (_x - this->MAX_X <= Bullet_x - MAX_X && _x + this->MAX_X >= Bullet_x + MAX_X && _y + this->MAX_Y >= Bullet_y + MAX_Y && _y - this->MAX_Y <= Bullet_y - MAX_Y) { //判斷是否在中彈的範圍內
+	if (_x - this->MAX_X <= (float)(Bullet_x - MAX_X) && _x + this->MAX_X >= (float)(Bullet_x + MAX_X) && _y + this->MAX_Y >= (float)(Bullet_y + MAX_Y) && _y - this->MAX_Y <= (float)(Bullet_y - MAX_Y)) { //判斷是否在中彈的範圍內
 
 		*HurtAlien = true; //設定該子彈有打到Alien
 

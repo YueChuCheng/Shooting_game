@@ -27,12 +27,6 @@ void main()
 	
 	
 
-
-		
-
-
-
-
     gl_Position =  Projection *  ModelView  * mxTranslate  * vPosition ;
 	color = vColor;
 }

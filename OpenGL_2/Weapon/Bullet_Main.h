@@ -8,7 +8,7 @@ const int Bullet_Main_Button = 6;
 
 const int Bullet_Main_Point_NUM = Bullet_Main_Head + Bullet_Main_Button;
 
-
+extern bool addspeed; //若碰到super cube 則加速;
 
 class Bullet_Main
 {
@@ -64,6 +64,9 @@ private:
 
 	void CreateBufferObject();
 
+
+
+
 protected:
 	// 紀錄是否有矩陣的更新
 	bool  _bUpdateMV;
@@ -80,7 +83,7 @@ enum sSBullet_direction //小怪子彈打擊方向
 	LEFT_45, RIGHT_45, NORMAL
 };
 
-const int Bullet_SAlien_Point_NUM = 100;
+const int Bullet_SAlien_Point_NUM = 20;
 
 class Bullet_SAlien :public Bullet_Main
 {
@@ -120,7 +123,7 @@ private:
 
 };
 
-const int Bullet_MAlien_Point_NUM = 100;
+const int Bullet_MAlien_Point_NUM = 20;
 
 class Bullet_MAlien :public Bullet_Main
 {
@@ -165,7 +168,7 @@ enum direction
 {
 	LEFT , RIGHT , TOP , BOTTOM
 };
-const int Bullet_BAlienMode2_Point_NUM = 100;
+const int Bullet_BAlienMode2_Point_NUM = 20;
 
 //BOSS 第二模式攻擊子彈
 class Bullet_BAlien :public Bullet_Main

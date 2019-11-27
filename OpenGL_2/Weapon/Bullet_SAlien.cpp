@@ -35,7 +35,16 @@ void Bullet_SAlien::AutoTranslate_Bullet() {
 	switch (fire_style)
 	{
 	case NORMAL:
-		_y -= 0.0035;
+
+		if (!addspeed) {
+			_y -= 0.0035;
+
+		}
+		else
+		{
+			_y -= 0.005;
+		}
+
 		BulletTrans = Translate(_x, _y, 0.0);
 		SetTRSMatrix(BulletTrans);
 
@@ -48,8 +57,8 @@ void Bullet_SAlien::AutoTranslate_Bullet() {
 
 		break;
 	case RIGHT_45:
-		_x += 0.0035 / 1.4;//pow(0.5)
-		_y -= 0.0035 / 1.4;//pow(0.5)
+		_x += (GLfloat) 0.0035 / 1.4;//pow(0.5)
+		_y -= (GLfloat) 0.0035 / 1.4;//pow(0.5)
 		BulletTrans = Translate(_x, _y, 0.0);
 		SetTRSMatrix(BulletTrans);
 

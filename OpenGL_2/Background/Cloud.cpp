@@ -1,5 +1,7 @@
 #include "Cloud.h"
 
+extern bool addspeed; //吃到superCube則加速
+
 
 Cloud::Cloud()
 {
@@ -8,7 +10,7 @@ Cloud::Cloud()
 	//circle top_left
 	for (int i = 0; i < Cloud_circle; i++)
 	{
-		_Points[i] = vec4(0.3f * cosf(2.0f * M_PI * i / Cloud_circle) , 0.3 * sinf(2.0f * M_PI * i / Cloud_circle), 0.0f, 1.0f);
+		_Points[i] = vec4((GLfloat)(0.3f * cosf(2.0f * M_PI * i / Cloud_circle)) , (GLfloat)(0.3f * sinf(2.0f * M_PI * i / Cloud_circle)), 0.0f, 1.0f);
 	}
 
 
@@ -276,7 +278,16 @@ void Cloud:: AutoTranslate_Background() {
 
 		}
 
-		_y -= 0.002f;     // 遞減
+		if (!addspeed) {
+			_y -= 0.002f;     // 遞減
+
+		}
+		else
+		{
+			_y -= 0.005f;     // 遞減
+		}
+
+		
 		SetXYScale(_x, _y, _scale);//設定雲朵資訊
 
 

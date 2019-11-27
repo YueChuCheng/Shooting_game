@@ -3,7 +3,7 @@ typedef Angel::vec4  color4;
 typedef Angel::vec4  point4;
 
 const int Alien_Point_NUM = 6; //程翴羆计
-
+extern bool addspeed; //superCube玥硉
 
 class Alien
 {
@@ -49,6 +49,7 @@ public:
 	float dis_x = 0; //畉ぶ糴
 	float dis_y = 0; //畉ぶ蔼
 
+	bool readyToDraw = false; //砆酶籹 bool 磷皗脅
 
 
 
@@ -82,7 +83,7 @@ public:
 };
 
 
-const int SAlien_circle = 50;
+const int SAlien_circle = 20;
 const int SAlien_Point_NUM = (SAlien_circle * 7); //程翴羆计
 
 //Small Alien 
@@ -214,7 +215,7 @@ private:
 };
 
 
-const int BAlien_circle = 50;
+const int BAlien_circle = 30;
 const int BAlien_rectangle = 4;
 const int BAlien_Point_NUM = (BAlien_circle * 12) + (BAlien_rectangle * 6 ) ; //程翴羆计
 
