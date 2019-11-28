@@ -90,6 +90,7 @@
     <ClCompile Include="Common\common.cpp" />
     <ClCompile Include="Common\Timer.cpp" />
     <ClCompile Include="Deco\Explo.cpp" />
+    <ClCompile Include="Deco\Smoke_BOSS.cpp" />
     <ClCompile Include="InitShader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Main\GL_Display_func.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="Characters\MainRole_Ring.h" />
     <ClInclude Include="Common\Timer.h" />
     <ClInclude Include="Deco\Explo.h" />
+    <ClInclude Include="Deco\Smoke_BOSS.h" />
     <ClInclude Include="Header\Angel.h" />
     <ClInclude Include="Header\CheckError.h" />
     <ClInclude Include="Header\mat.h" />

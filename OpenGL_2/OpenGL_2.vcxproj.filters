@@ -93,6 +93,9 @@
     <ClCompile Include="Bonus\SuperCube.cpp">
       <Filter>Bonus</Filter>
     </ClCompile>
+    <ClCompile Include="Deco\Smoke_BOSS.cpp">
+      <Filter>Deco</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Angel.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="Bonus\SuperCub.h">
       <Filter>Bonus</Filter>
+    </ClInclude>
+    <ClInclude Include="Deco\Smoke_BOSS.h">
+      <Filter>Deco</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

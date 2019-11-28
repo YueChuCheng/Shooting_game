@@ -8,6 +8,8 @@
 #include "Weapon/Bullet_Main.h"
 #include"Deco/Explo.h"
 #include"Bonus/SuperCub.h"
+#include"Deco/Smoke_BOSS.h"
+
 
 #define SPACE_KEY 32
 
@@ -26,6 +28,9 @@ bool touch_twoGunStar = false;
 
 //Deco
 Explo* explo_alien[5];
+
+Smoke* smoke_BOSS[2];
+
 
 //BOSS 子彈發射座標
 enum Mode
@@ -63,9 +68,9 @@ MainRole *mainrole;	// 宣告 指標物件，結束時記得釋放
 MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
 Cloud* cloud[6];
 Bullet_Main* bullet_main;
-short small_alien = 3; //螢幕上small alien 出現的最大數量
+short small_alien = 0; //螢幕上small alien 出現的最大數量
 short middle_alien = 0; //螢幕上middle alien 出現的最大數量
-short BOSS_alien = 0; //螢幕上BOSS alien 出現的最大數量
+short BOSS_alien = 1; //螢幕上BOSS alien 出現的最大數量
 short SAlien_space = 4;  // SAlien 空間個數
 short MAlien_space = 2;  // MAlien 空間個數
 short BAlien_space = 1;  // BOSS 空間個數
@@ -449,16 +454,29 @@ void CreateGameObject() {
 	}
 
 
-	//test bonus cube;
+	// bonus cube;
 	superCube = new SuperCube;
 	superCube->SetShader(g_mxModelView, g_mxProjection);
 	superCube->cubeStyle = 0; //設定cube樣式
 
-	//test two gun
+	// two gun
 	superCube_twoGun = new SuperCube;
 	superCube_twoGun->SetShader(g_mxModelView, g_mxProjection);
 	superCube_twoGun->cubeStyle = 1; //設定cube樣式
 	superCube_twoGun->SetColor(1.0f, 1.0f, 0.0f);
+
+
+	//smoke_BOSS
+	for (int i = 0; i < 2; i++)
+	{
+		smoke_BOSS[i] = new Smoke;
+		smoke_BOSS[i]->SetShader(g_mxModelView, g_mxProjection);
+
+	}
+
+
+
+
 }
 
 
@@ -514,6 +532,19 @@ void GL_Display(void)
 
 	}
 
+
+	//smoke_BOSS
+
+	if (PlayerTotalPoint_BAlien > 5 && alien[SAlien_space + MAlien_space]->used) { //若中槍超過五次則冒煙
+		
+		for (int i = 0; i < 2; i++)
+		{
+			smoke_BOSS[i]->Draw(); //test
+		}
+		
+
+	}
+	
 
 
 	// Boss mode 2 attack
@@ -1178,7 +1209,7 @@ float timer_canHurtMainRole = 0; //rotation's timer
 float timer_BAlien = 0;
 
 
-
+float frameTime = 1.0 / 1500.0;
 
 void onFrameMove(float delta)
 {
@@ -1187,13 +1218,29 @@ void onFrameMove(float delta)
 	timer_onFrameMove += delta;
 	timer_canHurtMainRole += delta;
 	timer_BAlien += delta;
-
-
-
-	if (timer_onFrameMove > 1.0 / 1500.0) { //每1/1000秒更新一次
-		
 	
+
+	if (PlayerTotalPoint_BAlien > 5 && alien[SAlien_space + MAlien_space]->used) { //若中槍超過五次則冒煙
+
 		
+		smoke_BOSS[0]->AutomaticMotion(alien[SAlien_space + MAlien_space]->_x, alien[SAlien_space + MAlien_space]->_y, delta); //test
+		smoke_BOSS[1]->AutomaticMotion(alien[SAlien_space + MAlien_space]->_x - 1.2f, alien[SAlien_space + MAlien_space]->_y , delta); //test
+
+		frameTime = 1.0 / 1000.0;
+
+	}
+	else
+	{
+		frameTime = 1.0 / 1500.0;
+	}
+	
+
+	if (timer_onFrameMove > frameTime) { //每1/1000秒更新一次
+		
+		
+		
+		
+
 		mainrole_ring->AutomaticRotation( mainrole->mxTran_Main );//星環自動選轉 傳入父層
 
 		//更新雲朵位置
@@ -1530,6 +1577,7 @@ bool addspeed; //若碰到super cube 則加速
 void GameProcessUpdate() {
 
 
+
 	if (superCube->used == true)
 	{
 		addspeed = touch_superCube; //抓取touch_superCube資料
@@ -1557,7 +1605,7 @@ void GameProcessUpdate() {
 	}
 
 	
-	else if(PlayerTotalPoint_SAlien >= 20 && PlayerTotalPoint_MAlien >= 10)
+	else if(PlayerTotalPoint_SAlien >= 15 && PlayerTotalPoint_MAlien >= 10)
 	{
 		isBossOut = true; //放出BOSS
 
@@ -1585,6 +1633,9 @@ void GameProcessUpdate() {
 				touch_twoGunStar = false;
 				super_twoGunFlag = true;
 				superCube_timer = 0.0f;
+
+				
+
 			}
 
 
@@ -1596,7 +1647,8 @@ void GameProcessUpdate() {
 	}
 
 
-	if ((superCubeFlag == true || super_twoGunFlag==true) && superCube_timer > 8.0f) {
+
+	if (superCubeFlag == true && superCube_timer > 6.0f) {
 		addspeed = false;
 		SMAlien_speed = 0.0015;
 
@@ -1605,7 +1657,15 @@ void GameProcessUpdate() {
 		mainrole->can_change_hurtMain = true; //可重新攻擊
 		superCube->used = false; //SuperCube 消失
 		touch_twoGunStar = false; //停止雙槍射擊
-		superCubeFlag = false;
+		
+	}
+
+
+
+	else if ( super_twoGunFlag == true && superCube_timer > 6.0f) {
+		
+		
+		touch_twoGunStar = false; //停止雙槍射擊
 		super_twoGunFlag = false;
 	}
 

@@ -27,8 +27,9 @@ Timer callback_Timer;
 //extern float test_timer;
 
 extern float superCube_timer;
-extern bool super_twoGunFlag;
-extern bool superCubeFlag;
+
+extern bool touch_superCube;
+extern bool touch_twoGunStar;
 
 extern void onFrameMove(float delta);
 extern void onBulletLaunch(float delta);
@@ -62,7 +63,7 @@ void IdleProcess()
 		onBulletLaunch(delta);
 		onAlienBulletLaunch(delta);
 		
-		if (superCubeFlag || super_twoGunFlag) {
+		if (touch_superCube || touch_twoGunStar) {
 			superCube_timer += delta;
 		}
 		

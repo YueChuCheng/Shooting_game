@@ -3,6 +3,9 @@
 extern bool touch_superCube;
 extern bool touch_twoGunStar;
 
+
+
+
 SuperCube::SuperCube()
 {
 
@@ -332,13 +335,13 @@ void SuperCube::CheackMainRole(GLfloat x, GLfloat y, float Max_X, float MAX_Y) {
 	{
 		if (_x - this->MAX_X <= x - Max_X && _x + this->MAX_X >= x + Max_X && _y + this->MAX_Y >= y + MAX_Y && _y - this->MAX_Y <= y - MAX_Y )//偵測是否位於攻擊範圍 且是否為可攻擊狀態
 			{
-		
+			
 				touch_superCube = true;
 
 				this->MAX_X = 0.7f; //最長寬
 				this->MAX_Y = 0.7f; //最高點
 
-		
+				
 		
 			}
 	}
@@ -348,8 +351,12 @@ void SuperCube::CheackMainRole(GLfloat x, GLfloat y, float Max_X, float MAX_Y) {
 
 		if (_x - this->MAX_X <= x - Max_X && _x + this->MAX_X >= x + Max_X && _y + this->MAX_Y >= y + MAX_Y && _y - this->MAX_Y <= y - MAX_Y)//偵測是否位於攻擊範圍 且是否為可攻擊狀態
 		{
+			
 			touch_twoGunStar = true;
 			used = false;
+			
+
+
 		}
 
 	}
