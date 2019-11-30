@@ -1,5 +1,6 @@
 #include"Smoke_BOSS.h"
 
+extern bool smoke_direction;
 
 Smoke::Smoke()
 {
@@ -394,7 +395,11 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	//헕1.
 	for (int i = 0; i < Smoke_circle; i++)
 	{
-			_Points[i].x += (0.18f * delta);
+		if(smoke_direction)
+			_Points[i].x += (0.36f * delta);
+		else
+			_Points[i].x -= (0.36f * delta);
+
 			_Points[i].y += (0.3f * delta);
 			
 		
@@ -433,7 +438,13 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	//헕2.
 	for (int i = Smoke_circle; i < Smoke_circle * 2; i++)
 	{
-		_Points[i].x += (0.05f * delta);
+		
+		if (smoke_direction)
+			_Points[i].x += (0.1f * delta);
+		else
+			_Points[i].x -= (0.1f * delta);
+
+
 		_Points[i].y += (0.2f * delta);
 
 	}
@@ -473,7 +484,12 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	//헕3.
 	for (int i = Smoke_circle * 2; i < Smoke_circle * 3; i++)
 	{
-		_Points[i].x += (0.01f * delta);
+
+		if (smoke_direction)
+			_Points[i].x += (0.02f * delta);
+		else
+			_Points[i].x -= (0.02f * delta);
+
 		_Points[i].y += (0.15f * delta);
 
 	}
@@ -514,7 +530,12 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	//헕4.
 	for (int i = Smoke_circle * 3; i < Smoke_circle * 4; i++)
 	{
-		_Points[i].x += (0.015f * delta);
+	
+		if (smoke_direction)
+			_Points[i].x += (0.03f * delta);
+		else
+			_Points[i].x -= (0.03f * delta);
+
 		_Points[i].y += (0.2f * delta);
 
 	}
@@ -554,7 +575,11 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	//헕5.
 	for (int i = Smoke_circle * 4; i < Smoke_circle * 5; i++)
 	{
-		_Points[i].x += (0.1f * delta);
+		if (smoke_direction)
+			_Points[i].x += (0.2f * delta);
+		else
+			_Points[i].x -= (0.2f * delta);
+
 		_Points[i].y += (0.15f * delta);
 
 	}
@@ -595,7 +620,11 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	//헕6.
 	for (int i = Smoke_circle * 5; i < Smoke_circle * 6; i++)
 	{
-		_Points[i].x += (0.1f * delta);
+		if (smoke_direction)
+			_Points[i].x += (0.2f * delta);
+		else
+			_Points[i].x -= (0.2f * delta);
+
 		_Points[i].y += (0.25f * delta);
 
 	}
@@ -635,7 +664,11 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	//헕7.
 	for (int i = Smoke_circle * 6; i < Smoke_circle * 7; i++)
 	{
-		_Points[i].x += (-0.02f * delta);
+		if (smoke_direction)
+			_Points[i].x += (-0.04f * delta);
+		else
+			_Points[i].x -= (-0.04f * delta);
+
 		_Points[i].y += (0.15f * delta);
 
 	}
@@ -675,7 +708,11 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	//헕8.
 	for (int i = Smoke_circle * 7; i < Smoke_circle * 8; i++)
 	{
-		_Points[i].x += (0.12f * delta);
+		if (smoke_direction)
+			_Points[i].x += (0.24f * delta);
+		else
+			_Points[i].x -= (0.24f * delta);
+
 		_Points[i].y += (0.08f * delta);
 
 	}

@@ -30,6 +30,9 @@ bool touch_twoGunStar = false;
 Explo* explo_alien[5];
 
 Smoke* smoke_BOSS[2];
+bool smoke_direction = true; //判斷smoke飄散方向
+
+
 
 
 //BOSS 子彈發射座標
@@ -250,6 +253,7 @@ void CreateGameObject() {
 
 			}
 
+			
 			else //沿用前面的Shader
 			{
 				alien[i] = new Middle_Alien;
@@ -1220,26 +1224,38 @@ void onFrameMove(float delta)
 	timer_BAlien += delta;
 	
 
-	if (PlayerTotalPoint_BAlien > 5 && alien[SAlien_space + MAlien_space]->used) { //若中槍超過五次則冒煙
+	//if (PlayerTotalPoint_BAlien > 5 && alien[SAlien_space + MAlien_space]->used) { //若中槍超過五次則冒煙
 
-		
-		smoke_BOSS[0]->AutomaticMotion(alien[SAlien_space + MAlien_space]->_x, alien[SAlien_space + MAlien_space]->_y, delta); //test
-		smoke_BOSS[1]->AutomaticMotion(alien[SAlien_space + MAlien_space]->_x - 1.2f, alien[SAlien_space + MAlien_space]->_y , delta); //test
+	//	
+	//	smoke_BOSS[0]->AutomaticMotion(alien[SAlien_space + MAlien_space]->_x, alien[SAlien_space + MAlien_space]->_y, delta); //test
+	//	smoke_BOSS[1]->AutomaticMotion(alien[SAlien_space + MAlien_space]->_x - 1.2f, alien[SAlien_space + MAlien_space]->_y , delta); //test
 
-		frameTime = 1.0 / 1000.0;
+	//	frameTime = 1.0 / 1000.0;
 
-	}
-	else
-	{
-		frameTime = 1.0 / 1500.0;
-	}
+	//}
+	//else
+	//{
+	//	frameTime = 1.0 / 1500.0;
+	//}
 	
 
 	if (timer_onFrameMove > frameTime) { //每1/1000秒更新一次
 		
 		
+		if (PlayerTotalPoint_BAlien > 5 && alien[SAlien_space + MAlien_space]->used) { //若中槍超過五次則冒煙
+
 		
-		
+			smoke_BOSS[0]->AutomaticMotion(alien[SAlien_space + MAlien_space]->_x, alien[SAlien_space + MAlien_space]->_y, delta); //test
+			smoke_BOSS[1]->AutomaticMotion(alien[SAlien_space + MAlien_space]->_x - 1.2f, alien[SAlien_space + MAlien_space]->_y , delta); //test
+
+			frameTime = 1.0 / 1000.0;
+
+		}
+		else
+		{
+			frameTime = 1.0 / 1500.0;
+		}
+
 
 		mainrole_ring->AutomaticRotation( mainrole->mxTran_Main );//星環自動選轉 傳入父層
 
@@ -1654,7 +1670,7 @@ void GameProcessUpdate() {
 
 
 		touch_superCube = false;
-		mainrole->can_change_hurtMain = true; //可重新攻擊
+		//mainrole->can_change_hurtMain = true; //可重新攻擊
 		superCube->used = false; //SuperCube 消失
 		touch_twoGunStar = false; //停止雙槍射擊
 		
@@ -1765,7 +1781,10 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 
 	case 033:
 		
-		for (int i = 0; i < Bullet_Total_Alien_free; i++)
+
+		int i;
+
+		for ( i = 0; i < Bullet_Total_Alien_free; i++)
 		{
 			pGet_Draw_AlienBullet = pHead_AlienBullet_free->link;
 			delete pHead_AlienBullet_free;
@@ -1773,7 +1792,7 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 		}
 
 
-		for (int i = 0; i < Bullet_Total_Alien_used; i++)
+		for ( i = 0; i < Bullet_Total_Alien_used; i++)
 		{
 			pGet_Draw_AlienBullet = pHead_AlienBullet_used->link;
 			delete pHead_AlienBullet_used;
@@ -1781,7 +1800,7 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 		}
 
 
-		for (int i = 0; i < Bullet_Total_MainBullet_free; i++)
+		for ( i = 0; i < Bullet_Total_MainBullet_free; i++)
 		{
 			pGet_Draw_bullet = pHead_MainBullet_free->link;
 			delete pHead_MainBullet_free;
@@ -1789,7 +1808,7 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 		}
 
 
-		for (int i = 0; i < Bullet_Total_MainBullet_used; i++)
+		for ( i = 0; i < Bullet_Total_MainBullet_used; i++)
 		{
 			pGet_Draw_bullet = pHead_MainBullet_used->link;
 			delete pHead_MainBullet_used;
@@ -1799,16 +1818,22 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 		delete mainrole;
 		delete mainrole_ring;
 		
-		for (int i = 0; i < 6; i++)
+		for ( i = 0; i < 6; i++)
 		{
 			delete cloud[i];
 		}
 
 
-		for (int i = 0; i < 7; i++)
+		for ( i = 0; i < 7; i++)
 		{
 			delete alien[i];
 		}
+
+		for ( i = 0; i < 2; i++)
+		{
+			delete smoke_BOSS[i];
+		}
+
 	
 		exit(EXIT_SUCCESS);
 

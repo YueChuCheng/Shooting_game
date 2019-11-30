@@ -4,6 +4,12 @@ extern int PlayerTotalPoint_BAlien;
 extern short BOSSMode;
 extern bool Game_Over;
 extern void CreateSmoke(float _x, float _y);
+extern bool smoke_direction; //§PÂ_smokeÄÆ´²¤è¦V
+
+
+
+
+
 BOSS_Alien::~BOSS_Alien()
 {
 
@@ -419,6 +425,7 @@ void BOSS_Alien::AutomaticMotion(float timer) {
 		if (_x > 1.3f || _x < -1.3f)
 		{
 			first_direction_x = !first_direction_x;
+			smoke_direction = !smoke_direction;
 		}
 
 		if (_y > 1.3f || _y < 1.0f)
@@ -426,22 +433,6 @@ void BOSS_Alien::AutomaticMotion(float timer) {
 			first_direction_y = !first_direction_y;
 		}
 
-		//Âà´«§ðÀ»¼Ò¦¡
-		/*switch (PlayerTotalPoint_BAlien)
-		{
-
-		case 10:
-			BOSSMode = 3;
-			break;
-
-		case 20:
-			BOSSMode = 2;
-			break;
-
-
-		default:
-			break;
-		}*/
 
 		if (PlayerTotalPoint_BAlien > 20) {
 		
@@ -456,17 +447,12 @@ void BOSS_Alien::AutomaticMotion(float timer) {
 		
 
 
-
-
-
 	}
 
 	
-
 	mxTran_Alien = Translate(_x, _y, 0.0);
 	SetTRSMatrix(mxTran_Alien);
 
-	
 
 }
 
