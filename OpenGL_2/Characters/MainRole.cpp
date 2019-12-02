@@ -1,5 +1,11 @@
 #include "MainRole.h"
 
+
+extern bool mainrole_alife; //主角是否死亡
+extern void CreateSmoke(float _x, float _y);
+bool mainroleSmokeOver = false;
+
+
 MainRole::MainRole()
 {
 
@@ -326,6 +332,13 @@ void MainRole::AutoCheckHurt_MainRole(GLfloat x, GLfloat y, float Max_X, float M
 		
 
 
+	}
+
+	if (mainrole_alife == false) {  //mainrole 死亡
+
+		CreateSmoke(this->_x, this->_y);
+		mainroleSmokeOver = true;
+		
 	}
 
 	

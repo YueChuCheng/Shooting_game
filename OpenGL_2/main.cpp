@@ -69,11 +69,15 @@ bool isSMAlienClear = true; //SMAlien是否都已經消失於畫面
 // 必須在 glewInit(); 執行完後,在執行物件實體的取得
 MainRole *mainrole;	// 宣告 指標物件，結束時記得釋放
 MainRole_Ring *mainrole_ring;	// 宣告 指標物件，結束時記得釋放
+bool mainrole_alife = true; //main role 死亡
+extern bool mainroleSmokeOver;
+
+
 Cloud* cloud[6];
 Bullet_Main* bullet_main;
-short small_alien = 0; //螢幕上small alien 出現的最大數量
+short small_alien = 3; //螢幕上small alien 出現的最大數量
 short middle_alien = 0; //螢幕上middle alien 出現的最大數量
-short BOSS_alien = 1; //螢幕上BOSS alien 出現的最大數量
+short BOSS_alien = 0; //螢幕上BOSS alien 出現的最大數量
 short SAlien_space = 4;  // SAlien 空間個數
 short MAlien_space = 2;  // MAlien 空間個數
 short BAlien_space = 1;  // BOSS 空間個數
@@ -583,9 +587,12 @@ void GL_Display(void)
 	
 
 
-	
-	mainrole->Draw();
-	mainrole_ring->Draw();
+	if (mainrole_alife) {
+		mainrole->Draw();
+		mainrole_ring->Draw();
+
+	}
+
 
 	
 
@@ -1016,7 +1023,7 @@ void CreateBullet_Alien(Alien *alien , char what_alien ) {
 //產生煙霧
 void CreateSmoke( float _x , float _y ) {
 
-	for (int i = 0; i < 5  && !Game_Over; i++)
+	for (int i = 0; i < 5  && !mainroleSmokeOver/* !Game_Over*/; i++)
 	{
 		if (explo_alien[i]->used == false) {
 			
@@ -1777,6 +1784,10 @@ void win_keyFunc(unsigned char key ,int x, int y) {
 		break;
 	case 'd':
 		mainrole_ring->_defenceBallNUM = 3;
+		break;
+
+	case 'g':
+		mainrole_alife = false; //main role 死亡
 		break;
 
 	case 033:

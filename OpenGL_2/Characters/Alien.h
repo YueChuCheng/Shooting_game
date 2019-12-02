@@ -273,7 +273,7 @@ private:
 
 
 
-	const int Blood_original = 30;
+	const int Blood_original = 100;
 	int Blood = Blood_original;
 
 };

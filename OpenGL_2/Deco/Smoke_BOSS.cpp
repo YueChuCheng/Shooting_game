@@ -387,7 +387,7 @@ void Smoke::Draw()
 
 }
 bool touch_top = false; //點是否已全數到達最上方
-
+bool smoke_direction_sparkle[8] = { smoke_direction };
 void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 
 	 
@@ -395,7 +395,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	//點1.
 	for (int i = 0; i < Smoke_circle; i++)
 	{
-		if(smoke_direction)
+		if(smoke_direction_sparkle[0])
 			_Points[i].x += (0.36f * delta);
 		else
 			_Points[i].x -= (0.36f * delta);
@@ -414,6 +414,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 		}
 		else
 		{
+			smoke_direction_sparkle[0] = smoke_direction;
 			touch_top = true;
 		}
 
@@ -439,7 +440,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	for (int i = Smoke_circle; i < Smoke_circle * 2; i++)
 	{
 		
-		if (smoke_direction)
+		if (smoke_direction_sparkle[1])
 			_Points[i].x += (0.1f * delta);
 		else
 			_Points[i].x -= (0.1f * delta);
@@ -458,6 +459,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 		}
 		else
 		{
+			smoke_direction_sparkle[1] = smoke_direction;
 			touch_top = true;
 		}
 
@@ -485,7 +487,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	for (int i = Smoke_circle * 2; i < Smoke_circle * 3; i++)
 	{
 
-		if (smoke_direction)
+		if (smoke_direction_sparkle[2])
 			_Points[i].x += (0.02f * delta);
 		else
 			_Points[i].x -= (0.02f * delta);
@@ -503,6 +505,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 		}
 		else
 		{
+			smoke_direction_sparkle[2] = smoke_direction;
 			touch_top = true;
 		}
 
@@ -531,7 +534,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	for (int i = Smoke_circle * 3; i < Smoke_circle * 4; i++)
 	{
 	
-		if (smoke_direction)
+		if (smoke_direction_sparkle[3])
 			_Points[i].x += (0.03f * delta);
 		else
 			_Points[i].x -= (0.03f * delta);
@@ -549,6 +552,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 		}
 		else
 		{
+			smoke_direction_sparkle[3] = smoke_direction;
 			touch_top = true;
 		}
 
@@ -575,7 +579,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	//點5.
 	for (int i = Smoke_circle * 4; i < Smoke_circle * 5; i++)
 	{
-		if (smoke_direction)
+		if (smoke_direction_sparkle[4])
 			_Points[i].x += (0.2f * delta);
 		else
 			_Points[i].x -= (0.2f * delta);
@@ -593,6 +597,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 		}
 		else
 		{
+			smoke_direction_sparkle[4] = smoke_direction;
 			touch_top = true;
 		}
 
@@ -620,7 +625,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	//點6.
 	for (int i = Smoke_circle * 5; i < Smoke_circle * 6; i++)
 	{
-		if (smoke_direction)
+		if (smoke_direction_sparkle[5])
 			_Points[i].x += (0.2f * delta);
 		else
 			_Points[i].x -= (0.2f * delta);
@@ -638,6 +643,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 		}
 		else
 		{
+			smoke_direction_sparkle[5] = smoke_direction;
 			touch_top = true;
 		}
 
@@ -664,7 +670,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	//點7.
 	for (int i = Smoke_circle * 6; i < Smoke_circle * 7; i++)
 	{
-		if (smoke_direction)
+		if (smoke_direction_sparkle[6])
 			_Points[i].x += (-0.04f * delta);
 		else
 			_Points[i].x -= (-0.04f * delta);
@@ -682,6 +688,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 		}
 		else
 		{
+			smoke_direction_sparkle[6] = smoke_direction;
 			touch_top = true;
 		}
 
@@ -708,7 +715,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 	//點8.
 	for (int i = Smoke_circle * 7; i < Smoke_circle * 8; i++)
 	{
-		if (smoke_direction)
+		if (smoke_direction_sparkle[7])
 			_Points[i].x += (0.24f * delta);
 		else
 			_Points[i].x -= (0.24f * delta);
@@ -726,6 +733,7 @@ void Smoke::AutomaticMotion(float boss_x, float boss_y, float delta) {
 		}
 		else
 		{
+			smoke_direction_sparkle[7] = smoke_direction;
 			touch_top = true;
 		}
 

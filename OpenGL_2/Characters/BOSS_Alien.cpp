@@ -434,13 +434,13 @@ void BOSS_Alien::AutomaticMotion(float timer) {
 		}
 
 
-		if (PlayerTotalPoint_BAlien > 20) {
+		if (PlayerTotalPoint_BAlien > 75) {
 		
 			BOSSMode = 2;
 		
 		}
 
-		else if (PlayerTotalPoint_BAlien > 10) {
+		else if (PlayerTotalPoint_BAlien > 50) {
 
 			BOSSMode = 3;
 		}
