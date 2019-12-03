@@ -75,9 +75,9 @@ extern bool mainroleSmokeOver;
 
 Cloud* cloud[6];
 Bullet_Main* bullet_main;
-short small_alien = 3; //螢幕上small alien 出現的最大數量
+short small_alien = 0; //螢幕上small alien 出現的最大數量
 short middle_alien = 0; //螢幕上middle alien 出現的最大數量
-short BOSS_alien = 0; //螢幕上BOSS alien 出現的最大數量
+short BOSS_alien = 1; //螢幕上BOSS alien 出現的最大數量
 short SAlien_space = 4;  // SAlien 空間個數
 short MAlien_space = 2;  // MAlien 空間個數
 short BAlien_space = 1;  // BOSS 空間個數
@@ -777,7 +777,7 @@ void CreateBullet_Alien(Alien *alien , char what_alien ) {
 
 			}
 
-			else if (BOSSMode == Three) {
+			else if (BOSSMode == Three || BOSSMode == Two) {
 
 				if (boss_Mode3BulletNUM % 3 ==1)
 				{
@@ -795,7 +795,7 @@ void CreateBullet_Alien(Alien *alien , char what_alien ) {
 				}
 
 			}
-			else
+			else 
 			{
 				pHead_AlienBullet_used->bullet_main->fire_style = NORMAL;
 			}
@@ -837,7 +837,7 @@ void CreateBullet_Alien(Alien *alien , char what_alien ) {
 				pGet_AlienBullet_used->bullet_main->fire_style = NORMAL;
 
 			}
-			else if (BOSSMode == Three) {//第二攻擊模式
+			else if (BOSSMode == Three || BOSSMode == Two) {//第二攻擊模式
 
 				if (boss_Mode3BulletNUM % 3 == 1)
 				{
@@ -1317,8 +1317,8 @@ void onFrameMove(float delta)
 				//被傷害後無敵狀態計算時間
 				if (pGet_AlienBullet_used->bullet_main->HurtMainRole) {
 					timer_canHurtMainRole = 0.0f;
-					mainrole->SetAlpha(0.6); //無敵狀態為半透明
-					mainrole_ring->SetAlpha(0.6); //無敵狀態為半透明
+					mainrole->SetAlpha(0.3); //無敵狀態為半透明
+					mainrole_ring->SetAlpha(0.3); //無敵狀態為半透明
 				}
 			}
 			else if (pGet_AlienBullet_used->isSAlien_bullet == false && pGet_AlienBullet_used->isMAlien_bullet == true) //為MAlien bullet
@@ -1329,8 +1329,8 @@ void onFrameMove(float delta)
 				//被傷害後無敵狀態計算時間
 				if (pGet_AlienBullet_used->bullet_MAlien->HurtMainRole) {
 					timer_canHurtMainRole = 0.0f;
-					mainrole->SetAlpha(0.6); //無敵狀態為半透明
-					mainrole_ring->SetAlpha(0.6); //無敵狀態為半透明
+					mainrole->SetAlpha(0.3); //無敵狀態為半透明
+					mainrole_ring->SetAlpha(0.3); //無敵狀態為半透明
 				}
 			}
 			
@@ -1371,15 +1371,15 @@ void onFrameMove(float delta)
 		}
 
 		// boss mode2 bullet
-		for (int i = 0; i < boss_Mode2BulletCount && BOSSMode == Two; i++)
+		for (int i = 0; i < boss_Mode2BulletCount &&  BOSSMode == Two; i++)
 		{
 			Bmode2_bullet[i]->AutoTranslate_Bullet();
 			mainrole->AutoCheckHurt_MainRole(Bmode2_bullet[i]->_x, Bmode2_bullet[i]->_y, Bmode2_bullet[i]->MAX_X, Bmode2_bullet[i]->MAX_Y, &Bmode2_bullet[i]->HurtMainRole, &mainrole_ring->_defenceBallNUM);//偵測 main role是否被子彈打中			
 			//被傷害後無敵狀態計算時間
 			if (Bmode2_bullet[i]->HurtMainRole) {
 				timer_canHurtMainRole = 0.0f;
-				mainrole->SetAlpha(0.6); //無敵狀態為半透明
-				mainrole_ring->SetAlpha(0.6); //無敵狀態為半透明
+				mainrole->SetAlpha(0.3); //無敵狀態為半透明
+				mainrole_ring->SetAlpha(0.3); //無敵狀態為半透明
 			}
 
 			Bmode2_bullet[i]->HurtMainRole = false; //reset 狀態
@@ -1488,7 +1488,7 @@ void onBulletLaunch(float delta) {
 
 	
 	timer_bullet += delta;
-	if (clickLaunchBullet && canLaunchBullet && Bullet_Total_MainBullet_free > 0) {
+	if (clickLaunchBullet && canLaunchBullet && Bullet_Total_MainBullet_free > 0 && mainrole_alife) {
 		
 		if (touch_twoGunStar) { //兩槍管
 			CreateTwoGunBullet_Main();
@@ -1566,7 +1566,7 @@ void onAlienBulletLaunch(float delta) {
 		//BOSS 兩邊三重子彈
 		for ( boss_Mode1BulletNUM = 0; boss_Mode1BulletNUM < 2; boss_Mode1BulletNUM++) //兩個出彈口
 		{
-			for (boss_Mode3BulletNUM = 0; boss_Mode3BulletNUM < 3 && BOSS_alien > 0 && BOSSMode == Three; boss_Mode3BulletNUM++) //Boss存在則發射子彈 且模式為Mode3
+			for (boss_Mode3BulletNUM = 0; boss_Mode3BulletNUM < 3 && BOSS_alien > 0 && (BOSSMode == Three || BOSSMode == Two); boss_Mode3BulletNUM++) //Boss存在則發射子彈 且模式為Mode3
 			{
 
 				CreateBullet_Alien(alien[SAlien_space + MAlien_space], 'B');
