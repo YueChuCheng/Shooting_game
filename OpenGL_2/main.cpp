@@ -1,3 +1,39 @@
+/*
+		(7 %) 操控與背景部分
+			V(1 %) 滑鼠可以控制戰鬥機的左右移動
+			V(1 %) 戰鬥機傭有防禦裝置，並以父子關係方式呈現
+			V(1 %) 可以發射飛彈
+			V(2 %) 能提供連續發射(LINKED LIST)
+			V(2 %)  能產生有速度感的背景物件，或是其他裝飾性的物件
+		(10 %) 敵人部分
+			V(1 %)  有至少三種以上不同外形的敵人(不同的顏色)，基本的四方型不算在內
+			V(2 %) 以物件導向的多型來控制所有的敵人(用link list 的方式寫)
+			V(1 %)  敵人可以不斷的產生，而且具有不同的顏色
+			V(1 %)  敵人能隨機朝向玩家發射子彈攻擊
+			V(2 %)  戰鬥機發射的子彈可以打到敵人，而且敵人會消失
+			V(3 %)  有 BOSS 級的敵人，且至會根據被攻擊的多寡至少三種不同的狀態可以切換
+		(4 %) (玩家部分)
+			V(2 %)  能判斷玩家是否被打中 並做出合理的反應
+			V(2 %)  玩家的船艦至少有三種狀態，且有提供玩家的船艦可改變狀態的機制
+						{
+							1.兩發子彈
+							2.可撞人的防護罩
+							3.被攻擊時的無敵狀態	
+						}
+		(5%) 其他你覺得可以展示的技術，包含物理或是數學的運算
+			V(2%)提供階層式動態控制(Main Ring)，並以時間為基礎進行動態的展示(如: OpenGL_2 的 Example4 ，以自動產生的軌跡去控制相關的物件運動)
+			V中BOSS導彈發射，控制子彈射擊方向外，算出怪獸的旋轉面相進行選轉
+			V怪獸死亡後會產生煙霧
+			VBOSS遭受攻擊時會冒煙
+			V主角吃到紅星星時遊戲速度會加快
+			V戰鬥機被打到時有其他的效果，珠珠少一顆
+
+			技術總分:26分
+
+*/
+
+
+////////////////////////////////////////////////////
 #include <math.h>
 #include <time.h>
 #include "header/Angel.h"
@@ -75,9 +111,9 @@ extern bool mainroleSmokeOver;
 
 Cloud* cloud[6];
 Bullet_Main* bullet_main;
-short small_alien = 0; //螢幕上small alien 出現的最大數量
+short small_alien = 3; //螢幕上small alien 出現的最大數量
 short middle_alien = 0; //螢幕上middle alien 出現的最大數量
-short BOSS_alien = 1; //螢幕上BOSS alien 出現的最大數量
+short BOSS_alien = 0; //螢幕上BOSS alien 出現的最大數量
 short SAlien_space = 4;  // SAlien 空間個數
 short MAlien_space = 2;  // MAlien 空間個數
 short BAlien_space = 1;  // BOSS 空間個數
@@ -543,7 +579,7 @@ void GL_Display(void)
 
 	//smoke_BOSS
 
-	if (PlayerTotalPoint_BAlien > 5 && alien[SAlien_space + MAlien_space]->used) { //若中槍超過五次則冒煙
+	if (PlayerTotalPoint_BAlien > 30 && alien[SAlien_space + MAlien_space]->used) { //若中槍超過五次則冒煙
 		
 		for (int i = 0; i < 2; i++)
 		{
@@ -1249,7 +1285,7 @@ void onFrameMove(float delta)
 	if (timer_onFrameMove > frameTime) { //每1/1000秒更新一次
 		
 		
-		if (PlayerTotalPoint_BAlien > 5 && alien[SAlien_space + MAlien_space]->used) { //若中槍超過五次則冒煙
+		if (PlayerTotalPoint_BAlien > 30 && alien[SAlien_space + MAlien_space]->used) { //若中槍超過五次則冒煙
 
 		
 			smoke_BOSS[0]->AutomaticMotion(alien[SAlien_space + MAlien_space]->_x, alien[SAlien_space + MAlien_space]->_y, delta); //test
